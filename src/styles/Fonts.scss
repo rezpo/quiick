@@ -1,0 +1,10 @@
+// secondary FAMILY
+@mixin secondary-normal {font: normal normal 16px 'asap', sans-serif;}
+@mixin secondary-bold {font: normal bold 1rem 'asap', sans-serif;}
+@mixin secondary-bold-title {font: normal bold 6rem 'asap', sans-serif;}
+@mixin secondary-bold-subtitle {font: normal bold 1.2rem 'asap', sans-serif;}
+
+// PRIMARY FAMILY
+@mixin primary-normal {font: normal 300 16px 'Work Sans', sans-serif;}
+@mixin primary-normal-small {font: normal 400 .8rem 'Work Sans', sans-serif;}
+@mixin primary-bold {font: normal 900 1rem 'Work Sans', sans-serif;}

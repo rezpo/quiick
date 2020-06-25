@@ -1,0 +1,107 @@
+@import '../../../styles/Index.scss';
+
+.promo__carousel-wrapper {
+  @include flex-between;
+  position: relative;
+
+}
+
+.promo__carousel-pic {
+  width: 70%;
+  margin: 0 auto;
+
+  @media screen and (max-width: $tablet-large-screen){
+    width: 44%;
+  }
+
+  @media screen and (max-width: $tablet-regular-screen){
+    width: 37%;
+  }
+}
+
+.promo__carousel-info {
+  position: absolute;
+  top: 60%;
+  left: 5rem;
+  width: 50%;
+  padding-right: .5rem;
+
+  @media screen and (max-width: $tablet-large-screen){
+    width: 56%;
+  }
+
+  @media screen and (max-width: $tablet-regular-screen){
+    width: 61%;
+  }
+}
+
+.promo__carousel-is-promo {
+  background: $secondary-gradient;
+  padding: 2px 7px;
+  color: $white;
+  font-size: .8rem;
+  font-weight: bold;
+  text-align: left;
+  width: fit-content;
+  border-radius: 2rem;
+
+}
+
+.promo__carousel-title {
+  @include secondary-bold;
+  font-size: 1.4rem;
+  color: $black;
+  width: fit-content;
+  background: $primary;
+  padding: 0 .4rem;
+  margin-bottom: .5rem;
+  text-align: left;
+
+  @media screen and (max-width: $tablet-large-screen){
+    font-size: 1.5rem;
+  }
+
+  @media screen and (max-width: $tablet-regular-screen){
+    font-size: 2.5rem;
+  }
+
+}
+
+.promo__carousel-description {
+  color: $black;
+  font-size: .8rem;
+  margin-bottom: 8px;
+  text-align: left;
+
+  @media screen and (max-width: $tablet-large-screen){
+    font-size: .9rem;
+
+  }
+
+}
+
+.promo__carousel-action {
+  margin: 4px 0;
+
+  @media screen and (max-width: $tablet-regular-screen){
+    @include flex-start;
+  }
+}
+
+.promo__carousel-price {
+  font-weight: bold;
+  font-size: 1.6rem;
+  text-align: left;
+  margin-bottom: .5rem;
+
+  @media screen and (max-width: $tablet-regular-screen){
+    font-size: 1.8rem;
+    margin-right: 1rem;
+  }
+}
+
+.promo__carousel-viewer {
+  a {
+    text-decoration: none;
+  }
+}

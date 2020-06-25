@@ -1,0 +1,279 @@
+@import '../styles/Mixings.scss';
+@import '../styles/MediaQuerys.scss';
+
+.order__extra-item {
+  @include secondary-bold;
+  @include flex-between;
+  width: 30%;
+  font-size: .9rem;
+  padding: 10px 12px;
+  border-radius: 4px;
+  text-align: center;
+  margin-bottom: .7rem;
+  cursor: pointer;
+  transition: .3s ease-in-out;
+  background: $white;
+  box-shadow: $secondary-shadow;
+  color: $black;
+
+  @media screen and (max-width: $desktop-large-screen) {
+
+    &:hover {
+      background: $secondary;
+      box-shadow: $secondary-shadow-hover;
+      color: $white;
+
+    }
+  }
+
+  @media screen and (max-width: $tablet-regular-screen) {
+    font-size: .7rem;
+
+    &:hover {
+      background: $white;
+      box-shadow: $secondary-shadow;
+      color: $black;
+
+    }
+  }
+
+  @media screen and (max-width: $mobile-large-screen) {
+    font-size: .8rem;
+  }
+
+  .item-name {
+    @include flex-start;
+  }
+}
+
+.curtain__announce {
+  @include secondary-bold;
+  text-align: center;
+  font-size: calc(35px + (55 - 35) * ((100vw - 300px) / (1600 - 300)));
+  width: 67%;
+  color: $white;
+  margin: 0 auto;
+
+  .announce-title {
+    margin-top: 0;
+  }
+
+  @media screen and (max-width: $mobile-large-screen) {
+    width: 100%;
+    text-align: left;
+  }
+
+  p {
+    @include primary-normal;
+    font-size: 1.2rem;
+  }
+}
+
+.menu__item {
+  font-weight: normal;
+  margin-right: 1rem;
+
+}
+
+.modal__wrapper {
+  border-radius: 13px;
+  box-shadow: $black-shadow;
+  padding: 3rem 4rem;
+  background: $white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+
+  @media screen and (max-width: $tablet-large-screen){
+    width: 90%;
+  }
+
+  @media screen and (max-width: $mobile-large-screen){
+    padding: 2rem 1rem;
+    height: 100vh;
+  }
+
+}
+
+.modal__layout {
+  background: rgba($color: $white, $alpha: .8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  z-index: 2;
+
+}
+
+.modal__header {
+  @include flex-between;
+  width: 100%;
+  margin-bottom: 2rem;
+
+  .modal-title {
+    @include flex-start;
+    @include secondary-bold-subtitle;
+  }
+
+  .modal-close {
+    width: 15px;
+    height: 15px;
+    color: $tertiary;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+
+    &:hover {
+      color: $black;
+    }
+  }
+}
+
+.modal__body {
+  margin: 3rem auto;
+  width: 60%;
+
+  @media screen and (max-width: $tablet-regular-screen){
+    width: 80%;
+  }
+
+  .product-extra-info {
+    display: block;
+    text-align: right;
+    margin-bottom: 1rem;
+  }
+
+  .product-total {
+    display: block;
+    text-align: right;
+    margin-top: 2rem;
+  }
+
+}
+
+.modal-product {
+  @include flex-between;
+  width: 100%;
+  margin: .5rem auto;
+
+  .product-quantity {
+    width: 10%;
+    display: block;
+
+    @media screen and (max-width: $mobile-large-screen){
+      font-size: .8rem;
+    }
+  }
+
+  .product-name {
+    width: 70%;
+    display: block;
+
+    @media screen and (max-width: $mobile-large-screen){
+      font-size: .8rem;
+    }
+  }
+
+  .product-price {
+    width: 20%;
+    display: block;
+
+    @media screen and (max-width: $mobile-large-screen){
+      font-size: .8rem;
+    }
+
+    span {
+      float: right;
+
+    }
+  }
+}
+
+.modal-delivery {
+  margin: 1rem 0;
+
+  .delivery-title {
+    @include flex-start;
+    margin: 1rem 0;
+
+  }
+
+  .delivery-input {
+    margin-bottom: 1rem;
+
+    label {
+      @include secondary-bold;
+      display: block;
+      margin-bottom: .5rem;
+
+    }
+
+  }
+
+}
+
+.tabs-link {
+  @include flex-start;
+
+  @media screen and (max-width: $mobile-large-screen){
+    margin: .5rem auto;
+  }
+
+  .link {
+    margin-left: 1rem;
+    width: fit-content;
+    text-decoration: none;
+  }
+}
+
+.check {
+  background: $quaternary !important;
+  color: $white !important;
+}
+
+.combo {
+  @include secondary-bold;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  color: $black;
+  font-size: 1rem;
+  margin-right: .2rem;
+
+  @media screen and (max-width: $tablet-large-screen){
+    font-size: 1rem;
+  }
+
+  @media screen and (max-width: $tablet-regular-screen){
+    font-size: .8rem;
+  }
+
+  .icon {
+    margin-right: .2rem;
+
+    svg {
+      width: 15px;
+
+    }
+  }
+}
+
+.bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 30px;
+  background: $white-gradient;
+  width: 50%;
+
+}
+
+// CAROUSEL REFACTOR
+
+.carousel {
+  .slide {
+    background: transparent;
+  }
+}

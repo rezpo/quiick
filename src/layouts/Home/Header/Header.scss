@@ -1,0 +1,44 @@
+@import '../../../styles/Index.scss';
+
+.header {
+  @include flex-between;
+  margin: 0 49px;
+  margin-bottom: 3rem;
+
+  @media screen and (max-width: $tablet-large-screen) {
+    margin: 0;
+  }
+
+  @media screen and (max-width: $tablet-regular-screen) {
+    padding: 1rem;
+  }
+
+  @media screen and (max-width: $mobile-large-screen) {
+    padding: 0;
+    padding-bottom: 1rem;
+  }
+
+  a {
+    @media screen and (max-width: $mobile-large-screen) {
+      width: 25%;
+    }
+  }
+
+  svg {
+    @media screen and (max-width: $tablet-regular-screen) {
+      width: 100%;
+    }
+  }
+
+}
+
+.header__menu {
+  @include flex-between;
+
+}
+
+.menu__item {
+  a {
+    text-decoration: none;
+  }
+}
