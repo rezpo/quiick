@@ -1,0 +1,41 @@
+@mixin flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+}
+
+@mixin flex-start {
+  @include flexbox;
+  justify-content: flex-start;
+}
+
+@mixin flex-end {
+  @include flexbox;
+  justify-content: flex-end;
+}
+
+@mixin flex-between {
+  @include flexbox;
+  justify-content: space-between;
+}
+
+@mixin flex-around {
+  @include flexbox;
+  justify-content: space-around;
+}
+
+@mixin flex-evenly {
+  @include flexbox;
+  justify-content: space-evenly;
+}
+
+// BORDER RADIUS
+
+@mixin large-box-radius {
+  border-radius: 25px;
+
+  @media screen and (max-width: $mobile-large-screen){
+    border-radius: 8px;
+  }
+}
