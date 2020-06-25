@@ -1,0 +1,91 @@
+@import '../../../styles/Index.scss';
+
+.button {
+  @include flex-start;
+  @include secondary-bold;
+  padding: 13px 34px;
+  border-radius: .7rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: $secondary-shadow;
+}
+
+.button--primary {
+  background: $secondary-gradient;
+  color: $white;
+  transition: .3s ease-in-out;
+
+  &:hover {
+    background: $secondary-gradient-hover;
+  }
+}
+
+.button--secondary {
+  background: $secondary;
+  transition: .3s ease-in-out;
+
+  &:hover {
+    background: $black;
+    color: $white;
+  }
+}
+
+.button--tertiary {
+  background: $tertiary-gradient;
+
+  &:hover {
+    background: $tertiary-gradient-hover;
+  }
+}
+
+.button--quaternary {
+  padding: 4px 11px;
+  border-radius: 5rem;
+  font-weight: bold;
+  font-size: .9rem;
+  background: $quinary;
+  transition: .2s ease-in-out;
+
+  &:hover {
+    background: $black;
+    color: $white;
+  }
+}
+
+.button--quinary {
+  padding: 4px 11px;
+  font-weight: bold;
+  font-size: .9rem;
+  border: 1px solid $black;
+  background: $white;
+  transition: .2s ease-in-out;
+  box-shadow: none;
+
+  &:hover {
+    background: $black;
+    color: $white;
+  }
+}
+
+.button--senary {
+  padding: 4px 0;
+  font-weight: bold;
+  font-size: .9rem;
+  border-radius: 0;
+  border-bottom: 2px solid $black;
+  outline: none;
+  background: transparent;
+  transition: .2s ease-in-out;
+  box-shadow: none;
+
+  &:hover {
+    color: $secondary;
+    border-bottom: 2px solid $secondary;
+  }
+}
+
+.button--unactive {
+  background: $tertiary;
+  box-shadow: none;
+
+}

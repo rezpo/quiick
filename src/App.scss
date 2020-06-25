@@ -1,0 +1,55 @@
+@import './styles/Index.scss';
+
+*,
+html {
+  box-sizing: border-box;
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+
+    @media screen and (max-width: $mobile-large-screen){
+      background: rgba($color: $tertiary, $alpha: .5);
+      border-radius: 5rem;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $secondary-gradient;
+    border-radius: 5rem;
+  }
+
+  :focus {
+    outline: none;
+  }
+
+}
+
+input {
+  @include primary-normal;
+  border: 1.3px solid $black;
+  border-radius: 5px;
+  color: $black;
+  height: 35px;
+  width: 100%;
+  padding: 0 10px;
+
+  &::placeholder {
+    color: rgba($color: $black, $alpha: .3);
+  }
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+body {
+  @include primary-normal;
+  background-color: $white;
+
+}

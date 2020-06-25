@@ -1,0 +1,123 @@
+@import '../../../styles/Index.scss';
+
+.body {
+  @include flex-evenly;
+  margin: 3rem auto;
+  width: 80%;
+
+  @media screen and (max-width: $tablet-large-screen) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: $mobile-large-screen) {
+    margin: 0;
+  }
+
+}
+
+.body__caption {
+  width: 40%;
+
+  @media screen and (max-width: $tablet-regular-screen) {
+    width: 60%;
+  }
+
+  @media screen and (max-width: $mobile-large-screen) {
+    width: 100%;
+    padding: 0 1rem;
+    margin-bottom: 2rem;
+  }
+
+}
+
+.body__caption-title {
+  @include secondary-bold;
+  font-size: calc(55px + (77 - 55) * ((100vw - 300px) / (1600 - 300)));
+  color: $black;
+  line-height: 93.1%;
+  margin-bottom: 1rem;
+
+}
+
+.body__paragraph {
+  @include primary-normal;
+  color: $black;
+  width: 100%;
+  font-weight: 300;
+  font-size: x-large;
+
+  .highlight-text {
+    background: $quinary;
+    color: $black;
+  }
+
+}
+
+.body__action {
+  @include flex-start;
+  margin-top: 32px;
+  width: 70%;
+
+  @media screen and (max-width: $tablet-regular-screen) {
+    width: 100%;
+  }
+}
+
+.body__action-button {
+  display: flex;
+  width: 100%;
+  padding-right: .5rem;
+
+  @media screen and (max-width: $tablet-regular-screen) {
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+}
+
+.body__promo {
+  width: 60%;
+  position: relative;
+
+  @media screen and (max-width: $tablet-regular-screen) {
+    width: 100%;
+  }
+
+}
+
+.body__promo-wrapper {
+
+
+  @media screen and (max-width: $tablet-large-screen) {
+    width: 50%;
+    padding: 0 55px;
+    padding-top: 0;
+  }
+
+  @media screen and (max-width: $tablet-regular-screen) {
+    width: 100%;
+    position: initial;
+    padding-top: 2rem;
+  }
+
+}
+
+.body-promo-eyecatch {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 70%;
+
+  @media screen and (max-width: $tablet-large-screen) {
+    left: 0;
+  }
+
+  @media screen and (max-width: $tablet-regular-screen) {
+    display: none;
+  }
+}
