@@ -188,6 +188,7 @@
     border-radius: 5rem;
     border: 2px solid $white;
     padding: .2rem .5rem .2rem .2rem;
+    box-shadow: 0 .1rem .2rem rgba($color: $black, $alpha: .5);
 
     .icon {
       position: absolute;
@@ -302,6 +303,7 @@
   @include flex-start;
   bottom: .5rem;
   position: absolute;
+  height: 33.7px;
   width: 90%;
 
 }
@@ -324,51 +326,6 @@
       width: 100%;
       margin-bottom: .2rem;
       font-size: 1rem;
-
-      .price {
-        @include flex-start;
-
-        .icon {
-          margin-right: 0;
-          margin: 0 .4rem;
-
-        }
-      }
-
-      .units {
-        @include flex-between;
-        border: 1px solid;
-        border-radius: 5rem;
-        padding: .2rem .2rem .2rem .5rem;
-
-        .unit {
-          margin-right: .3rem;
-        }
-      }
-
-      .quantifier {
-        border-radius: 5rem;
-        border: 1px solid;
-        width: 19px;
-        height: 19px;
-        margin-left: .2rem;
-        position: relative;
-
-        .icon {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          margin: 0 auto;
-
-          svg {
-            height: 10px;
-            width: auto;
-            margin: auto 0;
-            display: block;
-          }
-        }
-      }
     }
   }
 }
