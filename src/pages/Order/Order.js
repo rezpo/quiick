@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Wrapper from '../../components/wrapper/Wrapper'
 import Button from '../../components/buttons/Button/Button'
 import Icon from '../../components/icons/Icon'
-import { faPizzaSlice, faStar, faBicycle, faThumbsUp, faHandPointUp, faUtensils, faClipboardList, faTimes, faBeer, faCookieBite, faHandPointLeft, faPlus, faMinus, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPizzaSlice, faBicycle, faThumbsUp, faHandPointUp, faUtensils, faClipboardList, faTimes, faBeer, faCookieBite, faHandPointLeft, faPlus, faMinus, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import NumberFormat from 'react-number-format'
 import Modal from 'react-modal'
 import { HashLink as Link } from 'react-router-hash-link';
@@ -20,42 +20,171 @@ export default class Order extends Component {
           title: 'Producto 1',
           sku: '1',
           description: 'Occaecat incididunt ea irure elit non qui deserunt nostrud nisi.',
-          size: { size: 'FAM', units: 1, price: 13990, id: 'CMB0', selectedIndicator: '', isSelected: false, name: 'Oferta de la casa' },
-          isCombo: false
+          spec: { promo: true, units: 1, price: 13990, id: 'CMB0', selectedIndicator: '', isSelected: false, name: 'Oferta de la casa' },
         },
         {
           photo: 'https://www.dropbox.com/s/8ygdc40kho0mw3z/cmb1.jpg?raw=1',
           title: 'Producto 2',
           sku: '2',
           description: 'Duis veniam consequat consectetur incididunt labore ea labore laboris ad proident dolore non commodo.',
-          size: { size: 'FAM', units: 1, price: 14990, id: 'CMB1', selectedIndicator: '', isSelected: false, name: 'Combo 1' },
-          isCombo: false
+          spec: { promo: true, units: 1, price: 14990, id: 'CMB1', selectedIndicator: '', isSelected: false, name: 'Combo 1' },
         },
         {
           photo: 'https://www.dropbox.com/s/x95pvubgbnteirk/cmb2.jpg?raw=1',
           title: 'Producto 3',
           sku: '3',
           description: 'Culpa eiusmod culpa commodo dolore ad tempor incididunt fugiat ea nostrud nulla.',
-          size: { size: 'FAM', units: 1, price: 19490, id: 'CMB2', selectedIndicator: '', isSelected: false, name: 'Combo 2' },
-          isCombo: false
+          spec: { promo: false, units: 1, price: 19490, id: 'CMB2', selectedIndicator: '', isSelected: false, name: 'Combo 2' },
         },
         {
           photo: 'https://www.dropbox.com/s/6g07pe66pip7are/cmb3.jpg?raw=1',
           title: 'Producto 4',
           sku: '4',
           description: 'Nostrud velit pariatur excepteur aliquip mollit.',
-          size: { size: 'FAM', units: 1, price: 19490, id: 'CMB3', selectedIndicator: '', isSelected: false, name: 'Combo 3' },
-          isCombo: false
+          spec: { promo: true, units: 1, price: 19490, id: 'CMB3', selectedIndicator: '', isSelected: false, name: 'Combo 3' },
         },
       ],
       catalogSelected: [],
       totalOrder: 0,
       deliveryCost: 0,
+      deliveryAddress: '',
+      deliveryProvince: undefined,
+      provinces: [
+        {
+          name: 'Selecciona una comuna'
+        },
+        {
+          name: 'Santiago',
+          cost: 300
+        },
+        {
+          name: 'Conchalí',
+          cost: 300
+        },
+        {
+          name: 'Huechuraba',
+          cost: 300
+        },
+        {
+          name: 'Independencia',
+          cost: 300
+        },
+        {
+          name: 'Quilicura',
+          cost: 300
+        },
+        {
+          name: 'Recoleta',
+          cost: 300
+        },
+        {
+          name: 'Renca',
+          cost: 300
+        },
+        {
+          name: 'Las Condes',
+          cost: 300
+        },
+        {
+          name: 'Lo Barnechea',
+          cost: 300
+        },
+        {
+          name: 'Providencia',
+          cost: 300
+        },
+        {
+          name: 'Vitacura',
+          cost: 300
+        },
+        {
+          name: 'La Reina',
+          cost: 300
+        },
+        {
+          name: 'Macul',
+          cost: 300
+        },
+        {
+          name: 'Ñuñoa',
+          cost: 300
+        },
+        {
+          name: 'Peñalolén',
+          cost: 300
+        },
+        {
+          name: 'La Florida',
+          cost: 300
+        },
+        {
+          name: 'La Granja',
+          cost: 300
+        },
+        {
+          name: 'El Bosque',
+          cost: 300
+        },
+        {
+          name: 'La Cisterna',
+          cost: 300
+        },
+        {
+          name: 'La Pintana',
+          cost: 300
+        },
+        {
+          name: 'San Ramón',
+          cost: 300
+        },
+        {
+          name: 'Lo Espejo',
+          cost: 300
+        },
+        {
+          name: 'Pedro Aguirre Cerda',
+          cost: 300
+        },
+        {
+          name: 'San Joaquín',
+          cost: 300
+        },
+        {
+          name: 'San Miguel',
+          cost: 300
+        },
+        {
+          name: 'Cerrillos',
+          cost: 300
+        },
+        {
+          name: 'Estación Central',
+          cost: 300
+        },
+        {
+          name: 'Maipú',
+          cost: 300
+        },
+        {
+          name: 'Cerro Navia',
+          cost: 300
+        },
+        {
+          name: 'Lo Prado',
+          cost: 300
+        },
+        {
+          name: 'Pudahuel',
+          cost: 300
+        },
+        {
+          name: 'Quinta Normal',
+          cost: 300
+        },
+      ],
       modalIsOpen: false,
       fullName: '',
       contactNumber: '',
-      deliveryAddress: '',
-      msg: []
     }
   }
 
@@ -63,31 +192,32 @@ export default class Order extends Component {
     const catalogItems = [...this.state.catalog]
     let onlySelected = []
     let totalAmount = []
+    let deliveryMsg = []
 
     catalogItems.forEach(i => {
-      if (i.size.id === id) {
-        i.size.isSelected = !i.size.isSelected
-        if (i.size.isSelected) {
-          i.size.selectedIndicator = 'check'
+      if (i.spec.id === id) {
+        i.spec.isSelected = !i.spec.isSelected
+        if (i.spec.isSelected) {
+          i.spec.selectedIndicator = 'check'
         } else {
-          i.size.selectedIndicator = ''
+          i.spec.selectedIndicator = ''
         }
       }
     })
 
     catalogItems.forEach(i => {
-      if (i.size.isSelected) {
-        onlySelected.push(i.size)
+      if (i.spec.isSelected) {
+        onlySelected.push(i.spec)
       }
     })
 
     catalogItems.forEach(i => {
-      if(i.size.isSelected) {
-        totalAmount.push(i.size.price * i.size.units)
+      if (i.spec.isSelected) {
+        totalAmount.push(i.spec.price * i.spec.units)
       }
     })
 
-    this.setState({ catalogSelected: onlySelected })
+    this.setState({ catalogSelected: onlySelected})
     this.setState({ totalOrder: totalAmount.reduce((orderTotal, eachProduct) => orderTotal + eachProduct, 0) })
   }
 
@@ -100,8 +230,22 @@ export default class Order extends Component {
   }
 
   clientData = (e) => {
+    let provinceCost
+
     this.setState({
       [e.target.name]: e.target.value
+    })
+
+    this.state.provinces.map(province => {
+
+      if (e.target.value === province.name) {
+        provinceCost = province.cost
+      }
+      return provinceCost
+    })
+
+    this.setState({
+      deliveryCost: provinceCost
     })
   }
 
@@ -110,9 +254,9 @@ export default class Order extends Component {
       if (item.sku === sku) {
         return {
           ...item,
-          size: {
-            ...item.size,
-            units: item.size.units + 1
+          spec: {
+            ...item.spec,
+            units: item.spec.units + 1
           }
         }
       }
@@ -125,12 +269,12 @@ export default class Order extends Component {
 
   decrementUnits = sku => {
     const decremetUnit = this.state.catalog.map(item => {
-      if (item.sku === sku && item.size.units > 1) {
+      if (item.sku === sku && item.spec.units > 1) {
         return {
           ...item,
-          size: {
-            ...item.size,
-            units: item.size.units - 1
+          spec: {
+            ...item.spec,
+            units: item.spec.units - 1
           }
         }
       }
@@ -141,6 +285,10 @@ export default class Order extends Component {
     });
   }
 
+  toLowerCase = string => {
+    string.toLowerCase()
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { catalogSelected, catalog } = this.state
     let summaryTotal = []
@@ -148,8 +296,8 @@ export default class Order extends Component {
     if (prevState.catalog !== catalog) {
       catalog.map(item => {
         catalogSelected.forEach(selected => {
-          if (item.size.id === selected.id) {
-            selected.units = item.size.units
+          if (item.spec.id === selected.id) {
+            selected.units = item.spec.units
             summaryTotal.push(selected.price * selected.units)
           }
         })
@@ -165,7 +313,25 @@ export default class Order extends Component {
   }
 
   render() {
-    const { catalog, catalogSelected, totalOrder, modalIsOpen, deliveryCost, fullName, contactNumber, deliveryAddress } = this.state
+    const {
+      catalog,
+      catalogSelected,
+      totalOrder,
+      modalIsOpen,
+      deliveryCost,
+      fullName,
+      contactNumber,
+      deliveryAddress,
+      deliveryProvince,
+      provinces } = this.state
+
+    let resumeMsg = []
+
+    catalogSelected.map(product => {
+      let productsCount = `- ${product.units} ${product.name}`
+      resumeMsg.push(productsCount)
+      return resumeMsg
+    })
 
     return (
       <Wrapper>
@@ -188,30 +354,30 @@ export default class Order extends Component {
             <div className="order__catalog">
               {catalog.map((item, index) => {
                 return (
-                  <div key={index} className={`order__catalog-item ${item.size.selectedIndicator}`} id={item.size.id}>
-                    <div className="order__catalog-pic" onClick={() => this.selectItemHandler(item.size.id)}>
-                      <div className={`toggler ${item.size.isSelected ? 'remove' : 'add'}`}>{item.size.isSelected ? <Icon faIcon={faTimesCircle} /> : <Icon faIcon={faCheckCircle} />}</div>
+                  <div key={index} className={`order__catalog-item ${item.spec.selectedIndicator}`} id={item.spec.id}>
+                    <div className="order__catalog-pic" onClick={() => this.selectItemHandler(item.spec.id)}>
+                      <div className={`toggler ${item.spec.isSelected ? 'remove' : 'add'}`}>{item.spec.isSelected ? <Icon faIcon={faTimesCircle} /> : <Icon faIcon={faCheckCircle} />}</div>
                       <img src={item.photo} alt={item.title} />
                     </div>
                     <div className="order__catalog-info">
-                      <div className="order__catalog-info-title-size">
+                      <div className="order__catalog-info-title-spec">
                         <strong className="order__catalog-info-title">{item.title}</strong>
-                        {item.size.size ?
-                          <div className="order__catalog-info-size">
-                            <span className="size">{item.size.size}</span>
+                        {item.spec.promo ?
+                          <div className="order__catalog-info-spec">
+                            <span className="spec">Promo</span>
                           </div> : ''}
                       </div>
                       <p className="order__catalog-info-description">{item.description}</p>
                       <div className="order__catalog-item-price">
-                        <div className="order__catalog-item-size">
-                          <div className="size-price">
-                            <div className="size-item">
+                        <div className="order__catalog-item-spec">
+                          <div className="spec-price">
+                            <div className="spec-item">
                               <div className="price">
-                                <NumberFormat value={item.size.units > 1 && item.size.isSelected ? item.size.price * item.size.units : item.size.price} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} />
+                                <NumberFormat value={item.spec.units > 1 && item.spec.isSelected ? item.spec.price * item.spec.units : item.spec.price} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} />
                               </div>
-                              {item.size.isSelected ?
+                              {item.spec.isSelected ?
                                 <div className="units">
-                                  <span className="unit">{item.size.units}</span>
+                                  <span className="unit">{item.spec.units}</span>
                                   <div className="quantifier" onClick={() => this.incrementUnits(item.sku)}>
                                     <Icon faIcon={faPlus} />
                                   </div>
@@ -253,7 +419,7 @@ export default class Order extends Component {
                 return (
                   <div key={index} className="modal-product">
                     <span className="product-quantity">{product.units}</span>
-                    <span className="product-name">{`${product.name} ${product.size ? product.size : ''}`}</span>
+                    <span className="product-name">{`${product.name} ${product.spec ? product.spec : ''}`}</span>
                     <span className="product-price"><NumberFormat value={product.price * product.units} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} /></span>
                   </div>
                 )
@@ -265,7 +431,7 @@ export default class Order extends Component {
                 </div>
                 <strong className="product-total">Total: <NumberFormat value={totalOrder + deliveryCost} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} /></strong>
               </div>
-              <div className="modal-delivery">
+              <form className="modal-delivery">
                 <div className="delivery-title"><Icon faIcon={faBicycle} /><strong>Información de despacho</strong></div>
                 <div className="delivery-input">
                   <label>Nombre</label>
@@ -279,16 +445,24 @@ export default class Order extends Component {
                   <label>Dirección de despacho</label>
                   <input type="text" name="deliveryAddress" placeholder="Calle Nº (depto)" onChange={this.clientData} />
                 </div>
-              </div>
+                <div className="delivery-input">
+                  <label>Comuna de despacho</label>
+                  <select value={deliveryProvince} name="deliveryProvince" onChange={this.clientData}>
+                    {provinces.map((province, index) => {
+                      return <option key={index} value={this.toLowerCase(province.name)}>{province.name}</option>
+                    })}
+                  </select>
+                </div>
+              </form>
             </div>
-            {(!fullName || !contactNumber || !deliveryAddress) ?
+            {(!fullName || !contactNumber || !deliveryAddress || deliveryProvince === undefined) ?
               <div className="order__submit">
                 <Button isSubject='unactive' isText='Llena el formulario' isIcon={<Icon faIcon={faHandPointUp} />} />
               </div>
               :
               <div className="order__submit">
-                <a href={`https://wa.me/56961420311?text=${fullName} para completar tu pedido solo debes hacer transferencia a%0A%0AMaria Antonella Perez%0ARut 25124016-7%0ACuenta cte 0215303743%0ABanco ITAU%0Amealspizza@gmail.cl%0A%0ADetalle de tu pedido%0A%0A${'msgCompleteOrder'}%0ATotal: $${totalOrder + deliveryCost}%0ADespacho a ${deliveryAddress}%0ANº de contacto 56${contactNumber}`}>
-                  <Button isSubject='primary' isText='Confirmar pedido' isIcon={<Icon faIcon={faThumbsUp} />} />
+                <a href={`https://wa.me/56961420311?text=${fullName} para completar tu pedido solo debes hacer transferencia a%0A%0AMaria Antonella Perez%0ARut 25124016-7%0ACuenta cte 0215303743%0ABanco ITAU%0Amealspizza@gmail.cl%0A%0ADetalle de tu pedido%0A%0A${resumeMsg.join('%0A')}%0A%0ATotal: $${totalOrder + deliveryCost}%0A%0ADespacho a ${deliveryAddress}%0ANº de contacto 56${contactNumber}`}>
+                  <Button isSubject='secondary' isText='Confirmar pedido' isIcon={<Icon faIcon={faThumbsUp} />} />
                 </a>
               </div>
             }

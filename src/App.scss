@@ -28,7 +28,7 @@ html {
 
 }
 
-input {
+input, select {
   @include primary-normal;
   border: 1.3px solid $black;
   border-radius: 5px;

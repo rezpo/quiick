@@ -102,7 +102,7 @@
         opacity: inherit;
       }
 
-      .size-item {
+      .spec-item {
         color: inherit;
         background: inherit;
         padding: inherit;
@@ -118,7 +118,7 @@
         opacity: inherit;
       }
 
-      .size-item {
+      .spec-item {
         color: inherit;
         background: inherit;
         padding: inherit;
@@ -147,7 +147,7 @@
         color: $white;
       }
 
-      .order__catalog-info-title-size {
+      .order__catalog-info-title-spec {
 
         .combo,
         .order__catalog-info-title {
@@ -155,7 +155,7 @@
         }
       }
 
-      .order__catalog-item-size {
+      .order__catalog-item-spec {
         color: $white;
       }
     }
@@ -232,7 +232,7 @@
   height: 40%;
 }
 
-.order__catalog-info-title-size {
+.order__catalog-info-title-spec {
   @include flex-start;
   margin-bottom: .5rem;
 
@@ -254,15 +254,15 @@
 
 }
 
-.order__catalog-info-size {
+.order__catalog-info-spec {
   @include secondary-bold-subtitle;
   position: relative;
-  color: $white;
+  color: $black;
   text-align: center;
-  font-size: .8rem;
-  height: 25px;
-  width: 32px;
-  background: $secondary-gradient;
+  font-size: .7rem;
+  height: 20px;
+  width: 48px;
+  background: $quinary;
   padding: .3rem;
   margin-left: .5rem;
   border-radius: .3rem;
@@ -277,7 +277,7 @@
     padding: .3rem .7rem;
   }
 
-  .size {
+  .spec {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -308,7 +308,7 @@
 
 }
 
-.order__catalog-item-size {
+.order__catalog-item-spec {
   @include flex-start;
   @include primary-normal-small;
   font-weight: bold;
@@ -318,10 +318,10 @@
   cursor: pointer;
   transition: .2s ease-in-out;
 
-  .size-price {
+  .spec-price {
     width: 100%;
 
-    .size-item {
+    .spec-item {
       @include flex-between;
       width: 100%;
       margin-bottom: .2rem;
@@ -421,8 +421,13 @@
     text-decoration: none;
   }
 
+  .button--secondary {
+    margin: 0 auto;
+  }
+
   .button--unactive {
     pointer-events: none;
+    margin: 0 auto;
   }
 
 }
