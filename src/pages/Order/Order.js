@@ -16,42 +16,86 @@ export default class Order extends Component {
     this.state = {
       catalog: [
         {
+          category: 'Panaderia',
           photo: 'https://www.dropbox.com/s/xd7iw1r0mlax34a/cmb0.jpg?raw=1',
-          title: 'Producto 1',
+          title: 'Breve descripción',
+          name: 'Oferta de la casa',
           sku: '1',
           description: 'Occaecat incididunt ea irure elit non qui deserunt nostrud nisi.',
-          spec: { promo: true, units: 1, price: 13990, id: 'CMB0', selectedIndicator: '', isSelected: false, name: 'Oferta de la casa' },
+          promo: true,
+          units: 1,
+          price: 13990,
+          id: 'CMB0',
+          selectedIndicator: '',
+          isSelected: false,
         },
         {
+          category: 'Reposteria',
           photo: 'https://www.dropbox.com/s/8ygdc40kho0mw3z/cmb1.jpg?raw=1',
-          title: 'Producto 2',
+          title: 'Breve descripción',
+          name: 'Combo 1',
           sku: '2',
           description: 'Duis veniam consequat consectetur incididunt labore ea labore laboris ad proident dolore non commodo.',
-          spec: { promo: true, units: 1, price: 14990, id: 'CMB1', selectedIndicator: '', isSelected: false, name: 'Combo 1' },
+          promo: true,
+          units: 1,
+          price: 14990,
+          id: 'CMB1',
+          selectedIndicator: '',
+          isSelected: false,
         },
         {
+          category: 'Panaderia',
           photo: 'https://www.dropbox.com/s/x95pvubgbnteirk/cmb2.jpg?raw=1',
-          title: 'Producto 3',
+          title: 'Breve descripción',
+          name: 'Combo 2',
           sku: '3',
           description: 'Culpa eiusmod culpa commodo dolore ad tempor incididunt fugiat ea nostrud nulla.',
-          spec: { promo: false, units: 1, price: 19490, id: 'CMB2', selectedIndicator: '', isSelected: false, name: 'Combo 2' },
+          promo: false,
+          units: 1,
+          price: 19490,
+          id: 'CMB2',
+          selectedIndicator: '',
+          isSelected: false,
         },
         {
+          category: 'Reposteria',
           photo: 'https://www.dropbox.com/s/6g07pe66pip7are/cmb3.jpg?raw=1',
-          title: 'Producto 4',
+          title: 'Breve descripción',
+          name: 'Combo 3',
           sku: '4',
           description: 'Nostrud velit pariatur excepteur aliquip mollit.',
-          spec: { promo: true, units: 1, price: 19490, id: 'CMB3', selectedIndicator: '', isSelected: false, name: 'Combo 3' },
+          promo: true,
+          units: 1,
+          price: 19490,
+          id: 'CMB3',
+          selectedIndicator: '',
+          isSelected: false,
+        },
+        {
+          category: 'Bebidas',
+          photo: 'https://www.dropbox.com/s/6g07pe66pip7are/cmb3.jpg?raw=1',
+          title: 'Breve descripción',
+          name: 'Combo 3',
+          sku: '5',
+          description: 'Nostrud velit pariatur excepteur aliquip mollit.',
+          promo: true,
+          units: 1,
+          price: 19490,
+          id: 'CMB4',
+          selectedIndicator: '',
+          isSelected: false,
         },
       ],
       catalogSelected: [],
+      allCategories: [],
       totalOrder: 0,
       deliveryCost: 0,
       deliveryAddress: '',
       deliveryProvince: undefined,
       provinces: [
         {
-          name: 'Selecciona una comuna'
+          name: 'Selecciona una comuna',
+          cost: 0
         },
         {
           name: 'Santiago',
@@ -192,33 +236,58 @@ export default class Order extends Component {
     const catalogItems = [...this.state.catalog]
     let onlySelected = []
     let totalAmount = []
-    let deliveryMsg = []
 
-    catalogItems.forEach(i => {
-      if (i.spec.id === id) {
-        i.spec.isSelected = !i.spec.isSelected
-        if (i.spec.isSelected) {
-          i.spec.selectedIndicator = 'check'
+    catalogItems.forEach(item => {
+      if (item.id === id) {
+        item.isSelected = !item.isSelected
+        if (item.isSelected) {
+          item.selectedIndicator = 'check'
         } else {
-          i.spec.selectedIndicator = ''
+          item.selectedIndicator = ''
+        }
+        if (!item.isSelected) {
+          item.units = 1
         }
       }
     })
 
-    catalogItems.forEach(i => {
-      if (i.spec.isSelected) {
-        onlySelected.push(i.spec)
+    catalogItems.forEach(item => {
+      if (item.isSelected) {
+        onlySelected.push(item)
       }
     })
 
-    catalogItems.forEach(i => {
-      if (i.spec.isSelected) {
-        totalAmount.push(i.spec.price * i.spec.units)
+    catalogItems.forEach(item => {
+      if (item.isSelected) {
+        totalAmount.push(item.price * item.units)
       }
     })
 
-    this.setState({ catalogSelected: onlySelected})
+    this.setState({ catalogSelected: onlySelected })
     this.setState({ totalOrder: totalAmount.reduce((orderTotal, eachProduct) => orderTotal + eachProduct, 0) })
+  }
+
+  getCategories = () => {
+    let productCategories = {}
+    let getCategories = []
+
+    this.state.catalog.map(item => {
+      if (!productCategories[item.category]) {
+        productCategories[item.category] = 0
+      } productCategories[item.category] += 1
+    })
+
+    for (const prop in productCategories) {
+      if (productCategories[prop] >= 2) {
+        getCategories.push(prop)
+      } else if (productCategories[prop] === 1) {
+        getCategories.push(prop)
+      }
+    }
+
+    this.setState({
+      allCategories: getCategories
+    })
   }
 
   showModal = () => {
@@ -240,6 +309,8 @@ export default class Order extends Component {
 
       if (e.target.value === province.name) {
         provinceCost = province.cost
+      } else if (province.name === 'Selecciona una comuna') {
+        provinceCost = 0
       }
       return provinceCost
     })
@@ -254,10 +325,7 @@ export default class Order extends Component {
       if (item.sku === sku) {
         return {
           ...item,
-          spec: {
-            ...item.spec,
-            units: item.spec.units + 1
-          }
+          units: item.units + 1
         }
       }
       return item
@@ -269,13 +337,10 @@ export default class Order extends Component {
 
   decrementUnits = sku => {
     const decremetUnit = this.state.catalog.map(item => {
-      if (item.sku === sku && item.spec.units > 1) {
+      if (item.sku === sku && item.units > 1) {
         return {
           ...item,
-          spec: {
-            ...item.spec,
-            units: item.spec.units - 1
-          }
+          units: item.spec.units - 1
         }
       }
       return item
@@ -289,6 +354,10 @@ export default class Order extends Component {
     string.toLowerCase()
   }
 
+  componentDidMount() {
+    this.getCategories()
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { catalogSelected, catalog } = this.state
     let summaryTotal = []
@@ -296,8 +365,8 @@ export default class Order extends Component {
     if (prevState.catalog !== catalog) {
       catalog.map(item => {
         catalogSelected.forEach(selected => {
-          if (item.spec.id === selected.id) {
-            selected.units = item.spec.units
+          if (item.id === selected.id) {
+            selected.units = item.units
             summaryTotal.push(selected.price * selected.units)
           }
         })
@@ -316,6 +385,7 @@ export default class Order extends Component {
     const {
       catalog,
       catalogSelected,
+      allCategories,
       totalOrder,
       modalIsOpen,
       deliveryCost,
@@ -328,7 +398,7 @@ export default class Order extends Component {
     let resumeMsg = []
 
     catalogSelected.map(product => {
-      let productsCount = `- ${product.units} ${product.name}`
+      let productsCount = `- ${product.units} ${product.title}`
       resumeMsg.push(productsCount)
       return resumeMsg
     })
@@ -342,54 +412,63 @@ export default class Order extends Component {
               <strong>Arma tu pedido</strong>
             </div>
             <div className="tabs-link">
-              <Link to="#extras" className="link">
-                <Button isSubject="senary" isText="Extras" isIcon={<Icon faIcon={faCookieBite} />} />
-              </Link>
-              <Link to="#refreshments" className="link">
-                <Button isSubject="senary" isText="Bebidas" isIcon={<Icon faIcon={faBeer} />} />
-              </Link>
+              {allCategories.map(category => {
+                return (
+                  <Link to={`#${category}`} className="link">
+                    <Button isSubject="senary" isText={`${category}`} isIcon={<Icon faIcon={faCookieBite} />} />
+                  </Link>
+                )
+              })}
             </div>
           </div>
           <div className="order__catalog-selector">
             <div className="order__catalog">
-              {catalog.map((item, index) => {
+              {allCategories.map((category, index) => {
                 return (
-                  <div key={index} className={`order__catalog-item ${item.spec.selectedIndicator}`} id={item.spec.id}>
-                    <div className="order__catalog-pic" onClick={() => this.selectItemHandler(item.spec.id)}>
-                      <div className={`toggler ${item.spec.isSelected ? 'remove' : 'add'}`}>{item.spec.isSelected ? <Icon faIcon={faTimesCircle} /> : <Icon faIcon={faCheckCircle} />}</div>
-                      <img src={item.photo} alt={item.title} />
-                    </div>
-                    <div className="order__catalog-info">
-                      <div className="order__catalog-info-title-spec">
-                        <strong className="order__catalog-info-title">{item.title}</strong>
-                        {item.spec.promo ?
-                          <div className="order__catalog-info-spec">
-                            <span className="spec">Promo</span>
-                          </div> : ''}
-                      </div>
-                      <p className="order__catalog-info-description">{item.description}</p>
-                      <div className="order__catalog-item-price">
-                        <div className="order__catalog-item-spec">
-                          <div className="spec-price">
-                            <div className="spec-item">
-                              <div className="price">
-                                <NumberFormat value={item.spec.units > 1 && item.spec.isSelected ? item.spec.price * item.spec.units : item.spec.price} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} />
+                  <div key={index} id={category} className="order__catalog-category">
+                    {catalog.map(product => {
+                      if (category === product.category) {
+                        return (
+                          <div key={product.id} className={`order__catalog-item ${product.selectedIndicator}`} id={product.id}>
+                            <div className="order__catalog-pic" onClick={() => this.selectItemHandler(product.id)}>
+                              <div className={`toggler ${product.isSelected ? 'remove' : 'add'}`}>{product.isSelected ? <Icon faIcon={faTimesCircle} /> : <Icon faIcon={faCheckCircle} />}</div>
+                              <img src={product.photo} alt={product.title} />
+                            </div>
+                            <div className="order__catalog-info">
+                              <div className="order__catalog-info-title-spec">
+                                <strong className="order__catalog-info-title">{product.name}</strong>
+                                {product.promo ?
+                                  <div className="order__catalog-info-spec">
+                                    <span className="spec">Promo</span>
+                                  </div> : ''}
                               </div>
-                              {item.spec.isSelected ?
-                                <div className="units">
-                                  <span className="unit">{item.spec.units}</span>
-                                  <div className="quantifier" onClick={() => this.incrementUnits(item.sku)}>
-                                    <Icon faIcon={faPlus} />
+                              <p className="order__catalog-info-description">{product.description}</p>
+                              <div className="order__catalog-item-price">
+                                <div className="order__catalog-item-spec">
+                                  <div className="spec-price">
+                                    <div className="spec-item">
+                                      <div className="price">
+                                        <NumberFormat value={product.units > 1 && product.isSelected ? product.price * product.units : product.price} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} />
+                                      </div>
+                                      {product.isSelected ?
+                                        <div className="units">
+                                          <span className="unit">{product.units}</span>
+                                          <div className="quantifier" onClick={() => this.incrementUnits(product.sku)}>
+                                            <Icon faIcon={faPlus} />
+                                          </div>
+                                          <div className="quantifier" onClick={() => this.decrementUnits(product.sku)}>
+                                            <Icon faIcon={faMinus} />
+                                          </div>
+                                        </div> : ''}
+                                    </div>
                                   </div>
-                                  <div className="quantifier" onClick={() => this.decrementUnits(item.sku)}>
-                                    <Icon faIcon={faMinus} />
-                                  </div>
-                                </div> : ''}
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
+                        )
+                      }
+                    })}
                   </div>
                 )
               })}
@@ -419,7 +498,7 @@ export default class Order extends Component {
                 return (
                   <div key={index} className="modal-product">
                     <span className="product-quantity">{product.units}</span>
-                    <span className="product-name">{`${product.name} ${product.spec ? product.spec : ''}`}</span>
+                    <span className="product-name">{product.title}</span>
                     <span className="product-price"><NumberFormat value={product.price * product.units} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} /></span>
                   </div>
                 )
@@ -455,7 +534,7 @@ export default class Order extends Component {
                 </div>
               </form>
             </div>
-            {(!fullName || !contactNumber || !deliveryAddress || deliveryProvince === undefined) ?
+            {(!fullName || !contactNumber || !deliveryAddress || deliveryProvince === undefined || deliveryProvince === 'Selecciona una comuna') ?
               <div className="order__submit">
                 <Button isSubject='unactive' isText='Llena el formulario' isIcon={<Icon faIcon={faHandPointUp} />} />
               </div>
