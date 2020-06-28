@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Wrapper from '../../components/wrapper/Wrapper'
 import Button from '../../components/buttons/Button/Button'
 import Icon from '../../components/icons/Icon'
-import { faPizzaSlice, faBicycle, faThumbsUp, faHandPointUp, faUtensils, faClipboardList, faTimes, faBeer, faCookieBite, faHandPointLeft, faPlus, faMinus, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPizzaSlice, faBicycle, faThumbsUp, faHandPointUp, faClipboardList, faTimes, faHandPointLeft, faPlus, faMinus, faCheckCircle, faTimesCircle, faCartArrowDown } from '@fortawesome/free-solid-svg-icons'
 import NumberFormat from 'react-number-format'
 import Modal from 'react-modal'
 import { HashLink as Link } from 'react-router-hash-link';
@@ -24,6 +24,7 @@ export default class Order extends Component {
           description: 'Occaecat incididunt ea irure elit non qui deserunt nostrud nisi.',
           promo: true,
           units: 1,
+          before: undefined,
           price: 13990,
           id: 'CMB0',
           selectedIndicator: '',
@@ -38,6 +39,7 @@ export default class Order extends Component {
           description: 'Duis veniam consequat consectetur incididunt labore ea labore laboris ad proident dolore non commodo.',
           promo: true,
           units: 1,
+          before: 15000,
           price: 14990,
           id: 'CMB1',
           selectedIndicator: '',
@@ -52,6 +54,7 @@ export default class Order extends Component {
           description: 'Culpa eiusmod culpa commodo dolore ad tempor incididunt fugiat ea nostrud nulla.',
           promo: false,
           units: 1,
+          before: undefined,
           price: 19490,
           id: 'CMB2',
           selectedIndicator: '',
@@ -66,6 +69,7 @@ export default class Order extends Component {
           description: 'Nostrud velit pariatur excepteur aliquip mollit.',
           promo: true,
           units: 1,
+          before: undefined,
           price: 19490,
           id: 'CMB3',
           selectedIndicator: '',
@@ -80,6 +84,7 @@ export default class Order extends Component {
           description: 'Nostrud velit pariatur excepteur aliquip mollit.',
           promo: true,
           units: 1,
+          before: undefined,
           price: 19490,
           id: 'CMB4',
           selectedIndicator: '',
@@ -408,14 +413,14 @@ export default class Order extends Component {
         <div className="order">
           <div className="order__header">
             <div className="title">
-              <Icon faIcon={faUtensils} />
-              <strong>Arma tu pedido</strong>
+              <Icon faIcon={faCartArrowDown} />
+              <strong>Selecciona tus productos</strong>
             </div>
             <div className="tabs-link">
               {allCategories.map(category => {
                 return (
                   <Link to={`#${category}`} className="link">
-                    <Button isSubject="senary" isText={`${category}`} isIcon={<Icon faIcon={faCookieBite} />} />
+                    <Button isSubject="quinary" isText={`${category}`} />
                   </Link>
                 )
               })}
@@ -425,50 +430,54 @@ export default class Order extends Component {
             <div className="order__catalog">
               {allCategories.map((category, index) => {
                 return (
-                  <div key={index} id={category} className="order__catalog-category">
-                    {catalog.map(product => {
-                      if (category === product.category) {
-                        return (
-                          <div key={product.id} className={`order__catalog-item ${product.selectedIndicator}`} id={product.id}>
-                            <div className="order__catalog-pic" onClick={() => this.selectItemHandler(product.id)}>
-                              <div className={`toggler ${product.isSelected ? 'remove' : 'add'}`}>{product.isSelected ? <Icon faIcon={faTimesCircle} /> : <Icon faIcon={faCheckCircle} />}</div>
-                              <img src={product.photo} alt={product.title} />
-                            </div>
-                            <div className="order__catalog-info">
-                              <div className="order__catalog-info-title-spec">
-                                <strong className="order__catalog-info-title">{product.name}</strong>
-                                {product.promo ?
-                                  <div className="order__catalog-info-spec">
-                                    <span className="spec">Promo</span>
-                                  </div> : ''}
+                  <div className="order__catalog-category" id={category}>
+                    <h2>{category}</h2>
+                    <div key={index} className="order__catalog-products">
+                      {catalog.map(product => {
+                        if (category === product.category) {
+                          return (
+                            <div key={product.id} className={`order__catalog-item ${product.selectedIndicator}`} id={product.id}>
+                              <div className="order__catalog-pic" onClick={() => this.selectItemHandler(product.id)}>
+                                <div className={`toggler ${product.isSelected ? 'remove' : 'add'}`}>{product.isSelected ? <Icon faIcon={faTimesCircle} /> : <Icon faIcon={faCheckCircle} />}</div>
+                                <img src={product.photo} alt={product.title} />
                               </div>
-                              <p className="order__catalog-info-description">{product.description}</p>
-                              <div className="order__catalog-item-price">
-                                <div className="order__catalog-item-spec">
-                                  <div className="spec-price">
-                                    <div className="spec-item">
-                                      <div className="price">
-                                        <NumberFormat value={product.units > 1 && product.isSelected ? product.price * product.units : product.price} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} />
+                              <div className="order__catalog-info">
+                                <div className="order__catalog-info-title-spec">
+                                  <strong className="order__catalog-info-title">{product.name}</strong>
+                                  {product.promo ?
+                                    <div className="order__catalog-info-spec">
+                                      <span className="spec">Promo</span>
+                                    </div> : ''}
+                                </div>
+                                <p className="order__catalog-info-description">{product.description}</p>
+                                <div className="order__catalog-item-price">
+                                  <div className="order__catalog-item-spec">
+                                    <div className="spec-price">
+                                      <div className="spec-item">
+                                        <div className="price">
+                                          {product.before !== undefined ? <NumberFormat value={product.before} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} className="before" /> : ''}
+                                          <NumberFormat value={product.units > 1 && product.isSelected ? product.price * product.units : product.price} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} />
+                                        </div>
+                                        {product.isSelected ?
+                                          <div className="units">
+                                            <span className="unit">{product.units}</span>
+                                            <div className="quantifier" onClick={() => this.incrementUnits(product.sku)}>
+                                              <Icon faIcon={faPlus} />
+                                            </div>
+                                            <div className="quantifier" onClick={() => this.decrementUnits(product.sku)}>
+                                              <Icon faIcon={faMinus} />
+                                            </div>
+                                          </div> : ''}
                                       </div>
-                                      {product.isSelected ?
-                                        <div className="units">
-                                          <span className="unit">{product.units}</span>
-                                          <div className="quantifier" onClick={() => this.incrementUnits(product.sku)}>
-                                            <Icon faIcon={faPlus} />
-                                          </div>
-                                          <div className="quantifier" onClick={() => this.decrementUnits(product.sku)}>
-                                            <Icon faIcon={faMinus} />
-                                          </div>
-                                        </div> : ''}
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        )
-                      }
-                    })}
+                          )
+                        }
+                      })}
+                    </div>
                   </div>
                 )
               })}

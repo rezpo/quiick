@@ -23,7 +23,7 @@
 }
 
 .order__header {
-  @include flex-between;
+  @include flex-start;
   @include secondary-bold-subtitle;
   color: $black;
   margin: 0 auto;
@@ -327,12 +327,26 @@
       margin-bottom: .2rem;
       font-size: 1rem;
     }
+
+    .price {
+      .before {
+        display: block;
+        font-size: .7rem;
+        font-weight: 300;
+        padding-bottom: .1rem;
+        text-decoration: line-through;
+      }
+    }
   }
 }
 
 .order__catalog-category {
-  @include flex-start;
+  width: 100%;
   margin-bottom: 3rem;
+}
+
+.order__catalog-products {
+  @include flex-start;
   width: 100%;
 }
 
