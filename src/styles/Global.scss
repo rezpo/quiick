@@ -269,13 +269,14 @@
 
 .tabs-link {
   @include flex-start;
+  margin-left: 1.5rem;
 
   @media screen and (max-width: $mobile-large-screen){
     margin: .5rem auto;
   }
 
   .link {
-    margin-left: 1rem;
+    margin-left: .5rem;
     width: fit-content;
     text-decoration: none;
   }
