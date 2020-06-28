@@ -345,7 +345,7 @@ export default class Order extends Component {
       if (item.sku === sku && item.units > 1) {
         return {
           ...item,
-          units: item.spec.units - 1
+          units: item.units - 1
         }
       }
       return item
