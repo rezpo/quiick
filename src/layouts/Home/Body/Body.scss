@@ -6,11 +6,8 @@
   width: 80%;
 
   @media screen and (max-width: $tablet-large-screen) {
-    width: 100%;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
-    margin: 0;
+    margin: 0 auto;
+    width: 90%;
   }
 
 }
@@ -18,15 +15,12 @@
 .body__caption {
   width: 40%;
 
-  @media screen and (max-width: $tablet-regular-screen) {
-    width: 60%;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
+  @media screen and (max-width: $tablet-large-screen) {
     width: 100%;
     padding: 0 1rem;
     margin-bottom: 2rem;
   }
+
 
 }
 
@@ -81,7 +75,6 @@
 
 .body__promo {
   width: 60%;
-  position: relative;
 
   @media screen and (max-width: $tablet-regular-screen) {
     width: 100%;
@@ -90,7 +83,6 @@
 }
 
 .body__promo-wrapper {
-
 
   @media screen and (max-width: $tablet-large-screen) {
     width: 50%;
@@ -106,18 +98,6 @@
 
 }
 
-.body-promo-eyecatch {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 70%;
-
-  @media screen and (max-width: $tablet-large-screen) {
-    left: 0;
-  }
-
-  @media screen and (max-width: $tablet-regular-screen) {
-    display: none;
-  }
+.body__promo-item {
+  height: 30rem;
 }

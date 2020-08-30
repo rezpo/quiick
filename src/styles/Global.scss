@@ -1,5 +1,6 @@
 @import '../styles/Mixings.scss';
 @import '../styles/MediaQuerys.scss';
+@import '../styles/Fonts.scss';
 
 .order__extra-item {
   @include secondary-bold;
@@ -37,7 +38,7 @@
     }
   }
 
-  @media screen and (max-width: $mobile-large-screen) {
+  @media screen and (max-width: $tablet-large-screen) {
     font-size: .8rem;
   }
 
@@ -58,7 +59,7 @@
     margin-top: 0;
   }
 
-  @media screen and (max-width: $mobile-large-screen) {
+  @media screen and (max-width: $tablet-large-screen) {
     width: 100%;
     text-align: left;
   }
@@ -73,7 +74,7 @@
   font-weight: normal;
   margin-right: 1rem;
 
-  @media screen and (max-width: $mobile-large-screen) {
+  @media screen and (max-width: $tablet-large-screen) {
     margin: .7rem 0;
     margin-right: 0;
     width: 100%;
@@ -84,47 +85,23 @@
   }
 }
 
-.modal__wrapper {
-  border-radius: 13px;
-  box-shadow: $black-shadow;
-  padding: 3rem 4rem;
-  background: $white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60%;
-
-  @media screen and (max-width: $tablet-large-screen) {
-    width: 90%;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
-    padding: 2rem 1rem;
-    height: 100vh;
-  }
-
-  .price {
-    @include flex-start;
-
-    .icon {
-      margin-right: 0;
-      margin: 0 .4rem;
-
-    }
-  }
-
-}
-
 .units {
   @include flex-between;
   border: 1px solid $white;
   border-radius: 5rem;
   padding: .2rem .2rem .2rem .5rem;
 
+  @media screen and (max-width: $tablet-large-screen) {
+    width: 100%;
+  }
+
   .unit {
     color: $white;
     margin-right: .3rem;
+
+    @media screen and (max-width: $tablet-large-screen) {
+      width: 50%;
+    }
   }
 }
 
@@ -159,6 +136,34 @@
   }
 }
 
+.modal__wrapper {
+  border-radius: 0;
+  background: $white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100vh;
+
+  @media screen and (max-width: $tablet-large-screen) {
+    width: 90%;
+    padding: 2rem 1rem;
+    height: 100vh;
+  }
+
+  .price {
+    @include flex-start;
+
+    .icon {
+      margin-right: 0;
+      margin: 0 .4rem;
+
+    }
+  }
+
+}
+
 .modal__layout {
   background: rgba($color: $white, $alpha: .8);
   position: fixed;
@@ -174,6 +179,7 @@
   @include flex-between;
   width: 100%;
   margin-bottom: 2rem;
+  padding: 1rem 2rem;
 
   .modal-title {
     @include flex-start;
@@ -181,21 +187,28 @@
   }
 
   .modal-close {
-    width: 15px;
-    height: 15px;
-    color: $tertiary;
+    @include flex-start;
+    width: max-content;
+    color: $black;
     cursor: pointer;
     transition: .2s ease-in-out;
+    font-weight: bold;
 
     &:hover {
-      color: $black;
+      color: $quaternary;
+    }
+
+    svg {
+      path {
+        color: $secondary;
+      }
     }
   }
 }
 
 .modal__body {
-  margin: 3rem auto;
-  width: 60%;
+  @include flex-between;
+  width: 100%;
 
   @media screen and (max-width: $tablet-regular-screen) {
     width: 80%;
@@ -209,10 +222,42 @@
 
   .product-total {
     display: block;
-    text-align: right;
-    margin-top: 2rem;
+    text-align: left;
+    margin-top: .5rem;
+    font-size: 2rem;
   }
 
+  .product-total-title {
+    display: block;
+    text-align: left;
+    font-size: .9rem;
+    font-weight: bold;
+  }
+
+}
+
+.modal-info-box {
+  background: $white;
+  padding: 1rem 2.5rem;
+}
+
+.modal-info-box-title {
+  @include flex-start;
+  margin: 1rem 0;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+
+  svg {
+    path {
+      color: $secondary;
+    }
+  }
+
+}
+
+.modal-order-detail {
+  width: 70%;
+  height: 100vh;
 }
 
 .modal-product {
@@ -220,29 +265,67 @@
   width: 100%;
   margin: .5rem auto;
 
-  .product-quantity {
+  .product-pic {
+    position: relative;
     width: 10%;
-    display: block;
 
-    @media screen and (max-width: $mobile-large-screen) {
+    img {
+      width: 100%;
+      border-radius: 1rem;
+    }
+  }
+
+  .product-quantity {
+    position: absolute;
+    top: 1rem;
+    right: -.4rem;
+    color: $white;
+    background: $secondary;
+    padding: .1rem;
+    border-radius: .5rem;
+    height: 1.7rem;
+    width: 1.7rem;
+    text-align: center;
+
+    @media screen and (max-width: $tablet-large-screen) {
       font-size: .8rem;
+    }
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: bold;
     }
   }
 
   .product-name {
     width: 70%;
-    display: block;
+    padding: 0 2rem;
+    font-weight: bold;
 
-    @media screen and (max-width: $mobile-large-screen) {
+    @media screen and (max-width: $tablet-large-screen) {
       font-size: .8rem;
     }
+  }
+
+  .product-description {
+    display: block;
+    font-size: .8rem;
+    color: $black;
+    font-weight: normal;
+    margin-top: .3rem;
+    color: lighten($color: $black, $amount: 50);
   }
 
   .product-price {
     width: 20%;
     display: block;
+    font-weight: bold;
+    font-size: 1.3rem;
 
-    @media screen and (max-width: $mobile-large-screen) {
+    @media screen and (max-width: $tablet-large-screen) {
       font-size: .8rem;
     }
 
@@ -254,26 +337,78 @@
 }
 
 .modal-delivery {
-  margin: 1rem 0;
-
-  .delivery-title {
-    @include flex-start;
-    margin: 1rem 0;
-
-  }
 
   .delivery-input {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 
     label {
-      @include secondary-bold;
+      @include secondary-normal;
       display: block;
       margin-bottom: .5rem;
 
     }
 
+    input,
+    select {
+      border: 1px solid $quaternary-dark;
+      background: $quaternary-dark;
+      color: $white;
+    }
+
   }
 
+}
+
+.modal__delivery {
+  &-client,
+  &-resume,
+  &-payment {
+    width: 70%;
+    margin: 0 auto;
+    margin-bottom: 3rem;
+  }
+
+  &-focus {
+    background: $quaternary-dark;
+    width: 100%;
+    padding: 1rem 2rem;
+    margin-bottom: 0;
+    height: 100%;
+  }
+}
+
+.modal__payment {
+  &-types {
+    @include flex-between;
+  }
+}
+
+.modal-payment-type {
+  border: 2px solid $white;
+  padding: .8rem 2rem;
+  border-radius: 14px;
+  margin: .5rem 0;
+  width: 48%;
+  text-align: center;
+  font-weight: bold;
+  transition: .2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid $secondary;
+    background: $secondary;
+  }
+}
+
+.modal-payment-method {
+  width: 30%;
+  height: 100vh;
+  background: $quaternary;
+  color: $white;
+  padding: 2rem 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .menu--active {
@@ -285,17 +420,26 @@
 }
 
 .tabs-link {
-  @include flex-start;
-  margin-left: 1.5rem;
+  margin: 1rem auto;
 
-  @media screen and (max-width: $mobile-large-screen) {
+  @media screen and (max-width: $tablet-large-screen) {
     margin: .8rem 0;
+    width: 100%;
+    overflow: hidden;
   }
 
   .link {
-    margin-left: .5rem;
-    width: fit-content;
+    margin: 0;
+    display: block;
+    width: 100%;
     text-decoration: none;
+    padding: 0 .3rem;
+  }
+
+  .button {
+    display: block;
+    width: 100%;
+    text-align: center;
   }
 }
 

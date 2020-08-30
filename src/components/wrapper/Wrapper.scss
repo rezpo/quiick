@@ -2,12 +2,12 @@
 
 .wrapper-page {
   position: relative;
-  padding: 44px 49px;
-  height: 100%;
+  padding: 0 2rem;
+  height: 100vh;
   width: 100%;
   margin: 0;
 
-  @media screen and (max-width: $mobile-large-screen){
+  @media screen and (max-width: $tablet-large-screen){
     height: 100%;
     padding: 20px 15px;
     height: auto;

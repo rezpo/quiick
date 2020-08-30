@@ -1,0 +1,169 @@
+@import '../../styles/Index.scss';
+
+.pending-orders {
+  &__wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+  &-empty {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.pending-order {
+  @include flex-start;
+  margin: .3rem 0;
+
+  &__wrapper {
+    @include flex-between;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  &__resume {
+    @include flex-between;
+  }
+
+  &__detail {
+    padding: .1rem 0;
+  }
+
+  &__owner {
+
+    &-wrapper {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__status {
+    @include flex-evenly;
+    width: 36%;
+
+    &:first-child {
+      .pending-order-status-indicator {
+
+        &::after {
+          content: '';
+        }
+
+        &::before {
+          content: '';
+          display: block;
+          width: 100%;
+          height: 3px;
+          background: $black;
+          position: absolute;
+          top: 50%;
+          left: -100%;
+          transform: translate(0, -50%);
+        }
+
+      }
+    }
+
+    &-wrapper {
+      position: relative;
+      height: 4rem;
+      width: 25%;
+      cursor: pointer;
+    }
+  }
+
+  &-owner {
+    @include flex-between;
+    margin-bottom: .5rem;
+    // border: 1px solid $tertiary;
+    // border-radius: 4px;
+    // padding: .3rem .5rem;
+  }
+
+  &-owner-name {
+    margin-right: .3rem;
+  }
+
+  &-date {
+    @include primary-normal-small;
+  }
+
+  &-units {
+    margin-right: .2rem;
+    color: $black;
+    width: 18px;
+    height: 18px;
+    font-size: .9rem;
+    font-weight: bold;
+    position: relative;
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &-status {
+    transition: .2s ease-in-out;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    font-size: .7rem;
+    width: 100%;
+    text-align: center;
+
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &-to {
+      margin: 0 .5rem;
+    }
+
+    &-indicator {
+      width: 61.5px;
+      height: 61.5px;
+      border-radius: 999rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 3px solid $black;
+      background: $white;
+      pointer-events: none;
+
+    }
+  }
+}
+
+// Indicators
+
+.pending {
+  background: $quaternary;
+}
+
+.preparation {
+  background: $primary;
+}
+
+.deliver {
+  background: $quinary;
+}
+
+.delivered {
+  background: $secondary-gradient-end;
+}
+
+.active-order {
+  opacity: 1;
+}
+
+.deactive-order {
+  opacity: .3;
+}

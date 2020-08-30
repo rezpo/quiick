@@ -2,7 +2,7 @@
 
 .header {
   @include flex-between;
-  margin: 0 49px;
+  margin-top: 1rem;
   margin-bottom: 3rem;
 
   @media screen and (max-width: $tablet-large-screen) {
@@ -13,13 +13,13 @@
     padding: 1rem;
   }
 
-  @media screen and (max-width: $mobile-large-screen) {
+  @media screen and (max-width: $tablet-large-screen) {
     padding: 0;
     padding-bottom: 1rem;
   }
 
   a {
-    @media screen and (max-width: $mobile-large-screen) {
+    @media screen and (max-width: $tablet-large-screen) {
       width: 25%;
     }
   }
@@ -35,7 +35,7 @@
 .header__menu {
   @include flex-between;
 
-  @media screen and (max-width: $mobile-large-screen){
+  @media screen and (max-width: $tablet-large-screen){
     flex-direction: column;
     justify-content: center;
     position: fixed;
@@ -54,7 +54,7 @@
   display: none;
   margin-top: 2rem;
 
-  @media screen and (max-width: $mobile-large-screen){
+  @media screen and (max-width: $tablet-large-screen){
     display: block;
   }
 
@@ -65,7 +65,7 @@
   width: 35px;
   height: 35px;
 
-  @media screen and (max-width: $mobile-large-screen){
+  @media screen and (max-width: $tablet-large-screen){
     display: block;
   }
 

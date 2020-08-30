@@ -9,15 +9,12 @@
 
   @media screen and (max-width: $tablet-large-screen) {
     width: 90%;
+    height: auto;
+    padding: 40px 0;
   }
 
   @media screen and (max-width: $tablet-regular-screen) {
     width: 100%;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
-    height: auto;
-    padding: 40px 0;
   }
 
 }
@@ -27,13 +24,13 @@
   @include secondary-bold-subtitle;
   color: $black;
   margin: 0 auto;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   width: 90%;
+  height: auto;
 
   @media screen and (max-width: $tablet-large-screen) {
     width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 0;
   }
 
@@ -54,9 +51,6 @@
 
   @media screen and (max-width: $tablet-large-screen) {
     width: 100%;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
     flex-direction: column;
   }
 
@@ -69,9 +63,6 @@
 
   @media screen and (max-width: $tablet-large-screen) {
     overflow-x: auto;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
     width: 100%;
   }
 
@@ -128,7 +119,7 @@
     }
   }
 
-  @media screen and (max-width: $mobile-large-screen) {
+  @media screen and (max-width: $tablet-large-screen) {
     width: 43%;
     height: 300px;
   }
@@ -187,9 +178,7 @@
     font-weight: bold;
     color: $white;
     border-radius: 5rem;
-    border: 2px solid $white;
     padding: .2rem .5rem .2rem .2rem;
-    box-shadow: 0 .1rem .2rem rgba($color: $black, $alpha: .5);
 
     .icon {
       position: absolute;
@@ -257,25 +246,16 @@
 
 .order__catalog-info-spec {
   @include secondary-bold-subtitle;
-  position: relative;
-  color: $black;
+  position: absolute;
+  right: .5rem;
+  top: 1rem;
+  color: $white;
   text-align: center;
-  font-size: .7rem;
-  height: 20px;
-  width: 48px;
-  background: $quinary;
-  padding: .3rem;
-  margin-left: .5rem;
-  border-radius: .3rem;
+  font-size: 1.5rem;
+  padding: .8rem;
 
-  @media screen and (max-width: $tablet-regular-screen) {
-    width: 18px;
-    height: 18px;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
-    font-size: .6rem;
-    padding: .3rem .7rem;
+  @media screen and (max-width: $tablet-large-screen) {
+    padding: .7rem;
   }
 
   .spec {
@@ -283,6 +263,10 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+
+    .icon {
+      margin-right: 0;
+    }
   }
 
 }
@@ -296,6 +280,11 @@
 
   @media screen and (max-width: $tablet-regular-screen) {
     font-size: .7rem;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 38px;
   }
 
 }
@@ -306,6 +295,12 @@
   position: absolute;
   height: 33.7px;
   width: 90%;
+
+  @media screen and (max-width: $tablet-large-screen){
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
 
 }
 
@@ -330,6 +325,10 @@
     }
 
     .price {
+      @media screen and (max-width: $tablet-large-screen){
+        margin-bottom: .3rem;
+      }
+
       .before {
         display: block;
         font-size: .7rem;
@@ -356,10 +355,6 @@
   margin: 2rem auto;
 
   @media screen and (max-width: $tablet-large-screen) {
-    padding: 0 1rem;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
     width: 100%;
     padding: 1rem 0;
   }
@@ -386,10 +381,6 @@
   margin: 2rem auto;
 
   @media screen and (max-width: $tablet-large-screen) {
-    padding: 0 1rem;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
     width: 100%;
     padding: 1rem 0;
   }
@@ -415,6 +406,16 @@
   border-radius: .5rem;
   border: 1px solid $black;
 
+  @media screen and (max-width: $tablet-large-screen){
+    flex-direction: row;
+    width: 100%;
+    right: 0;
+    bottom: 34px;
+    border-radius: 0;
+    border: none;
+    box-shadow: 0 .6rem 1rem rgba($color: $secondary, $alpha: .8);
+  }
+
 }
 
 .order__total {
@@ -424,6 +425,11 @@
   margin-bottom: .5rem;
   text-align: center;
   width: 100%;
+
+  @media screen and (max-width: $tablet-large-screen){
+    width: 50%;
+    font-size: 1rem;
+  }
 
   strong {
     display: block;
@@ -437,6 +443,14 @@
 .order__submit {
   width: 100%;
   margin: 0 auto;
+
+  @media screen and (max-width: $tablet-large-screen){
+    width: 50%;
+
+    .button {
+      float: right;
+    }
+  }
 
   a {
     text-decoration: none;
@@ -457,6 +471,13 @@
   pointer-events: none;
   width: 100%;
 
+  @media screen and (max-width: $tablet-large-screen){
+    width: 50%;
+
+    .button {
+      float: right;
+    }
+  }
 }
 
 .order-notation {
@@ -466,4 +487,8 @@
   color: rgba($color: $black, $alpha: .4);
   width: 100%;
   margin-bottom: .5rem;
+}
+
+.order-cost {
+  margin-top: .5rem;
 }
