@@ -16,9 +16,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path='/' exact>
-          <Home />
-        </Route>
+        <Route path='/' exact component={Home} />
         <Route path='/order' exact component={Order} />
         <Route path='/delivery' exact component={Delivery} />
         <Route path='/contact' exact component={Contact} />
@@ -26,8 +24,7 @@ function App() {
         <Route path='/success' exact component={Success} />
         <Route path='/login-orders' exact component={Login} />
         <Route path='/signup-chief' exact component={Signup} />
-        {/* <ProtectedRoute path='/pending-orders' exact component={PendingOrders} /> */}
-        <Route path='/pending-orders' exact component={PendingOrders} />
+        <ProtectedRoute path='/pending-orders' exact component={PendingOrders} />
       </Switch>
     </Router>
   );
