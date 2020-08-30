@@ -68,19 +68,19 @@
 }
 
 .button--senary {
-  padding: 4px 0;
+  padding: 4px 6px;
   font-weight: bold;
   font-size: .9rem;
-  border-radius: 0;
-  border-bottom: 2px solid $black;
+  border-radius: .5rem .5rem 0 0 ;
+  border: 1px solid $black;
   outline: none;
   background: transparent;
   transition: .2s ease-in-out;
   box-shadow: none;
 
   &:hover {
-    color: $secondary;
-    border-bottom: 2px solid $secondary;
+    color: $white;
+    background: $black;
   }
 }
 

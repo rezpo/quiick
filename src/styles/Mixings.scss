@@ -35,7 +35,7 @@
 @mixin large-box-radius {
   border-radius: 25px;
 
-  @media screen and (max-width: $mobile-large-screen){
+  @media screen and (max-width: $tablet-large-screen){
     border-radius: 8px;
   }
 }

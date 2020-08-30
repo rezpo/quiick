@@ -2,447 +2,644 @@ import React, { Component } from 'react'
 import Wrapper from '../../components/wrapper/Wrapper'
 import Button from '../../components/buttons/Button/Button'
 import Icon from '../../components/icons/Icon'
-import { faPizzaSlice, faTrashAlt, faStar, faBicycle, faThumbsUp, faHandPointUp, faUtensils, faClipboardList, faTimes, faBeer, faCookieBite, faHandPointLeft, faPlus, faMinus, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import {
+  faPizzaSlice,
+  faThumbsUp,
+  faHandPointUp,
+  faHandPointLeft,
+  faPlus,
+  faMinus,
+  faCheckCircle,
+  faTimesCircle,
+  faCartArrowDown,
+  faStar,
+  faArrowLeft,
+  faList,
+  faUserAstronaut,
+} from '@fortawesome/free-solid-svg-icons'
+import Spinner from '../../components/spinner/Spinner'
 import NumberFormat from 'react-number-format'
+import Carousel from 'nuka-carousel'
 import Modal from 'react-modal'
-import { HashLink as Link } from 'react-router-hash-link';
+import { HashLink as Link } from 'react-router-hash-link'
+import axios from 'axios'
 import './Order.scss'
 
 Modal.setAppElement('#root')
 export default class Order extends Component {
-
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      catalog: [
-        {
-          photo: 'https://www.dropbox.com/s/xd7iw1r0mlax34a/cmb0.jpg?raw=1',
-          title: 'De la casa',
-          sku: '1',
-          description: '2 Pizzas familiares: Pepperoni y Solo queso + Bebida 1.5lts',
-          size: { size: 'FAM', units: 1, price: 13990, id: 'CMB0', selectedIndicator: '', isSelected: false, name: 'Oferta de la casa' },
-          isCombo: true
-        },
-        {
-          photo: 'https://www.dropbox.com/s/8ygdc40kho0mw3z/cmb1.jpg?raw=1',
-          title: '1',
-          sku: '2',
-          description: '1 Pizza familiar de la casa + 1 Porción de palitos tropicales + Bebida 1.5lts',
-          size: { size: 'FAM', units: 1, price: 14990, id: 'CMB1', selectedIndicator: '', isSelected: false, name: 'Combo 1' },
-          isCombo: true
-        },
-        {
-          photo: 'https://www.dropbox.com/s/x95pvubgbnteirk/cmb2.jpg?raw=1',
-          title: '2',
-          sku: '3',
-          description: '1 Pizzas familiar (pollo bbq) + 1 Pizza mediana (napolitana) + Palitos de ajo + Bebida 1.5lts',
-          size: { size: 'FAM', units: 1, price: 19490, id: 'CMB2', selectedIndicator: '', isSelected: false, name: 'Combo 2' },
-          isCombo: true
-        },
-        {
-          photo: 'https://www.dropbox.com/s/6g07pe66pip7are/cmb3.jpg?raw=1',
-          title: '3',
-          sku: '4',
-          description: '1 Pizza pollo champiñón + 1 Pizza italiana + Bebida 1.5lts',
-          size: { size: 'FAM', units: 1, price: 19490, id: 'CMB3', selectedIndicator: '', isSelected: false, name: 'Combo 3' },
-          isCombo: true
-        },
-      ],
-      extras: [
-        {
-          name: 'Palitos tropicales',
-          price: 4490,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Alitas de pollo',
-          price: 3490,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Palitos de ajo',
-          price: 2990,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Papas fritas',
-          price: 2990,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Borde de queso',
-          price: 1990,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Extra de queso',
-          price: 800,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Pimentón verde',
-          price: 800,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Champiñón',
-          price: 800,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Palta',
-          price: 800,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Platano maduro',
-          price: 800,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Aceitunas',
-          price: 800,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Choclo',
-          price: 800,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Tocino',
-          price: 800,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Pollo',
-          price: 800,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Salsa BBQ spicy',
-          price: 300,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Salsa de ajo',
-          price: 300,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Salsa BBQ',
-          price: 300,
-          isSelected: false,
-          selectedIndicator: ''
-        },
-        {
-          name: 'Salsa de pizza',
-          price: 300,
-          isSelected: false,
-          selectedIndicator: ''
-        }
-      ],
+      prevCatalog: [],
+      prevCategories: [],
       catalogSelected: [],
-      extraSelected: [],
-      order: [],
-      deliveryCost: 0,
+      allCategories: [],
+      currentOrder: [],
+      totalOrder: 0,
+      tableSelected: undefined,
+      tables: [
+        {
+          table: '¿Cual es tu mesa?',
+          id: 0
+        },
+        {
+          table: 1,
+          id: 1
+        },
+        {
+          table: 2,
+          id: 2
+        },
+        {
+          table: 3,
+          id: 3
+        },
+      ],
       modalIsOpen: false,
       fullName: '',
       contactNumber: '',
-      deliveryAddress: '',
-      msg: []
+      orderDate: '',
+      isReady: true,
+      width: 0,
+      height: 0,
     }
+    this.clientData = this.clientData.bind(this)
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+    this.showModal = this.showModal.bind(this)
+    this.hideModal = this.hideModal.bind(this)
+    this.toLowerCase = this.toLowerCase.bind(this)
+    this.postCurrentOrder = this.postCurrentOrder.bind(this)
+    this.getDateOfOrder = this.getDateOfOrder.bind(this)
   }
 
-  selectItemHandler = (index) => () => {
-    const catalogItems = [...this.state.catalog]
+  selectItemHandler(id) {
+    const catalogItems = [...this.state.prevCatalog]
     let onlySelected = []
+    let totalAmount = []
 
-    catalogItems[index].size.isSelected = !catalogItems[index].size.isSelected
-    if (catalogItems[index].size.isSelected) {
-      catalogItems[index].size.selectedIndicator = 'check'
-    } else {
-      catalogItems[index].size.selectedIndicator = ''
-    }
-
-    catalogItems.forEach(item => {
-      if (item.size.isSelected) {
-        onlySelected.push(item.size)
+    catalogItems.forEach((item) => {
+      if (item.id === id) {
+        item.isSelected = !item.isSelected
+        if (!item.isSelected) {
+          item.unidades = 1
+        }
       }
     })
 
-    this.setState({ catalogSelected: onlySelected })
-  };
-
-  selectExtras = (index) => () => {
-    const extrasItems = [...this.state.extras]
-    let onlySelected = []
-
-    extrasItems[index].isSelected = !extrasItems[index].isSelected
-    if (extrasItems[index].isSelected) {
-      extrasItems[index].selectedIndicator = 'check'
-    } else {
-      extrasItems[index].selectedIndicator = ''
-    }
-
-    extrasItems.forEach(item => {
+    catalogItems.forEach((item) => {
       if (item.isSelected) {
         onlySelected.push(item)
       }
     })
 
-    this.setState({ extraSelected: onlySelected })
-  };
+    catalogItems.forEach((item) => {
+      if (item.isSelected) {
+        totalAmount.push(parseInt(item.precio_ahora) * item.unidades)
+      }
+    })
 
-  orderSummary = () => {
+    this.setState({ catalogSelected: onlySelected })
     this.setState({
-      order: [this.state.catalogSelected, this.state.extraSelected]
+      totalOrder: totalAmount.reduce(
+        (orderTotal, eachProduct) => orderTotal + eachProduct,
+        0
+      ),
     })
   }
 
-  showModal = () => {
+  showModal() {
     this.setState({ modalIsOpen: true })
   }
 
-  hideModal = () => {
+  hideModal() {
     this.setState({ modalIsOpen: false })
   }
 
-  clientData = (e) => {
+  clientData(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
-  incrementUnits = sku => {
-    const incremetUnit = this.state.catalog.map(item => {
-      if (item.sku === sku) {
+  incrementUnits(sku) {
+    const incremetUnit = this.state.prevCatalog.map((item) => {
+      if (item.sku === sku && item.unidades < item.stock) {
         return {
           ...item,
-          size: {
-            ...item.size,
-            units: item.size.units + 1
-          }
+          unidades: item.unidades + 1,
         }
       }
       return item
     })
     this.setState({
-      catalog: incremetUnit
-    });
+      prevCatalog: incremetUnit,
+    })
   }
 
-  decrementUnits = sku => {
-    const decremetUnit = this.state.catalog.map(item => {
-      if (item.sku === sku && item.size.units > 1) {
+  decrementUnits(sku) {
+    const decremetUnit = this.state.prevCatalog.map((item) => {
+      if (item.sku === sku && item.unidades > 1) {
         return {
           ...item,
-          size: {
-            ...item.size,
-            units: item.size.units - 1
-          }
+          unidades: item.unidades - 1,
         }
       }
       return item
     })
     this.setState({
-      catalog: decremetUnit
-    });
+      prevCatalog: decremetUnit,
+    })
+  }
+
+  toLowerCase(string) {
+    string.toLowerCase()
+  }
+
+  getProducts() {
+    axios.get(process.env.NODE_ENV !== 'production' ? `/productos` : 'https://quiick-281820.rj.r.appspot.com/productos').then((res) => {
+      this.setState({
+        prevCatalog: res.data,
+      })
+    })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  getPrevCategories() {
+    axios.get(process.env.NODE_ENV !== 'production' ? `/categorias` : 'https://quiick-281820.rj.r.appspot.com/categorias')
+      .then((res) => {
+        this.setState({
+          prevCategories: res.data,
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  postCurrentOrder(isReady) {
+    this.setState({
+      isReady: !isReady
+    }, () => {
+      axios.post(process.env.NODE_ENV !== 'production' ? '/ordenes' : 'https://quiick-281820.rj.r.appspot.com/ordenes', {
+        order: this.state.catalogSelected,
+        owner: [
+          {
+            name: this.state.fullName,
+            contact: this.state.contactNumber,
+            orderDate: this.getDateOfOrder()
+          }
+        ],
+        status: [
+          {
+            statusName: 'Pendiente',
+            id: 'pending',
+            isActive: false
+          },
+          {
+            statusName: 'En Preparación',
+            id: 'preparation',
+            isActive: false
+          },
+          {
+            statusName: 'A Servir',
+            id: 'serve',
+            isActive: false
+          },
+          {
+            statusName: 'Servido',
+            id: 'served',
+            isActive: false
+          },
+        ],
+        isDone: false
+      })
+        .then((res) => {
+          if (res.status === 200) {
+            window.location = "/success"
+
+            this.setState({
+              isReady: !isReady
+            })
+          }
+        })
+    })
+  }
+
+  getDateOfOrder() {
+    let dateOfOrder = new Date();
+    let day = String(dateOfOrder.getDate()).padStart(2, '0');
+    let month = String(dateOfOrder.getMonth() + 1).padStart(2, '0');
+    let year = dateOfOrder.getFullYear();
+    let hour = dateOfOrder.getHours();
+    let minute = dateOfOrder.getMinutes();
+    return (`${day}/${month}/${year} ${hour}:${minute}hrs`);
+  }
+
+  componentDidMount() {
+    this.getPrevCategories()
+    this.getProducts()
+    this.updateWindowDimensions()
+    window.addEventListener('resize', this.updateWindowDimensions)
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { catalogSelected, extraSelected } = this.state
+    const { catalogSelected, prevCatalog } = this.state
+    let summaryTotal = []
 
-    if (prevState.catalogSelected !== catalogSelected || prevState.extraSelected !== extraSelected) {
-      this.orderSummary()
+    if (prevState.prevCatalog !== prevCatalog) {
+      prevCatalog.map((item) => {
+        catalogSelected.forEach((selected) => {
+          if (item.id === selected.id) {
+            selected.unidades = item.unidades
+            summaryTotal.push(selected.precio_ahora * selected.unidades)
+          }
+        })
+        return summaryTotal
+      })
+
+      if (catalogSelected.length >= 1) {
+        this.setState({
+          totalOrder: summaryTotal.reduce(
+            (orderTotal, eachProduct) => orderTotal + eachProduct,
+            0
+          ),
+        })
+      }
+
+
     }
   }
 
+  componentWillUnmount() {
+    window.addEventListener('resize', this.updateWindowDimensions)
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight })
+  }
 
   render() {
-    const { catalog, extras, order, modalIsOpen, deliveryCost, fullName, contactNumber, deliveryAddress } = this.state
-    const isCombo = <div className="combo"><Icon faIcon={faStar} /><strong>Combo</strong></div>
-    let productsSummary = []
-    let msgOrder = []
-    let totalSumary, msgCompleteOrder
+    const {
+      prevCatalog,
+      prevCategories,
+      catalogSelected,
+      totalOrder,
+      modalIsOpen,
+      fullName,
+      contactNumber,
+      deliveryAddress,
+      tableSelected,
+      tables,
+      width,
+      isReady
+    } = this.state
 
-    order.forEach(item => {
-      item.forEach(product => {
-        let msgComplete
-        msgComplete = `${product.name}+${product.size ? product.size : ''}`
-        productsSummary.push(product.price)
-        msgOrder.push(msgComplete)
-      })
+    let resumeMsg = []
+
+    catalogSelected.map((product) => {
+      let productsCount = `- ${product.unidades} ${product.titulo}`
+      resumeMsg.push(productsCount)
+      return resumeMsg
     })
-
-    totalSumary = productsSummary.reduce((orderTotal, eachProduct) => orderTotal + eachProduct, 0)
-    msgCompleteOrder = msgOrder.join('+')
 
     return (
       <Wrapper>
-        <div className="order">
-          <div className="order__header">
-            <div className="title">
-              <Icon faIcon={faUtensils} />
-              <strong>Arma tu pedido</strong>
+        <div className='order'>
+          <div className='order__header'>
+            <div className='title'>
+              <Icon faIcon={faCartArrowDown} />
+              <strong>Selecciona tus productos</strong>
             </div>
-            <div className="tabs-link">
-              <Link to="#extras" className="link">
-                <Button isSubject="senary" isText="Extras" isIcon={<Icon faIcon={faCookieBite} />} />
-              </Link>
-              <Link to="#refreshments" className="link">
-                <Button isSubject="senary" isText="Bebidas" isIcon={<Icon faIcon={faBeer} />} />
-              </Link>
-            </div>
-          </div>
-          <div className="order__catalog-selector">
-            <div className="order__catalog">
-              {catalog.map((item, index) => {
+            <Carousel
+              className='tabs-link'
+              cellSpacing={width <= 1080 ? 5 : 20}
+              dragging={true}
+              slidesToShow={width <= 1080 ? 2 : 4}
+              slidesToScroll={1}
+              cellAlign='left'
+              withoutControls={true}
+              autoGenerateStyleTag={true}
+              slideWidth={0.8}
+            >
+              {prevCategories.map(item => {
                 return (
-                  <div key={index} className={`order__catalog-item ${item.size.selectedIndicator}`} id={item.size.id}>
-                    <div className="order__catalog-pic" onClick={this.selectItemHandler(index)}>
-                      <div className={`toggler ${item.size.isSelected ? 'remove' : 'add'}`}>{item.size.isSelected ? <Icon faIcon={faTimesCircle} /> : <Icon faIcon={faCheckCircle} />}</div>
-                      <img src={item.photo} alt={item.title} />
-                    </div>
-                    <div className="order__catalog-info">
-                      <div className="order__catalog-info-title-size">
-                        {item.isCombo ? isCombo : ''}
-                        <strong className="order__catalog-info-title">{item.title}</strong>
-                        {item.size.size ?
-                          <div className="order__catalog-info-size">
-                            <span className="size">{item.size.size}</span>
-                          </div> : ''}
-                      </div>
-                      <p className="order__catalog-info-description">{item.description}</p>
-                      <div className="order__catalog-item-price">
-                        <div className="order__catalog-item-size">
-                          <div className="size-price">
-                            <div className="size-item">
-                              <div className="price">
-                                <NumberFormat value={item.size.units > 1 ? item.size.price * item.size.units : item.size.price} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} />
+                  <Link key={item.id} to={`#${item.categoria}`} className='link'>
+                    <Button isSubject='quinary' isText={`${item.categoria}`} />
+                  </Link>
+                )
+              })}
+            </Carousel>
+          </div>
+          <div className='order__catalog-selector'>
+            <div className='order__catalog'>
+              {prevCategories.map(item => {
+                return (
+                  <div className='order__catalog-category' key={item.id} id={item.categoria}>
+                    <h2>{item.categoria}</h2>
+                    <div
+                      key={item.categoria}
+                      className='order__catalog-products'
+                    >
+                      {prevCatalog.map((product) => {
+                        return product.categorias.map((cat) => {
+                          if (item.categoria === cat.categoria) {
+                            return (
+                              <div
+                                key={product.id}
+                                className={`order__catalog-item ${
+                                  product.isSelected ? 'check' : ''
+                                  }`}
+                                id={product.id}
+                              >
+                                <div
+                                  className='order__catalog-pic'
+                                  onClick={() =>
+                                    this.selectItemHandler(product.id)
+                                  }
+                                >
+                                  <div
+                                    className={`toggler ${
+                                      product.isSelected ? 'remove' : 'add'
+                                      }`}
+                                  >
+                                    {product.isSelected ? (
+                                      <Icon faIcon={faTimesCircle} />
+                                    ) : (
+                                        <Icon faIcon={faCheckCircle} />
+                                      )}
+                                  </div>
+                                  {product.promo ? (
+                                    <div className='order__catalog-info-spec'>
+                                      <span className='spec'>
+                                        <Icon faIcon={faStar} />
+                                      </span>
+                                    </div>
+                                  ) : (
+                                      ''
+                                    )}
+
+                                  <img
+                                    src={product.foto.url}
+                                    alt={product.titulo}
+                                  />
+                                </div>
+                                <div className='order__catalog-info'>
+                                  <div className='order__catalog-info-title-spec'>
+                                    <strong className='order__catalog-info-title'>
+                                      {product.nombre}
+                                    </strong>
+                                  </div>
+                                  <p className='order__catalog-info-description'>
+                                    {product.descripcion}
+                                  </p>
+                                  <div className='order__catalog-item-price'>
+                                    <div className='order__catalog-item-spec'>
+                                      <div className='spec-price'>
+                                        <div className='spec-item'>
+                                          <div className='price'>
+                                            {parseInt(product.precio_antes) > 0 &&
+                                              parseInt(product.precio_antes) >
+                                              parseInt(product.precio_ahora) ? (
+                                                <NumberFormat
+                                                  value={parseInt(product.precio_antes)}
+                                                  displayType={'text'}
+                                                  thousandSeparator={'.'}
+                                                  prefix={'$'}
+                                                  decimalSeparator={','}
+                                                  className='before'
+                                                />
+                                              ) : (
+                                                ''
+                                              )}
+                                            <NumberFormat
+                                              value={
+                                                product.unidades > 1 &&
+                                                  product.isSelected
+                                                  ? parseInt(product.precio_ahora) *
+                                                  product.unidades
+                                                  : parseInt(product.precio_ahora)
+                                              }
+                                              displayType={'text'}
+                                              thousandSeparator={'.'}
+                                              prefix={'$'}
+                                              decimalSeparator={','}
+                                            />
+                                          </div>
+                                          {product.isSelected ? (
+                                            <div className='units'>
+                                              <span className='unit'>
+                                                {product.unidades}
+                                              </span>
+                                              <div
+                                                className='quantifier'
+                                                onClick={() =>
+                                                  this.incrementUnits(
+                                                    product.sku
+                                                  )
+                                                }
+                                              >
+                                                <Icon faIcon={faPlus} />
+                                              </div>
+                                              <div
+                                                className='quantifier'
+                                                onClick={() =>
+                                                  this.decrementUnits(
+                                                    product.sku
+                                                  )
+                                                }
+                                              >
+                                                <Icon faIcon={faMinus} />
+                                              </div>
+                                            </div>
+                                          ) : (
+                                              ''
+                                            )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              {item.size.isSelected ?
-                                <div className="units">
-                                  <span className="unit">{item.size.units}</span>
-                                  <div className="quantifier" onClick={() => this.incrementUnits(item.sku)}>
-                                    <Icon faIcon={faPlus} />
-                                  </div>
-                                  <div className="quantifier" onClick={() => this.decrementUnits(item.sku)}>
-                                    <Icon faIcon={faMinus} />
-                                  </div>
-                                </div> : ''}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                            )
+                          }
+                        })
+                      })}
                     </div>
                   </div>
                 )
               })}
-              <span className="bottom-fade"></span>
             </div>
-            <div className="order__extra" id="extras">
-              <div className="order__extra-title"><strong>Extras</strong></div>
-              <div className="order__extra-items">
-                {extras.map((extra, index) => {
-                  return (
-                    <div key={index} className={"order__extra-item " + extra.selectedIndicator} onClick={this.selectExtras(index)}>
-                      <div className="item-name">
-                        {extra.isSelected ? <Icon faIcon={faTrashAlt} /> : ''}
-                        {extra.name}
-                      </div>
-                      <div className="item-price">
-                        <NumberFormat value={extra.price} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} />
-                      </div>
-                    </div>
-                  )
-                })}
+          </div>
+          <div className='order__action'>
+            <div className='order__total'>
+              <strong>Total</strong>
+              <strong>
+                <NumberFormat
+                  value={totalOrder}
+                  displayType={'text'}
+                  thousandSeparator={'.'}
+                  prefix={'$'}
+                  decimalSeparator={','}
+                />
+              </strong>
+            </div>
+            {totalOrder === 0 ? (
+              <div className='order__submit--disable'>
+                <Button
+                  isSubject='quinary'
+                  isText='¿Nada aún?'
+                  isIcon={<Icon faIcon={faHandPointLeft} />}
+                />
+              </div>
+            ) : (
+                <div className='order__submit' onClick={this.showModal}>
+                  <Button
+                    isSubject='quinary'
+                    isText='Continuar'
+                    isIcon={<Icon faIcon={faPizzaSlice} />}
+                  />
+                </div>
+              )}
+          </div>
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={this.hideModal}
+            className='modal__wrapper'
+            overlayClassName='modal__layout'
+          >
+            <div className="modal__header">
+              <div className='modal-close' onClick={this.hideModal}>
+                <Icon faIcon={faArrowLeft} />
+                <span>Seguir comprando</span>
               </div>
             </div>
-          </div>
-          <div className="order__action">
-            <div className="order__total">
-              <strong>Total</strong>
-              <strong><NumberFormat value={totalSumary} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} /></strong>
-            </div>
-            <div className="order-notation">
-              <small>Delivery no incluido</small>
-            </div>
-            {totalSumary === 0 ? <div className="order__submit--disable">
-              <Button isSubject='quinary' isText='¿Nada aún?' isIcon={<Icon faIcon={faHandPointLeft} />} />
-            </div> : <div className="order__submit" onClick={this.showModal}>
-                <Button isSubject='quinary' isText='Continuar' isIcon={<Icon faIcon={faPizzaSlice} />} />
-              </div>}
-          </div>
-          <Modal isOpen={modalIsOpen} onRequestClose={this.hideModal} className='modal__wrapper' overlayClassName='modal__layout'>
-            <div className="modal__header">
-              <div className="modal-title"><Icon faIcon={faClipboardList} /><strong>Información de tu pedido</strong></div>
-              <div className="modal-close" onClick={this.hideModal}><Icon faIcon={faTimes} /></div>
-            </div>
-            <div className="modal__body">
-              {order.map(category => {
-                return (
-                  category.map((product, index) => {
+            <div className='modal__body'>
+              <div className='modal-order-detail'>
+                <div className='modal-info-box'>
+                  <div className='modal-info-box-title'>
+                    <Icon faIcon={faList} />
+                    <strong>Detalle de pedido</strong>
+                  </div>
+                  {catalogSelected.map((product, index) => {
                     return (
-                      <div key={index} className="modal-product">
-                        <span className="product-quantity">1</span>
-                        <span className="product-name">{`${product.name} ${product.size ? product.size : ''}`}</span>
-                        <span className="product-price"><NumberFormat value={product.price} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} /></span>
+                      <div key={index} className='modal-product'>
+                        <div className="product-pic">
+                          <div className='product-quantity'>
+                            <span>{product.unidades}</span>
+                          </div>
+                          <img src={product.foto.url} alt={product.titulo} />
+                        </div>
+                        <div className='product-name'>
+                          {product.titulo}
+                          <small className="product-description">{product.descripcion}</small>
+                        </div>
+                        <span className='product-price'>
+                          <NumberFormat
+                            value={product.precio_ahora * product.unidades}
+                            displayType={'text'}
+                            thousandSeparator={'.'}
+                            prefix={'$'}
+                            decimalSeparator={','}
+                          />
+                        </span>
                       </div>
                     )
-                  })
-                )
-              })}
-              <div className="order-cost">
-                <div className="modal-product">
-                  <span className="product-name">Delivery</span>
-                  <span className="product-price"><NumberFormat value={deliveryCost} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} /></span>
+                  })}
                 </div>
-                <strong className="product-total">Total: <NumberFormat value={totalSumary + deliveryCost} displayType={'text'} thousandSeparator={'.'} prefix={'$'} decimalSeparator={','} /></strong>
               </div>
-              <div className="modal-delivery">
-                <div className="delivery-title"><Icon faIcon={faBicycle} /><strong>Información de despacho</strong></div>
-                <div className="delivery-input">
-                  <label>Nombre</label>
-                  <input type="text" name="fullName" placeholder="Joaquín" onChange={this.clientData} />
+              <div className="modal-payment-method">
+                {!isReady ? <Spinner /> : null}
+                <div className="modal__delivery-client">
+                  <form className='modal-delivery'>
+                    <div className='modal-info-box-title'>
+                      <Icon faIcon={faUserAstronaut} />
+                      <strong>Tu información</strong>
+                    </div>
+                    <div className='delivery-input'>
+                      <label>Nombre</label>
+                      <input
+                        type='text'
+                        name='fullName'
+                        placeholder='Joaquín'
+                        onChange={this.clientData}
+                      />
+                    </div>
+                    <div className='delivery-input'>
+                      <label>Teléfono</label>
+                      <input
+                        type='number'
+                        name='contactNumber'
+                        pattern='[0-9]{9}'
+                        placeholder='955555555'
+                        onChange={this.clientData}
+                      />
+                    </div>
+                    <div className='delivery-input'>
+                      <label>Mesa</label>
+                      <select
+                        value={tableSelected}
+                        name='tableSelected'
+                        onChange={this.clientData}
+                      >
+                        {tables.map(table => {
+                          return (
+                            <option
+                              key={table.id}
+                              value={table.table}
+                            >
+                              {table.table}
+                            </option>
+                          )
+                        })}
+                      </select>
+                    </div>
+                  </form>
                 </div>
-                <div className="delivery-input">
-                  <label>Numero de telefono</label>
-                  <input type="number" name="contactNumber" pattern="[0-9]{9}" placeholder="955555555" onChange={this.clientData} />
+                <div className="modal__delivery-resume">
+                  <div className='modal-info-box-title'>
+                    <strong>Total</strong>
+                  </div>
+                  <div className='order-cost'>
+                    <strong className='product-total'>
+                      <NumberFormat
+                        value={totalOrder}
+                        displayType={'text'}
+                        thousandSeparator={'.'}
+                        prefix={'$'}
+                        decimalSeparator={','}
+                      />
+                    </strong>
+                  </div>
                 </div>
-                <div className="delivery-input">
-                  <label>Dirección de despacho</label>
-                  <input type="text" name="deliveryAddress" placeholder="Calle Nº (depto)" onChange={this.clientData} />
+                <div className='modal__delivery-payment modal__delivery-focus'>
+                  <div className='modal__payment-types'>
+                    {!fullName ||
+                      !contactNumber ||
+                      !tableSelected ||
+                      tableSelected === undefined ||
+                      tableSelected === '¿Cual es tu mesa?' ? (
+                        <div className='order__submit'>
+                          <Button
+                            isSubject='unactive'
+                            isText='Debes llenar el formulario'
+                            isIcon={<Icon faIcon={faHandPointUp} />}
+                          />
+                        </div>
+                      ) : (
+                        <div className='order__submit' onClick={this.postCurrentOrder}>
+                          <Button
+                            isSubject='secondary'
+                            isText='Confirmar orden'
+                            isIcon={<Icon faIcon={faThumbsUp} />}
+                          />
+                        </div>
+                      )}
+                  </div>
                 </div>
               </div>
             </div>
-            {(!fullName || !contactNumber || !deliveryAddress) ?
-              <div className="order__submit">
-                <Button isSubject='unactive' isText='Llena el formulario' isIcon={<Icon faIcon={faHandPointUp} />} />
-              </div>
-              :
-              <div className="order__submit">
-                <a href={`https://wa.me/56961420311?text=${fullName} para completar tu pedido solo debes hacer transferencia a%0A%0AMaria Antonella Perez%0ARut 25124016-7%0ACuenta cte 0215303743%0ABanco ITAU%0Amealspizza@gmail.cl%0A%0ADetalle de tu pedido%0A%0A${msgCompleteOrder}%0ATotal: $${totalSumary + deliveryCost}%0ADespacho a ${deliveryAddress}%0ANº de contacto 56${contactNumber}`}>
-                  <Button isSubject='primary' isText='Confirmar pedido' isIcon={<Icon faIcon={faThumbsUp} />} />
-                </a>
-              </div>
-            }
           </Modal>
         </div>
       </Wrapper>

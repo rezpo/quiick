@@ -22,7 +22,7 @@ $secondary-gradient-hover: linear-gradient(188.67deg, $secondary 30.5%, $seconda
 $tertiary: #EEEEEE;
 $tertiary-ligth: #fafafa;
 $tertiary-dark: #c4c4c4;
-$tertiary-gradient-end: #FFFFFF;
+$tertiary-gradient-end: $white;
 $tertiary-gradient: linear-gradient(214.29deg, $tertiary 12.5%, $tertiary-gradient-end 100%);
 $tertiary-gradient-hover: linear-gradient(214.29deg, $tertiary 5.5%, $tertiary-gradient-end 100%);
 
