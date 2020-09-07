@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { UserContext } from '../../components/context/UserContext'
-import Wrapper from '../../components/wrapper/Wrapper'
+import Spinner from '../../components/spinner/Spinner'
+import { Input } from '../../components/form/Index'
+import Button from '../../components/buttons/Button/Button'
 import axios from 'axios'
 
 const Signup = ({ history }) => {
@@ -26,7 +28,7 @@ const Signup = ({ history }) => {
       })
       .then(res => {
         setUser(res)
-        if(res.data.message){
+        if (res.data.message) {
           setError(res.data.message[0].messages[0].message)
           return
         }
@@ -38,40 +40,35 @@ const Signup = ({ history }) => {
   }
 
   return (
-    <Wrapper>
-      <div className="login">
-        <div className="login__wrapper">
-          <form onSubmit={handleSubmit}>
-            <div className="input__wrapper" >
-              <label> Usuario o correo </label>
-              <input
-                type="email"
-                value={userEmail}
-                placeholder="Joaquín"
-                onChange={(e) => {
-                  setError('')
-                  setUserEmail(e.target.value)
-                }}
-              /> </div>
-            <div className="input__wrapper" >
-              <label> Constraseña </label>
-              <input
-                type="password"
-                value={userPass}
-                onChange={(e) => {
-                  setError('')
-                  setUserPass(e.target.value)
-                }}
-              /> </div>
-            <div className="submit__wrapper">
-              <button>Registrar</button>
-            </div>
-          </form>
-
-          {error && <p>{error}</p>}
-        </div>
+    <div className="login">
+      <div className="login__wrapper">
+        <form onSubmit={handleSubmit}>
+          <div className="form-account-input__wrapper" >
+            <Input
+              input_type="email"
+              label_name="Correo"
+              value_state={userEmail}
+              input_error={setError}
+              input_setState={setUserEmail}
+              placeholder_content="joaquin@email.com"
+            />
+          </div>
+          <div className="form-account-input__wrapper" >
+            <Input
+              input_type="password"
+              label_name="Contraseña"
+              value_state={userPass}
+              input_error={setError}
+              input_setState={setUserPass}
+            />
+          </div>
+          <div className="form-account-submit__wrapper">
+            <Button isSubject="primary" isType="submit" isText="Registrar" />
+          </div>
+        </form>
+        {error && <p>{error}</p>}
       </div>
-    </Wrapper>
+    </div>
   );
 }
 

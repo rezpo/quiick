@@ -244,7 +244,7 @@
 .modal-info-box-title {
   @include flex-start;
   margin: 1rem 0;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
   font-size: 1.3rem;
 
   svg {
@@ -348,18 +348,12 @@
 
     }
 
-    input,
-    select {
-      border: 1px solid $quaternary-dark;
-      background: $quaternary-dark;
-      color: $white;
-    }
-
   }
 
 }
 
 .modal__delivery {
+
   &-client,
   &-resume,
   &-payment {
@@ -369,7 +363,7 @@
   }
 
   &-focus {
-    background: $quaternary-dark;
+    background: lighten($color: $tertiary, $amount: 5);
     width: 100%;
     padding: 1rem 2rem;
     margin-bottom: 0;
@@ -403,8 +397,8 @@
 .modal-payment-method {
   width: 30%;
   height: 100vh;
-  background: $quaternary;
-  color: $white;
+  background: lighten($color: $tertiary, $amount: 5);
+  color: $black;
   padding: 2rem 0;
   position: absolute;
   top: 0;
@@ -448,14 +442,43 @@
   color: $white !important;
 }
 
-.bottom-fade {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 30px;
-  background: $white-gradient;
-  width: 50%;
+.form {
+  &-account {
+    &-input__wrapper {
+      margin-bottom: 1rem;
 
+      label {
+        display: block;
+        margin-bottom: .5rem;
+      }
+    }
+
+    &-submit__wrapper {
+      margin-top: 1.4rem;
+      width: 100%;
+
+      .button {
+        display: block;
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    &-forgotpassword {
+      display: block;
+      margin: .5rem 0;
+
+      a {
+        @include flex-start;
+        color: $black;
+        text-decoration: none;
+
+        .icon {
+          margin-right: .2rem;
+        }
+      }
+    }
+  }
 }
 
 // CAROUSEL REFACTOR
