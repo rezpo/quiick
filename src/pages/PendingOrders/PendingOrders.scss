@@ -23,6 +23,7 @@
     @include flex-between;
     margin: 1rem 0;
     position: relative;
+    border-bottom: 1px solid $tertiary;
   }
 
   &__resume {

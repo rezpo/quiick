@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Wrapper from '../../components/wrapper/Wrapper'
 import axios from 'axios'
 import Spinner from '../../components/spinner/Spinner'
 import './PendingOrders.scss'
@@ -7,7 +6,6 @@ import './PendingOrders.scss'
 const PendingOrders = () => {
 
   const [orders, setOrders] = useState([])
-  const [orderId, setOrderId] = useState([])
   const [orderLength, setOrderLength] = useState(0)
 
   useEffect(() => {
@@ -102,54 +100,52 @@ const PendingOrders = () => {
   }
 
   return (
-    <Wrapper>
-      <div className="pending-orders__wrapper">
-        {orderLength <= 0 ?
-          <div className="pending-orders-empty">No hay nada</div>
-          : orders.map(item => {
+    <div className="pending-orders__wrapper">
+      {orderLength <= 0 ?
+        <div className="pending-orders-empty">No hay nada</div>
+        : orders.map(item => {
 
-            return (
-              <div className="pending-order__wrapper" id={item.id}>
-                {item.isDone ? <Spinner /> : null}
-                <div className="pending-order__owner-wrapper">
-                  <div className="pending-order-owner">
-                    {item.owner.map(client => {
-                      return (
-                        <div>
-                          <strong className="pending-order-owner-name">{client.name}</strong>
-                          <div className="pending-order-date">{client.orderDate}</div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                  <div className="pending-order__resume" >
-                    <div className="pending-order__detail">
-                      {item.order.map(product => {
-                        return (
-                          <div key={product.sku} className="pending-order">
-                            <div className="pending-order-units"><span>{product.unidades}</span></div>
-                            <span className="pending-order-item">{product.nombre}</span>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                </div>
-                <div className="pending-order__status">
-                  {item.status.map(status => {
+          return (
+            <div className="pending-order__wrapper" id={item.id}>
+              {item.isDone ? <Spinner /> : null}
+              <div className="pending-order__owner-wrapper">
+                <div className="pending-order-owner">
+                  {item.owner.map(client => {
                     return (
-                      <div key={status.id} id={status.id} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={updateOrderStatus}>
-                        <div className={`pending-order-status-indicator`}></div>
+                      <div>
+                        <strong className="pending-order-owner-name">{client.name}, mesa {client.table}</strong>
+                        <div className="pending-order-date">{client.orderDate}</div>
                       </div>
                     )
                   })}
                 </div>
+                <div className="pending-order__resume" >
+                  <div className="pending-order__detail">
+                    {item.order.map(product => {
+                      return (
+                        <div key={product.sku} className="pending-order">
+                          <div className="pending-order-units"><span>{product.unidades}</span></div>
+                          <span className="pending-order-item">{product.nombre}</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
-            )
+              <div className="pending-order__status">
+                {item.status.map(status => {
+                  return (
+                    <div key={status.id} id={status.id} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={updateOrderStatus}>
+                      <div className={`pending-order-status-indicator`}></div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )
 
-          })}
-      </div>
-    </Wrapper>
+        })}
+    </div>
   )
 }
 
