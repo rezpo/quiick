@@ -134,13 +134,25 @@ export default class Order extends Component {
       axios
         .get(process.env.NODE_ENV !== 'production' ? `/productos` : 'https://quiick-281820.rj.r.appspot.com/productos')
         .then(res => {
-          this.setState({
-            prevCatalog: res.data,
+          let allProds = []
+
+          res.data.forEach(item => {
+            if (item.restaurante.slug === this.state.matchLocation.restaurant) {
+
+              allProds.push(item)
+
+              this.setState({
+                prevCatalog: allProds,
+              })
+
+            }
           })
           res.data.map(item => {
-            this.setState({
-              currentLocation: item.restaurante.slug
-            })
+            return (
+              this.setState({
+                currentLocation: item.restaurante.slug
+              })
+            )
           })
         })
         .catch((error) => {
@@ -153,8 +165,18 @@ export default class Order extends Component {
       axios
         .get(process.env.NODE_ENV !== 'production' ? `/categorias` : 'https://quiick-281820.rj.r.appspot.com/categorias')
         .then((res) => {
-          this.setState({
-            prevCategories: res.data,
+          let allCats = []
+
+          res.data.forEach(item => {
+            item.restaurantes.forEach(restaurant => {
+              if(restaurant.slug === this.state.matchLocation.restaurant) {
+                allCats.push(item)
+
+                this.setState({
+                  prevCategories: allCats
+                })
+              }
+            })
           })
         })
         .catch((error) => {
@@ -176,6 +198,7 @@ export default class Order extends Component {
                   name: this.state.fullName,
                   contact: this.state.contactNumber,
                   orderDate: this.getDateOfOrder(),
+                  restaurant: this.state.matchLocation.restaurant,
                   table: this.state.matchLocation.tableId
                 }
               ],
@@ -279,8 +302,7 @@ export default class Order extends Component {
       contactNumber,
       width,
       isReady,
-      matchLocation,
-      currentLocation
+      matchLocation
     } = this.state
 
     let resumeMsg = []
@@ -293,279 +315,277 @@ export default class Order extends Component {
 
     return (
       <div>
-        {
-          matchLocation.restaurant === currentLocation ?
-            <div className='order'>
-              <div className='order__header'>
-                <div className='title'>
-                  <Icon faIcon={faGlassCheers} />
-                  <div>Estas en la mesa {matchLocation.tableId}</div>
-                </div>
-                <Carousel
-                  className='tabs-link'
-                  cellSpacing={width <= 1080 ? 5 : 20}
-                  dragging={true}
-                  slidesToShow={width <= 1080 ? 2 : 4}
-                  slidesToScroll={1}
-                  cellAlign='left'
-                  withoutControls={true}
-                  autoGenerateStyleTag={true}
-                  slideWidth={0.8}
-                >
-                  {prevCategories.map(item => {
-                    return (
-                      <Link key={item.id} to={`#${item.categoria}`} className='link'>
-                        <Button isSubject='quinary' isText={`${item.categoria}`} />
-                      </Link>
-                    )
-                  })}
-                </Carousel>
-              </div>
-              <div className='order__catalog-selector'>
-                <div className='order__catalog'>
-                  {prevCategories.map(item => {
-                    return (
-                      <div className='order__catalog-category' key={item.id} id={item.categoria}>
-                        <h2>{item.categoria}</h2>
-                        <div key={item.categoria} className='order__catalog-products'>
-                          {prevCatalog.map(product => {
-                            return product.categorias.map((cat) => {
-                              if (item.categoria === cat.categoria) {
-                                return (
-                                  <div key={product.id} className={`${product.promo ? 'order__catalog-item-promo' : 'order__catalog-item'} ${product.isSelected ? 'check' : ''}`} id={product.id}>
-                                    <div className='order__catalog-pic' onClick={() => this.selectItemHandler(product.id)}>
-                                      <div className={`toggler ${product.isSelected ? 'remove' : 'add'}`}>
-                                        {product.isSelected ? (<Icon faIcon={faTimesCircle} />) : (<Icon faIcon={faCheckCircle} />)}
-                                      </div>
-                                      {product.promo ? (
-                                        <div className='order__catalog-info-spec'>
-                                          <span className='spec'>
-                                            <Icon faIcon={faStar} />
-                                          </span>
-                                        </div>
-                                      ) : ('')}
-
-                                      <img src={product.foto.url} alt={product.titulo} />
+        <div className='order'>
+          <div className='order__header'>
+            <div className='title'>
+              <Icon faIcon={faGlassCheers} />
+              <div>Estas en la mesa {matchLocation.tableId}</div>
+            </div>
+            <Carousel
+              className='tabs-link'
+              cellSpacing={width <= 1080 ? 5 : 20}
+              dragging={true}
+              slidesToShow={width <= 1080 ? 2 : 4}
+              slidesToScroll={1}
+              cellAlign='left'
+              withoutControls={true}
+              autoGenerateStyleTag={true}
+              slideWidth={0.8}
+            >
+              {prevCategories.map(item => {
+                return (
+                  <Link key={item.id} to={`#${item.categoria}`} className='link'>
+                    <Button isSubject='quinary' isText={`${item.categoria}`} />
+                  </Link>
+                )
+              })}
+            </Carousel>
+          </div>
+          <div className='order__catalog-selector'>
+            <div className='order__catalog'>
+              {prevCategories.map(item => {
+                return (
+                  <div className='order__catalog-category' key={item.id} id={item.categoria}>
+                    <h2>{item.categoria}</h2>
+                    <div key={item.categoria} className='order__catalog-products'>
+                      {prevCatalog.map(product => {
+                        return product.categorias.map((cat) => {
+                          if (item.categoria === cat.categoria) {
+                            return (
+                              <div key={product.id} className={`${product.promo ? 'order__catalog-item-promo' : 'order__catalog-item'} ${product.isSelected ? 'check' : ''}`} id={product.id}>
+                                <div className='order__catalog-pic' onClick={() => this.selectItemHandler(product.id)}>
+                                  <div className={`toggler ${product.isSelected ? 'remove' : 'add'}`}>
+                                    {product.isSelected ? (<Icon faIcon={faTimesCircle} />) : (<Icon faIcon={faCheckCircle} />)}
+                                  </div>
+                                  {product.promo ? (
+                                    <div className='order__catalog-info-spec'>
+                                      <span className='spec'>
+                                        <Icon faIcon={faStar} />
+                                      </span>
                                     </div>
-                                    <div className='order__catalog-info'>
-                                      <div className='order__catalog-info-title-spec'>
-                                        <strong className='order__catalog-info-title'>
-                                          {product.nombre}
-                                        </strong>
-                                      </div>
-                                      <p className='order__catalog-info-description'>
-                                        {product.descripcion}
-                                      </p>
-                                      <div className='order__catalog-item-price'>
-                                        <div className='order__catalog-item-spec'>
-                                          <div className='spec-price'>
-                                            <div className='spec-item'>
-                                              <div className='price'>
-                                                {parseInt(product.precio_antes) > 0 &&
-                                                  parseInt(product.precio_antes) >
-                                                  parseInt(product.precio_ahora) ? (
-                                                    <NumberFormat
-                                                      value={parseInt(product.precio_antes)}
-                                                      displayType={'text'}
-                                                      thousandSeparator={'.'}
-                                                      prefix={'$'}
-                                                      decimalSeparator={','}
-                                                      className='before'
-                                                    />
-                                                  ) : ('')}
+                                  ) : ('')}
+
+                                  <img src={product.foto.url} alt={product.titulo} />
+                                </div>
+                                <div className='order__catalog-info'>
+                                  <div className='order__catalog-info-title-spec'>
+                                    <strong className='order__catalog-info-title'>
+                                      {product.nombre}
+                                    </strong>
+                                  </div>
+                                  <p className='order__catalog-info-description'>
+                                    {product.descripcion}
+                                  </p>
+                                  <div className='order__catalog-item-price'>
+                                    <div className='order__catalog-item-spec'>
+                                      <div className='spec-price'>
+                                        <div className='spec-item'>
+                                          <div className='price'>
+                                            {parseInt(product.precio_antes) > 0 &&
+                                              parseInt(product.precio_antes) >
+                                              parseInt(product.precio_ahora) ? (
                                                 <NumberFormat
-                                                  value={
-                                                    product.unidades > 1 &&
-                                                      product.isSelected
-                                                      ? parseInt(product.precio_ahora) *
-                                                      product.unidades
-                                                      : parseInt(product.precio_ahora)
-                                                  }
+                                                  value={parseInt(product.precio_antes)}
                                                   displayType={'text'}
                                                   thousandSeparator={'.'}
                                                   prefix={'$'}
                                                   decimalSeparator={','}
+                                                  className='before'
                                                 />
-                                              </div>
-                                              {product.isSelected ? (
-                                                <div className='units'>
-                                                  <span className='unit'>
-                                                    {product.unidades}
-                                                  </span>
-                                                  <div className='quantifier' onClick={() => this.incrementUnits(product.sku)}>
-                                                    <Icon faIcon={faPlus} />
-                                                  </div>
-                                                  <div className='quantifier' onClick={() => this.decrementUnits(product.sku)}>
-                                                    <Icon faIcon={faMinus} />
-                                                  </div>
-                                                </div>
                                               ) : ('')}
-                                            </div>
+                                            <NumberFormat
+                                              value={
+                                                product.unidades > 1 &&
+                                                  product.isSelected
+                                                  ? parseInt(product.precio_ahora) *
+                                                  product.unidades
+                                                  : parseInt(product.precio_ahora)
+                                              }
+                                              displayType={'text'}
+                                              thousandSeparator={'.'}
+                                              prefix={'$'}
+                                              decimalSeparator={','}
+                                            />
                                           </div>
+                                          {product.isSelected ? (
+                                            <div className='units'>
+                                              <span className='unit'>
+                                                {product.unidades}
+                                              </span>
+                                              <div className="units-actions">
+                                                <div className='quantifier' onClick={() => this.incrementUnits(product.sku)}>
+                                                  <Icon faIcon={faPlus} />
+                                                </div>
+                                                <div className='quantifier' onClick={() => this.decrementUnits(product.sku)}>
+                                                  <Icon faIcon={faMinus} />
+                                                </div>
+                                              </div>
+                                            </div>
+                                          ) : ('')}
                                         </div>
                                       </div>
                                     </div>
                                   </div>
-                                )
-                              }
-                            })
-                          })}
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-              <div className='order__action'>
-                <div className='order__total'>
-                  <strong>Total</strong>
-                  <strong>
-                    <NumberFormat
-                      value={totalOrder}
-                      displayType={'text'}
-                      thousandSeparator={'.'}
-                      prefix={'$'}
-                      decimalSeparator={','}
-                    />
-                  </strong>
-                </div>
-                {totalOrder === 0 ? (
-                  <div className='order__submit--disable'>
-                    <Button
-                      isSubject='quinary'
-                      isText='¿Nada aún?'
-                      isIcon={<Icon faIcon={faHandPointLeft} />}
-                    />
-                  </div>
-                ) : (
-                    <div className='order__submit' onClick={this.showModal}>
-                      <Button
-                        isSubject='quinary'
-                        isText='Continuar'
-                        isIcon={<Icon faIcon={faPizzaSlice} />}
-                      />
-                    </div>
-                  )}
-              </div>
-              <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={this.hideModal}
-                className='modal__wrapper'
-                overlayClassName='modal__layout'
-              >
-                <div className="modal__header">
-                  <div className='modal-close' onClick={this.hideModal}>
-                    <Icon faIcon={faArrowLeft} />
-                    <span>Seguir comprando</span>
-                  </div>
-                </div>
-                <div className='modal__body'>
-                  <div className='modal-order-detail'>
-                    <div className='modal-info-box'>
-                      <div className='modal-info-box-title'>
-                        <Icon faIcon={faList} />
-                        <strong>Detalle de pedido</strong>
-                      </div>
-                      {catalogSelected.map((product, index) => {
-                        return (
-                          <div key={index} className='modal-product'>
-                            <div className="product-pic">
-                              <div className='product-quantity'>
-                                <span>{product.unidades}</span>
+                                </div>
                               </div>
-                              <img src={product.foto.url} alt={product.titulo} />
-                            </div>
-                            <div className='product-name'>
-                              {product.titulo}
-                              <small className="product-description">{product.descripcion}</small>
-                            </div>
-                            <span className='product-price'>
-                              <NumberFormat
-                                value={product.precio_ahora * product.unidades}
-                                displayType={'text'}
-                                thousandSeparator={'.'}
-                                prefix={'$'}
-                                decimalSeparator={','}
-                              />
-                            </span>
-                          </div>
-                        )
+                            )
+                          }
+                        })
                       })}
                     </div>
                   </div>
-                  <div className="modal-payment-method">
-                    {!isReady ? <Spinner /> : null}
-                    <div className="modal__delivery-client">
-                      <form className='modal-delivery'>
-                        <div className='modal-info-box-title'>
-                          <Icon faIcon={faUserAstronaut} />
-                          <strong>Tu información</strong>
+                )
+              })}
+            </div>
+          </div>
+          <div className='order__action'>
+            <div className='order__total'>
+              <strong>Total</strong>
+              <strong>
+                <NumberFormat
+                  value={totalOrder}
+                  displayType={'text'}
+                  thousandSeparator={'.'}
+                  prefix={'$'}
+                  decimalSeparator={','}
+                />
+              </strong>
+            </div>
+            {totalOrder === 0 ? (
+              <div className='order__submit--disable'>
+                <Button
+                  isSubject='quinary'
+                  isText='¿Nada aún?'
+                  isIcon={<Icon faIcon={faHandPointLeft} />}
+                />
+              </div>
+            ) : (
+                <div className='order__submit' onClick={this.showModal}>
+                  <Button
+                    isSubject='quinary'
+                    isText='Continuar'
+                    isIcon={<Icon faIcon={faPizzaSlice} />}
+                  />
+                </div>
+              )}
+          </div>
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={this.hideModal}
+            className='modal__wrapper'
+            overlayClassName='modal__layout'
+          >
+            <div className="modal__header">
+              <div className='modal-close' onClick={this.hideModal}>
+                <Icon faIcon={faArrowLeft} />
+                <span>Seguir comprando</span>
+              </div>
+            </div>
+            <div className='modal__body'>
+              <div className='modal-order-detail'>
+                <div className='modal-info-box'>
+                  <div className='modal-info-box-title'>
+                    <Icon faIcon={faList} />
+                    <strong>Detalle de pedido</strong>
+                  </div>
+                  {catalogSelected.map((product, index) => {
+                    return (
+                      <div key={index} className='modal-product'>
+                        <div className="product-pic">
+                          <div className='product-quantity'>
+                            <span>{product.unidades}</span>
+                          </div>
+                          <img src={product.foto.url} alt={product.titulo} />
                         </div>
-                        <div className='delivery-input'>
-                          <label>Nombre</label>
-                          <input
-                            type='text'
-                            name='fullName'
-                            placeholder='Joaquín'
-                            onChange={this.clientData}
-                          />
+                        <div className='product-name'>
+                          {product.titulo}
+                          <small className="product-description">{product.descripcion}</small>
                         </div>
-                        <div className='delivery-input'>
-                          <label>Teléfono</label>
-                          <input
-                            type='number'
-                            name='contactNumber'
-                            pattern='[0-9]{9}'
-                            placeholder='955555555'
-                            onChange={this.clientData}
-                          />
-                        </div>
-                      </form>
-                    </div>
-                    <div className="modal__delivery-resume">
-                      <div>
-                        <strong>Total</strong>
-                      </div>
-                      <div className='order-cost'>
-                        <strong className='product-total'>
+                        <span className='product-price'>
                           <NumberFormat
-                            value={totalOrder}
+                            value={product.precio_ahora * product.unidades}
                             displayType={'text'}
                             thousandSeparator={'.'}
                             prefix={'$'}
                             decimalSeparator={','}
                           />
-                        </strong>
+                        </span>
                       </div>
+                    )
+                  })}
+                </div>
+              </div>
+              <div className="modal-payment-method">
+                {!isReady ? <Spinner /> : null}
+                <div className="modal__delivery-client">
+                  <form className='modal-delivery'>
+                    <div className='modal-info-box-title'>
+                      <Icon faIcon={faUserAstronaut} />
+                      <strong>Tu información</strong>
                     </div>
-                    <div className='modal__delivery-payment modal__delivery-focus'>
-                      <div className='modal__payment-types'>
-                        {!fullName ||
-                          !contactNumber ? (
-                            <div className='order__submit'>
-                              <Button
-                                isSubject='unactive'
-                                isText='Debes llenar el formulario'
-                                isIcon={<Icon faIcon={faHandPointUp} />}
-                              />
-                            </div>
-                          ) : (
-                            <div className='order__submit' onClick={this.postCurrentOrder}>
-                              <Button
-                                isSubject='secondary'
-                                isText='Confirmar orden'
-                                isIcon={<Icon faIcon={faThumbsUp} />}
-                              />
-                            </div>
-                          )}
-                      </div>
+                    <div className='delivery-input'>
+                      <label>Nombre</label>
+                      <input
+                        type='text'
+                        name='fullName'
+                        placeholder='Joaquín'
+                        onChange={this.clientData}
+                      />
                     </div>
+                    <div className='delivery-input'>
+                      <label>Teléfono</label>
+                      <input
+                        type='number'
+                        name='contactNumber'
+                        pattern='[0-9]{9}'
+                        placeholder='955555555'
+                        onChange={this.clientData}
+                      />
+                    </div>
+                  </form>
+                </div>
+                <div className="modal__delivery-resume">
+                  <div>
+                    <strong>Total</strong>
+                  </div>
+                  <div className='order-cost'>
+                    <strong className='product-total'>
+                      <NumberFormat
+                        value={totalOrder}
+                        displayType={'text'}
+                        thousandSeparator={'.'}
+                        prefix={'$'}
+                        decimalSeparator={','}
+                      />
+                    </strong>
                   </div>
                 </div>
-              </Modal>
+                <div className='modal__delivery-payment modal__delivery-focus'>
+                  <div className='modal__payment-types'>
+                    {!fullName ||
+                      !contactNumber ? (
+                        <div className='order__submit'>
+                          <Button
+                            isSubject='unactive'
+                            isText='Debes llenar el formulario'
+                            isIcon={<Icon faIcon={faHandPointUp} />}
+                          />
+                        </div>
+                      ) : (
+                        <div className='order__submit' onClick={this.postCurrentOrder}>
+                          <Button
+                            isSubject='secondary'
+                            isText='Confirmar orden'
+                            isIcon={<Icon faIcon={faThumbsUp} />}
+                          />
+                        </div>
+                      )}
+                  </div>
+                </div>
+              </div>
             </div>
-            : null
-        }
+          </Modal>
+        </div>
       </div>
     )
   }

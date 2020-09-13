@@ -4,10 +4,9 @@
   @include large-box-radius;
   width: 100%;
   padding: 0 1rem;
-  margin: 0 auto;
-  margin-bottom: 10rem;
+  margin: 5rem auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 90%;
     height: auto;
     padding: 40px 0;
@@ -28,7 +27,7 @@
   width: 90%;
   height: auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 100%;
     align-items: center;
     margin-bottom: 0;
@@ -49,7 +48,7 @@
   margin: 0 auto;
   margin-bottom: 1rem;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 100%;
     flex-direction: column;
   }
@@ -61,7 +60,7 @@
   width: 90%;
   margin: 0 auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     overflow-x: auto;
     width: 100%;
   }
@@ -74,7 +73,7 @@
   cursor: pointer;
   overflow: hidden;
   border-radius: .6rem;
-  width: 15%;
+  width: 16%;
   background: $white;
   height: 378px;
   box-shadow: $secondary-shadow;
@@ -87,24 +86,17 @@
     }
   }
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-medium-screen) {
+    width: 18%;
+  }
+
+  @media screen and (max-width: $desktop-small-screen) {
     width: 22%;
-
-    &:hover {
-      .order__catalog-pic {
-        opacity: inherit;
-      }
-
-      .spec-item {
-        color: inherit;
-        background: inherit;
-        padding: inherit;
-      }
-    }
   }
 
   @media screen and (max-width: $tablet-regular-screen) {
-    width: 29.5%;
+    width: 30%;
+    height: 390px;
 
     &:hover {
       .order__catalog-pic {
@@ -119,16 +111,24 @@
     }
   }
 
-  @media screen and (max-width: $tablet-large-screen) {
-    width: 43%;
-    height: 300px;
+  @media screen and (max-width: $mobile-large-screen) {
+    width: 47%;
+    height: 339px;
+    margin: 1rem .3rem;
+
+    &:hover {
+      .order__catalog-pic {
+        opacity: inherit;
+      }
+
+      .spec-item {
+        color: inherit;
+        background: inherit;
+        padding: inherit;
+      }
+    }
   }
 
-  @media screen and (max-width: $mobile-small-screen) {
-    width: 70%;
-    height: 300px;
-    margin: 1rem auto;
-  }
 
   &.check {
     .order__catalog-pic {
@@ -159,9 +159,14 @@
   opacity: .8;
   transition: .3s ease-in-out;
   position: relative;
+  height: 60%;
+  overflow: hidden;
+
+  @media screen and (max-width: $desktop-regular-screen) {
+    height: max-content;
+  }
 
   img {
-    height: 100%;
     width: 100%;
     margin: 0 auto;
     display: block;
@@ -234,12 +239,8 @@
   color: $black;
   text-align: left;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     font-size: 1rem;
-  }
-
-  @media screen and (max-width: $tablet-regular-screen) {
-    font-size: .8rem;
   }
 
 }
@@ -254,7 +255,7 @@
   font-size: 1.5rem;
   padding: .8rem;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     padding: .7rem;
   }
 
@@ -279,12 +280,9 @@
   height: 48px;
 
   @media screen and (max-width: $tablet-regular-screen) {
-    font-size: .7rem;
-    width: 100%;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-    height: 38px;
+    font-size: .8rem;
+    width: 100%;
   }
 
 }
@@ -296,10 +294,11 @@
   height: 33.7px;
   width: 90%;
 
-  @media screen and (max-width: $tablet-large-screen) {
-    bottom: 2.5rem;
-    left: 50%;
-    transform: translate(-50%, 0);
+  @media screen and (max-width: $desktop-regular-screen) {
+    position: inherit;
+    width: 100%;
+    height: max-content;
+    margin-top: .4rem;
   }
 
 }
@@ -325,7 +324,8 @@
     }
 
     .price {
-      @media screen and (max-width: $tablet-large-screen) {
+      @media screen and (max-width: $desktop-regular-screen) {
+        font-size: 1.2rem;
         margin-bottom: .3rem;
       }
 
@@ -354,7 +354,7 @@
   width: 90%;
   margin: 2rem auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 100%;
     padding: 1rem 0;
   }
@@ -380,7 +380,7 @@
   width: 90%;
   margin: 2rem auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 100%;
     padding: 1rem 0;
   }
@@ -406,7 +406,7 @@
   border-radius: .5rem;
   border: 1px solid $black;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     flex-direction: row;
     width: 100%;
     right: 0;
@@ -426,7 +426,7 @@
   text-align: center;
   width: 100%;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 50%;
     font-size: 1rem;
   }
@@ -444,7 +444,7 @@
   width: 100%;
   margin: 0 auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 50%;
 
     .button {
@@ -471,7 +471,7 @@
   pointer-events: none;
   width: 100%;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 50%;
 
     .button {

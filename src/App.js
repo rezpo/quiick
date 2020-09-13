@@ -6,10 +6,9 @@ import Contact from './pages/Contact/Contact'
 import Success from './pages/Success/Success'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
-import PendingOrders from './pages/PendingOrders/PendingOrders'
-import HistoryOrders from './pages/HistoryOrders/HistoryOrders'
 import Notfound from './pages/Notfound/Notfound'
 import ForgotPass from './pages/ForgotPass/ForgotPass'
+import Account from './pages/Account/Account'
 import Wrapper from './components/wrapper/Wrapper'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
@@ -25,11 +24,10 @@ function App() {
           <Route path='/delivery' exact component={Delivery} />
           <Route path='/contact' exact component={Contact} />
           <Route path='/success' exact component={Success} />
-          <Route path='/login-orders' exact component={Login} />
-          <Route path='/signup-chief' exact component={Signup} />
+          <Route path='/login' exact component={Login} />
+          <Route path='/signup' exact component={Signup} />
           <Route path='/recover-password' exact component={ForgotPass} />
-          <ProtectedRoute path='/order-history' exact component={HistoryOrders} />
-          <ProtectedRoute path='/pending-orders' exact component={PendingOrders} />
+          <ProtectedRoute path='/:userid/:username/account' exact component={Account} />
           <Route component={Notfound} />
         </Switch>
       </Wrapper>
@@ -38,3 +36,4 @@ function App() {
 }
 
 export default App;
+

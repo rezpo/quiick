@@ -12,6 +12,7 @@ import axios from 'axios'
 const Login = ({ history }) => {
 
   const { user, setUser } = useContext(UserContext)
+  const { setUserToken } = useContext(UserContext)
   const { isLogin, setIsLogin } = useContext(UserContext)
   const [userEmail, setUserEmail] = useState('')
   const [userPass, setUserPass] = useState('')
@@ -20,7 +21,7 @@ const Login = ({ history }) => {
   useEffect(() => {
     if (user) {
       setTimeout(() => {
-        history.push('/pending-orders')
+        history.push(`/${user.user.id}/${user.user.username}/account`)
       }, 1500)
     }
   }, [user])
@@ -34,6 +35,7 @@ const Login = ({ history }) => {
       })
       .then(res => {
         setUser(res.data)
+        setUserToken(res.data.jwt)
         setIsLogin(true)
       })
       .catch(err => {

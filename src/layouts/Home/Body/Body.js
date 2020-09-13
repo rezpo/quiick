@@ -10,19 +10,14 @@ const Body = () => {
   return (
     <div className='body'>
       <div className='body__caption'>
-        <h1 className='body__caption-title'>
-          Todos tus productos en un solo lugar
-      </h1>
-        <p className='body__paragraph'>
-          <strong className='highlight-text'>sencillo</strong> y sin{' '}
-          <strong className='highlight-text'>grandes gastos</strong>.
-      </p>
+        <h1 className='body__caption-title'>Realiza pedidos sin contacto</h1>
+        <p className='body__paragraph'><strong className='highlight-text'>Rapido</strong> y cuidando la salud de tus {' '}<strong className='highlight-text'>clientes y empleados</strong></p>
         <div className='body__action'>
           <div className='body__action-button'>
-            <Link to='/salsa-salsa/1/order'>
+            <Link to='/quiickcafe/1/order'>
               <Button
                 isSubject='secondary'
-                isText='Realizar pedido'
+                isText='Hacer una prueba'
                 isIcon={<Icon faIcon={faHamburger} />}
               />
             </Link>

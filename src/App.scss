@@ -12,7 +12,7 @@ html {
   &::-webkit-scrollbar-track {
     background: transparent;
 
-    @media screen and (max-width: $tablet-large-screen){
+    @media screen and (max-width: $desktop-regular-screen){
       background: rgba($color: $tertiary, $alpha: .5);
       border-radius: 5rem;
     }

@@ -34,9 +34,9 @@ export default class Slider extends Component {
 				slideWidth={1}
 				heightMode={'max'}
 			>
-				{promos.map((promo) => {
+				{promos.map((promo, index) => {
 					return (
-						<div className='promo__carousel-wrapper'>
+						<div key={index} className='promo__carousel-wrapper'>
 							<div className='promo__carousel-pic'>
 								<img src={promo.photo} alt={promo.title} />
 							</div>

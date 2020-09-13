@@ -3,8 +3,9 @@
 .pending-orders {
   &__wrapper {
     position: relative;
-    height: 100%;
+    height: 100vh;
     width: 100%;
+    padding: 0 1rem;
   }
 
   &-empty {
@@ -21,7 +22,7 @@
 
   &__wrapper {
     @include flex-between;
-    margin: 1rem 0;
+    margin-bottom: 1rem;
     position: relative;
     border-bottom: 1px solid $tertiary;
   }
@@ -78,13 +79,11 @@
   &-owner {
     @include flex-between;
     margin-bottom: .5rem;
-    // border: 1px solid $tertiary;
-    // border-radius: 4px;
-    // padding: .3rem .5rem;
   }
 
   &-owner-name {
     margin-right: .3rem;
+    text-transform: capitalize;
   }
 
   &-date {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Input } from '../../components/form/Index'
 import Button from '../../components/buttons/Button/Button'
 import Spinner from '../../components/spinner/Spinner'
@@ -7,10 +7,14 @@ import './ForgotPass.js.scss'
 
 const ForgotPass = ({ history }) => {
 
+  const useHistory = useRef()
   const [userEmail, setUserEmail] = useState('')
   const [recover, setRecover] = useState(false)
   const [error, setError] = useState('')
 
+  useEffect(() => {
+    useHistory.current = history
+  })
   useEffect(() => {
     if (recover) {
       setTimeout(() => {
