@@ -4,8 +4,9 @@ import { ReactComponent as BurgerIcon } from '../../../assets/icons/burguer-menu
 import Button from '../../../components/buttons/Button/Button'
 import Icon from '../../../components/icons/Icon'
 import { Link } from 'react-router-dom'
-import { faBicycle, faUserAstronaut, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faBicycle, faUserAstronaut, faTimes, faDollarSign } from '@fortawesome/free-solid-svg-icons'
 import './Header.scss'
+import { faUserCircle } from '@fortawesome/free-regular-svg-icons'
 
 export default class Header extends Component {
 
@@ -42,13 +43,23 @@ export default class Header extends Component {
         <div className="header__mobile-menu" onClick={this.menuMobileDisplayToggler}>{<BurgerIcon />}</div>
         <div className={`header__menu ${mobileMenuStatus}`}>
           <div className="menu__item">
+            <Link to="/delivery">
+              <Button isSubject='quinary' isText='Precios' isIcon={<Icon faIcon={faDollarSign} />} />
+            </Link>
+          </div>
+          <div className="menu__item">
             <Link to="/">
-              <Button isSubject='quinary' isText='Nuestra tienda' isIcon={<Icon faIcon={faUserAstronaut} />} />
+              <Button isSubject='quinary' isText='¿Quienes somos?' isIcon={<Icon faIcon={faUserAstronaut} />} />
             </Link>
           </div>
           <div className="menu__item">
             <Link to="/delivery">
-              <Button isSubject='quinary' isText='Delivery' isIcon={<Icon faIcon={faBicycle} />} />
+              <Button isSubject='quinary' isText='¿Como funciona?' isIcon={<Icon faIcon={faBicycle} />} />
+            </Link>
+          </div>
+          <div className="menu__item">
+            <Link to="/login">
+              <Button isSubject='quinary' isText='Iniciar sesión' isIcon={<Icon faIcon={faUserCircle} />} />
             </Link>
           </div>
           <div className="header__menu--close" onClick={this.menuMobileDisplayToggler}>

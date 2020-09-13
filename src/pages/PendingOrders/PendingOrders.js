@@ -1,40 +1,77 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
+import { UserContext } from '../../components/context/UserContext'
 import Spinner from '../../components/spinner/Spinner'
 import './PendingOrders.scss'
 
 const PendingOrders = () => {
 
+  const { userToken, user } = useContext(UserContext)
+  const [rawOrders, setRawOrders] = useState([])
   const [orders, setOrders] = useState([])
   const [orderLength, setOrderLength] = useState(0)
 
   useEffect(() => {
     getAllPendingOrders()
-  }, [orders])
+    cleanOrders()
+  }, [rawOrders])
 
   const getAllPendingOrders = async () => {
     await
       axios
-        .get(process.env.NODE_ENV !== 'production' ? '/ordenes' : 'https://quiick-281820.rj.r.appspot.com/ordenes')
+        .get(process.env.NODE_ENV !== 'production' ? '/ordenes' : 'https://quiick-281820.rj.r.appspot.com/ordenes', {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        })
         .then(res => {
-          setOrders(res.data)
-          setOrderLength(res.data.length)
+          setRawOrders(res.data)
         })
   }
 
   const updateOrder = async (target, status) => {
     await axios
-      .put(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, status)
+      .put(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, status, {
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        }
+      })
   }
 
   const removeOrder = async (target) => {
     await axios
-      .delete(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`)
+      .delete(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        }
+      })
   }
 
   const addOrderToHistory = async (orderDone) => {
     await axios
-      .post(process.env.NODE_ENV !== 'production' ? `/historial-de-ordenes` : `https://quiick-281820.rj.r.appspot.com/historial-de-ordenes`, orderDone)
+      .post(process.env.NODE_ENV !== 'production' ? `/historial-de-ordenes` : `https://quiick-281820.rj.r.appspot.com/historial-de-ordenes`, orderDone, {
+        headers: {
+          Authorization: `Bearer ${userToken}`
+        }
+      })
+  }
+
+  const cleanOrders = () => {
+
+    const currentPendings = [...rawOrders]
+    let allMatchPendings = []
+    currentPendings.map(item => {
+      user.user.restaurantes.forEach(local => {
+        item.owner.forEach(owner => {
+          if (owner.restaurant === local.slug) {
+            allMatchPendings.push(item)
+          }
+        })
+      })
+    })
+
+    setOrders(allMatchPendings)
+    setOrderLength(allMatchPendings.length)
   }
 
   const updateOrderStatus = (e) => {
@@ -42,7 +79,7 @@ const PendingOrders = () => {
     const parentTarget = e.target.parentNode.parentNode.id
     let statusOrder = []
     let orderIsDone = false
-    currentOrder.map(order => {
+    currentOrder.forEach(order => {
       let statusArr = []
 
       order.status.forEach(status => {
@@ -64,8 +101,6 @@ const PendingOrders = () => {
       statusOrder = order.status
       orderIsDone = order.isDone
 
-      console.log(orderIsDone)
-
       if (parentTarget === String(order.id)) {
         updateOrder(parentTarget, { status: statusOrder, isDone: orderIsDone })
         checkOrderStatus()
@@ -77,7 +112,7 @@ const PendingOrders = () => {
   const checkOrderStatus = () => {
     const currentOrder = [...orders]
 
-    currentOrder.map(order => {
+    currentOrder.forEach(order => {
       let statusArr = []
       order.status.forEach(status => {
         if (status.isActive) {
@@ -110,10 +145,10 @@ const PendingOrders = () => {
               {item.isDone ? <Spinner /> : null}
               <div className="pending-order__owner-wrapper">
                 <div className="pending-order-owner">
-                  {item.owner.map(client => {
+                  {item.owner.map((client, index) => {
                     return (
-                      <div>
-                        <strong className="pending-order-owner-name">{client.name}, mesa {client.table}</strong>
+                      <div key={client.contact}>
+                        <strong className="pending-order-owner-name">{client.name}, {client.restaurant} mesa {client.table}</strong>
                         <div className="pending-order-date">{client.orderDate}</div>
                       </div>
                     )
