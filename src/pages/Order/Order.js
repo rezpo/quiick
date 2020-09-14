@@ -169,7 +169,7 @@ export default class Order extends Component {
 
           res.data.forEach(item => {
             item.restaurantes.forEach(restaurant => {
-              if(restaurant.slug === this.state.matchLocation.restaurant) {
+              if (restaurant.slug === this.state.matchLocation.restaurant) {
                 allCats.push(item)
 
                 this.setState({
@@ -477,8 +477,7 @@ export default class Order extends Component {
           >
             <div className="modal__header">
               <div className='modal-close' onClick={this.hideModal}>
-                <Icon faIcon={faArrowLeft} />
-                <span>Seguir comprando</span>
+                <Button isSubject='quinary' isText={'Seguir comprando'} isIcon={<Icon faIcon={faArrowLeft} />} />
               </div>
             </div>
             <div className='modal__body'>
