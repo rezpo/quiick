@@ -30,7 +30,7 @@ export default class Button extends Component {
     )
 
     return (
-      <button className={'button ' + buttonSubjectStyle} type={this.props.isType}>
+      <button className={`button ${buttonSubjectStyle} ${this.props.plusClass}`} type={this.props.isType}>
         {this.props.isIcon}
         {this.props.isText}
       </button>

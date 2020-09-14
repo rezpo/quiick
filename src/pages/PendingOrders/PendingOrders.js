@@ -2,6 +2,10 @@ import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { UserContext } from '../../components/context/UserContext'
 import Spinner from '../../components/spinner/Spinner'
+import { ReactComponent as PendingOrder } from '../../assets/icons/pending-glass.svg'
+import { ReactComponent as PreparationOrder } from '../../assets/icons/preparation-glass.svg'
+import { ReactComponent as ServeOrder } from '../../assets/icons/serve-glass.svg'
+import { ReactComponent as ServedOrder } from '../../assets/icons/served-glass.svg'
 import './PendingOrders.scss'
 
 const PendingOrders = () => {
@@ -83,7 +87,10 @@ const PendingOrders = () => {
       let statusArr = []
 
       order.status.forEach(status => {
-        if (e.target.id === status.id) {
+        const statusId = `${status.id}-${parentTarget}`
+
+        console.log(e.target.id, statusId)
+        if (e.target.id === statusId) {
           status.isActive = !status.isActive
         }
 
@@ -145,7 +152,7 @@ const PendingOrders = () => {
               {item.isDone ? <Spinner /> : null}
               <div className="pending-order__owner-wrapper">
                 <div className="pending-order-owner">
-                  {item.owner.map((client, index) => {
+                  {item.owner.map(client => {
                     return (
                       <div key={client.contact}>
                         <strong className="pending-order-owner-name">{client.name}, {client.restaurant} mesa {client.table}</strong>
@@ -167,15 +174,22 @@ const PendingOrders = () => {
                   </div>
                 </div>
               </div>
-              <div className="pending-order__status">
-                {item.status.map(status => {
+              <ul className="pending-order__status">
+                {item.status.map((status, index) => {
                   return (
-                    <div key={status.id} id={status.id} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={updateOrderStatus}>
-                      <div className={`pending-order-status-indicator`}></div>
-                    </div>
+                    <li key={status.id} id={`${status.id}-${item.id}`} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={updateOrderStatus}>
+                      <div className={`pending-order-status-indicator`}>
+                        {
+                          (status.id === 'pending' ? <PendingOrder /> : null) ||
+                          (status.id === 'preparation' ? <PreparationOrder /> : null) ||
+                          (status.id === 'serve' ? <ServeOrder /> : null) ||
+                          (status.id === 'served' ? <ServedOrder /> : null)
+                        }
+                      </div>
+                    </li>
                   )
                 })}
-              </div>
+              </ul>
             </div>
           )
 

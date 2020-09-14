@@ -83,6 +83,12 @@
       width: 100%;
     }
   }
+
+  .user {
+    &--loggeding {
+      text-transform: capitalize;
+    }
+  }
 }
 
 .units {
@@ -183,8 +189,8 @@
 .modal__header {
   @include flex-between;
   width: 100%;
-  margin-bottom: 2rem;
   padding: 1rem 2rem;
+  padding-top: 4rem;
 
   .modal-title {
     @include flex-start;
@@ -201,12 +207,6 @@
 
     &:hover {
       color: $quaternary;
-    }
-
-    svg {
-      path {
-        color: $secondary;
-      }
     }
   }
 }
@@ -404,7 +404,7 @@
   height: 100vh;
   background: lighten($color: $tertiary, $amount: 5);
   color: $black;
-  padding: 2rem 0;
+  padding: 3rem 0;
   position: absolute;
   top: 0;
   right: 0;
