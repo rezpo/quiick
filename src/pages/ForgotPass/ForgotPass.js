@@ -21,7 +21,7 @@ const ForgotPass = ({ history }) => {
         history.push('/')
       }, 1500)
     }
-  }, [recover])
+  }, [recover, history])
 
   const recoverPassword = async (e) => {
     e.preventDefault()

@@ -6,6 +6,7 @@ import { ReactComponent as PendingOrder } from '../../assets/icons/pending-glass
 import { ReactComponent as PreparationOrder } from '../../assets/icons/preparation-glass.svg'
 import { ReactComponent as ServeOrder } from '../../assets/icons/serve-glass.svg'
 import { ReactComponent as ServedOrder } from '../../assets/icons/served-glass.svg'
+import { grinning } from '../../components/emojis/Emojis'
 import './PendingOrders.scss'
 
 const PendingOrders = () => {
@@ -16,22 +17,59 @@ const PendingOrders = () => {
   const [orderLength, setOrderLength] = useState(0)
 
   useEffect(() => {
-    getAllPendingOrders()
-    cleanOrders()
-  }, [rawOrders])
 
-  const getAllPendingOrders = async () => {
-    await
-      axios
-        .get(process.env.NODE_ENV !== 'production' ? '/ordenes' : 'https://quiick-281820.rj.r.appspot.com/ordenes', {
-          headers: {
-            Authorization: `Bearer ${userToken}`
-          }
+    const CancelToken = axios.CancelToken
+    const source = CancelToken.source()
+
+    const getAllPendingOrders = async () => {
+      await
+        axios
+          .get(process.env.NODE_ENV !== 'production' ? '/ordenes' : 'https://quiick-281820.rj.r.appspot.com/ordenes', {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            },
+            cancelToken: source.token
+          })
+          .then(res => {
+            setRawOrders(res.data)
+          })
+          .catch(err => {
+            if (axios.isCancel(err)) {
+              console.log(`OK ${grinning}`);
+            } else {
+              throw err;
+            }
+          })
+    }
+
+    const cleanOrders = () => {
+
+      const currentPendings = [...rawOrders]
+      let allMatchPendings = []
+      currentPendings.forEach(item => {
+        user.user.restaurantes.forEach(local => {
+          item.owner.forEach(owner => {
+            if (owner.restaurant === local.slug) {
+              allMatchPendings.push(item)
+            }
+          })
         })
-        .then(res => {
-          setRawOrders(res.data)
-        })
-  }
+      })
+
+      setOrders(allMatchPendings)
+      setOrderLength(allMatchPendings.length)
+    }
+
+    getAllPendingOrders()
+
+    setTimeout(() => {
+      cleanOrders()
+    }, 1000)
+
+    return () => {
+      source.cancel()
+    }
+  }, [rawOrders, userToken, user])
 
   const updateOrder = async (target, status) => {
     await axios
@@ -58,24 +96,6 @@ const PendingOrders = () => {
           Authorization: `Bearer ${userToken}`
         }
       })
-  }
-
-  const cleanOrders = () => {
-
-    const currentPendings = [...rawOrders]
-    let allMatchPendings = []
-    currentPendings.map(item => {
-      user.user.restaurantes.forEach(local => {
-        item.owner.forEach(owner => {
-          if (owner.restaurant === local.slug) {
-            allMatchPendings.push(item)
-          }
-        })
-      })
-    })
-
-    setOrders(allMatchPendings)
-    setOrderLength(allMatchPendings.length)
   }
 
   const updateOrderStatus = (e) => {
@@ -148,7 +168,7 @@ const PendingOrders = () => {
         : orders.map(item => {
 
           return (
-            <div className="pending-order__wrapper" id={item.id}>
+            <div className="pending-order__wrapper" id={item.id} key={item.id}>
               {item.isDone ? <Spinner /> : null}
               <div className="pending-order__owner-wrapper">
                 <div className="pending-order-owner">

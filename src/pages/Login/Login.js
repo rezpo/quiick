@@ -9,7 +9,7 @@ import { faSadTear } from '@fortawesome/free-regular-svg-icons'
 import './Login.scss'
 import axios from 'axios'
 
-const Login = ({ history }) => {
+const Login = ({history}) => {
 
   const { user, setUser } = useContext(UserContext)
   const { setUserToken } = useContext(UserContext)
@@ -24,7 +24,7 @@ const Login = ({ history }) => {
         history.push(`/${user.user.id}/${user.user.username}/account`)
       }, 1500)
     }
-  }, [user])
+  }, [user, history])
   const handleSubmit = async (e) => {
     e.preventDefault()
 

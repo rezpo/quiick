@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { UserContext } from '../../components/context/UserContext'
+import { grinning } from '../../components/emojis/Emojis'
 import axios from 'axios'
 import './HistoryOrders.scss'
 
@@ -10,40 +11,55 @@ export default function HistoryOrders() {
   const { userToken, user } = useContext(UserContext)
 
   useEffect(() => {
-    getHistoryOrders()
-    cleanHistory()
-  }, [rawHistoryOrders])
+    const CancelToken = axios.CancelToken
+    const source = CancelToken.source()
+    const getHistoryOrders = async () => {
+      await
+        axios
+          .get(process.env.NODE_ENV !== 'production' ? '/historial-de-ordenes' : 'https://quiick-281820.rj.r.appspot.com/historial-de-ordenes', {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            },
+            cancelToken: source.token
+          })
+          .then((res) => {
+            setRawHistoryOrders(res.data)
+          })
+          .catch(err => {
+            if (axios.isCancel(err)) {
+              console.log(`Ok ${grinning}`);
+            } else {
+              throw err;
+            }
+          })
+    }
+    const cleanHistory = () => {
+      const allHistory = [...rawHistoryOrders]
+      let allMatchHistory = []
 
-
-  const getHistoryOrders = async () => {
-    await
-      axios
-        .get(process.env.NODE_ENV !== 'production' ? '/historial-de-ordenes' : 'https://quiick-281820.rj.r.appspot.com/historial-de-ordenes', {
-          headers: {
-            Authorization: `Bearer ${userToken}`
-          }
-        })
-        .then((res) => {
-          setRawHistoryOrders(res.data)
-        })
-  }
-
-  const cleanHistory = () => {
-    const allHistory = [...rawHistoryOrders]
-    let allMatchHistory = []
-
-    allHistory.map(item => {
-      user.user.restaurantes.forEach(local => {
-        item.owner.forEach(owner => {
-          if(owner.restaurant === local.slug) {
-            allMatchHistory.push(item)
-          }
+      allHistory.forEach(item => {
+        user.user.restaurantes.forEach(local => {
+          item.owner.forEach(owner => {
+            if(owner.restaurant === local.slug) {
+              allMatchHistory.push(item)
+            }
+          })
         })
       })
-    })
 
-    setHistoryOrders(allMatchHistory)
-  }
+      setHistoryOrders(allMatchHistory)
+    }
+
+    getHistoryOrders()
+
+    setTimeout(() => {
+      cleanHistory()
+    }, 1000)
+
+    return () => {
+      source.cancel()
+    }
+  }, [rawHistoryOrders, userToken, user])
 
   return (
     <div className="history__wrapper">
