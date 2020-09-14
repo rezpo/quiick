@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import './Footer.scss'
-import Icon from '../../../components/icons/Icon'
 import { Link } from 'react-router-dom'
-import { faPhone } from '@fortawesome/free-regular-svg-icons'
 import { ReactComponent as Minilogo } from '../../../assets/mini-logo.svg'
 
 export default class Footer extends Component {
