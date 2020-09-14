@@ -1,7 +1,4 @@
 import React, { Component } from 'react'
-import Button from '../../components/buttons/Button/Button'
-import Icon from '../../components/icons/Icon'
-import { faPhoneAlt } from '@fortawesome/free-solid-svg-icons'
 import './Contact.scss'
 
 export default class Delivery extends Component {
