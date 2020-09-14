@@ -349,9 +349,9 @@ export default class Order extends Component {
                     <h2>{item.categoria}</h2>
                     <div key={item.categoria} className='order__catalog-products'>
                       {prevCatalog.map(product => {
-                        return product.categorias.map((cat) => {
-                          if (item.categoria === cat.categoria) {
-                            return (
+                        return product.categorias.map(cat => {
+                          return (
+                            item.categoria === cat.categoria ?
                               <div key={product.id} className={`${product.promo ? 'order__catalog-item-promo' : 'order__catalog-item'} ${product.isSelected ? 'check' : ''}`} id={product.id}>
                                 <div className='order__catalog-pic' onClick={() => this.selectItemHandler(product.id)}>
                                   <div className={`toggler ${product.isSelected ? 'remove' : 'add'}`}>
@@ -428,8 +428,7 @@ export default class Order extends Component {
                                   </div>
                                 </div>
                               </div>
-                            )
-                          }
+                              : null)
                         })
                       })}
                     </div>
