@@ -15,23 +15,32 @@ export default function Account() {
   const { userToken, user } = useContext(UserContext)
 
   useEffect(() => {
+
+    const CancelToken = axios.CancelToken
+    const source = CancelToken.source()
+    const getUserAccount = async () => {
+      await
+        axios
+          .get(process.env.NODE_ENV !== 'production' ? `/restaurantes` : 'https://quiick-281820.rj.r.appspot.com/restaurantes', {
+            headers: {
+              Authorization: `Bearer ${userToken}`
+            },
+            cancelToken: source.token
+          })
+          .then(res => {
+            setRestaurants(user.user.restaurantes)
+          })
+          .catch(err => {
+            console.log(err.Error)
+          })
+    }
+
     getUserAccount()
-  }, [restaurants])
-  const getUserAccount = async () => {
-    await
-      axios
-        .get(process.env.NODE_ENV !== 'production' ? `/restaurantes` : 'https://quiick-281820.rj.r.appspot.com/restaurantes', {
-          headers: {
-            Authorization: `Bearer ${userToken}`
-          }
-        })
-        .then(res => {
-          setRestaurants(user.user.restaurantes)
-        })
-        .catch(err => {
-          console.log(err.Error)
-        })
-  }
+
+    return () => {
+      source.cancel()
+    }
+  }, [restaurants, userToken, user])
 
   const viewPendingOrders = () => {
     setViewPending(true)
@@ -67,8 +76,10 @@ export default function Account() {
         </ul>
       </div>
       <div className="account__info-wrapper">
-        {viewPending && <PendingOrders />}
-        {viewHistory && <HistoryOrder />}
+      {
+        (viewPending ? <div className="hide-info"><PendingOrders /></div> : null) ||
+        (viewHistory ? <div className="hide-info"><HistoryOrder /></div> : null)
+      }
       </div>
     </div>
   )

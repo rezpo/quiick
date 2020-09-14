@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { UserContext } from '../../components/context/UserContext'
-import Spinner from '../../components/spinner/Spinner'
 import { Input } from '../../components/form/Index'
 import Button from '../../components/buttons/Button/Button'
 import axios from 'axios'
@@ -16,7 +15,7 @@ const Signup = ({ history }) => {
     if (user) {
       history.push('/')
     }
-  }, [user])
+  }, [user, history])
   const handleSubmit = async (e) => {
     e.preventDefault()
 
