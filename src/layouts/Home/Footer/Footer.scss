@@ -20,6 +20,14 @@
   @include flex-between;
   width: 100%;
 
+  .minilogo {
+    height: 15px;
+  }
+
+  .name {
+    margin-left: .3rem;
+  }
+
   .address {
     @include flex-start;
   }
