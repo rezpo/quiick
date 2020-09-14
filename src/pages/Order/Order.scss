@@ -4,20 +4,16 @@
   @include large-box-radius;
   width: 100%;
   padding: 0 1rem;
-  margin: 0 auto;
-  margin-bottom: 10rem;
+  margin: 5rem auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 90%;
+    height: auto;
+    padding: 40px 0;
   }
 
   @media screen and (max-width: $tablet-regular-screen) {
     width: 100%;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
-    height: auto;
-    padding: 40px 20px;
   }
 
 }
@@ -27,12 +23,14 @@
   @include secondary-bold-subtitle;
   color: $black;
   margin: 0 auto;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   width: 90%;
+  height: auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 100%;
-
+    align-items: center;
+    margin-bottom: 0;
   }
 
   .title {
@@ -50,11 +48,8 @@
   margin: 0 auto;
   margin-bottom: 1rem;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 100%;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
     flex-direction: column;
   }
 
@@ -62,14 +57,11 @@
 
 .order__catalog {
   @include flex-start;
-  width: 88%;
+  width: 90%;
   margin: 0 auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     overflow-x: auto;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
     width: 100%;
   }
 
@@ -81,7 +73,7 @@
   cursor: pointer;
   overflow: hidden;
   border-radius: .6rem;
-  width: 15%;
+  width: 16%;
   background: $white;
   height: 378px;
   box-shadow: $secondary-shadow;
@@ -94,24 +86,17 @@
     }
   }
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-medium-screen) {
+    width: 18%;
+  }
+
+  @media screen and (max-width: $desktop-small-screen) {
     width: 22%;
-
-    &:hover {
-      .order__catalog-pic {
-        opacity: inherit;
-      }
-
-      .spec-item {
-        color: inherit;
-        background: inherit;
-        padding: inherit;
-      }
-    }
   }
 
   @media screen and (max-width: $tablet-regular-screen) {
-    width: 29.5%;
+    width: 30%;
+    height: 390px;
 
     &:hover {
       .order__catalog-pic {
@@ -127,15 +112,23 @@
   }
 
   @media screen and (max-width: $mobile-large-screen) {
-    width: 43%;
-    height: 300px;
+    width: 47%;
+    height: 339px;
+    margin: 1rem .3rem;
+
+    &:hover {
+      .order__catalog-pic {
+        opacity: inherit;
+      }
+
+      .spec-item {
+        color: inherit;
+        background: inherit;
+        padding: inherit;
+      }
+    }
   }
 
-  @media screen and (max-width: $mobile-small-screen) {
-    width: 70%;
-    height: 300px;
-    margin: 1rem auto;
-  }
 
   &.check {
     .order__catalog-pic {
@@ -149,7 +142,6 @@
 
       .order__catalog-info-title-spec {
 
-        .combo,
         .order__catalog-info-title {
           color: $white;
         }
@@ -167,9 +159,14 @@
   opacity: .8;
   transition: .3s ease-in-out;
   position: relative;
+  height: 60%;
+  overflow: hidden;
+
+  @media screen and (max-width: $desktop-regular-screen) {
+    height: max-content;
+  }
 
   img {
-    height: 100%;
     width: 100%;
     margin: 0 auto;
     display: block;
@@ -186,9 +183,7 @@
     font-weight: bold;
     color: $white;
     border-radius: 5rem;
-    border: 2px solid $white;
     padding: .2rem .5rem .2rem .2rem;
-    box-shadow: 0 .1rem .2rem rgba($color: $black, $alpha: .5);
 
     .icon {
       position: absolute;
@@ -244,37 +239,24 @@
   color: $black;
   text-align: left;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     font-size: 1rem;
-  }
-
-  @media screen and (max-width: $tablet-regular-screen) {
-    font-size: .8rem;
   }
 
 }
 
 .order__catalog-info-spec {
   @include secondary-bold-subtitle;
-  position: relative;
-  color: $black;
+  position: absolute;
+  right: .5rem;
+  top: 1rem;
+  color: $white;
   text-align: center;
-  font-size: .7rem;
-  height: 20px;
-  width: 48px;
-  background: $quinary;
-  padding: .3rem;
-  margin-left: .5rem;
-  border-radius: .3rem;
+  font-size: 1.5rem;
+  padding: .8rem;
 
-  @media screen and (max-width: $tablet-regular-screen) {
-    width: 18px;
-    height: 18px;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
-    font-size: .6rem;
-    padding: .3rem .7rem;
+  @media screen and (max-width: $desktop-regular-screen) {
+    padding: .7rem;
   }
 
   .spec {
@@ -282,6 +264,10 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+
+    .icon {
+      margin-right: 0;
+    }
   }
 
 }
@@ -294,7 +280,9 @@
   height: 48px;
 
   @media screen and (max-width: $tablet-regular-screen) {
-    font-size: .7rem;
+    overflow: hidden;
+    font-size: .8rem;
+    width: 100%;
   }
 
 }
@@ -305,6 +293,13 @@
   position: absolute;
   height: 33.7px;
   width: 90%;
+
+  @media screen and (max-width: $desktop-regular-screen) {
+    position: inherit;
+    width: 100%;
+    height: max-content;
+    margin-top: .4rem;
+  }
 
 }
 
@@ -329,6 +324,11 @@
     }
 
     .price {
+      @media screen and (max-width: $desktop-regular-screen) {
+        font-size: 1.2rem;
+        margin-bottom: .3rem;
+      }
+
       .before {
         display: block;
         font-size: .7rem;
@@ -354,11 +354,7 @@
   width: 90%;
   margin: 2rem auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
-    padding: 0 1rem;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 100%;
     padding: 1rem 0;
   }
@@ -384,11 +380,7 @@
   width: 90%;
   margin: 2rem auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
-    padding: 0 1rem;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 100%;
     padding: 1rem 0;
   }
@@ -414,6 +406,16 @@
   border-radius: .5rem;
   border: 1px solid $black;
 
+  @media screen and (max-width: $desktop-regular-screen) {
+    flex-direction: row;
+    width: 100%;
+    right: 0;
+    bottom: 34px;
+    border-radius: 0;
+    border: none;
+    box-shadow: 0 .6rem 1rem rgba($color: $secondary, $alpha: .8);
+  }
+
 }
 
 .order__total {
@@ -423,6 +425,11 @@
   margin-bottom: .5rem;
   text-align: center;
   width: 100%;
+
+  @media screen and (max-width: $desktop-regular-screen) {
+    width: 50%;
+    font-size: 1rem;
+  }
 
   strong {
     display: block;
@@ -436,6 +443,14 @@
 .order__submit {
   width: 100%;
   margin: 0 auto;
+
+  @media screen and (max-width: $desktop-regular-screen) {
+    width: 50%;
+
+    .button {
+      float: right;
+    }
+  }
 
   a {
     text-decoration: none;
@@ -456,6 +471,13 @@
   pointer-events: none;
   width: 100%;
 
+  @media screen and (max-width: $desktop-regular-screen) {
+    width: 50%;
+
+    .button {
+      float: right;
+    }
+  }
 }
 
 .order-notation {
@@ -465,4 +487,8 @@
   color: rgba($color: $black, $alpha: .4);
   width: 100%;
   margin-bottom: .5rem;
+}
+
+.order-cost {
+  margin-top: .5rem;
 }

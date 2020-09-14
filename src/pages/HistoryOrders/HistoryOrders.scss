@@ -1,0 +1,62 @@
+@import '../../styles/Index.scss';
+
+.history {
+  &__wrapper {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  &-order {
+    &__wrapper {
+      @include flex-between;
+      align-items: flex-start;
+      border-bottom: 1px solid $tertiary;
+      padding: .5rem 1rem
+    }
+
+    &-id {
+      width: 5%;
+      text-align: center;
+      height: 100%;
+    }
+
+    &-detail {
+      padding-left: 1rem;
+      @include flex-start;
+      width: 80%;
+    }
+
+    &-owner {
+      width: 15%;
+
+      &-name {
+        font-size: .8rem;
+        font-weight: bold;
+      }
+
+      &-contact {
+        font-size: .8rem;
+      }
+
+      &-date {
+        font-size: .7rem;
+      }
+    }
+  }
+}
+
+.item-ordered {
+  margin-bottom: 1rem;
+  padding-right: .5rem;
+}
+
+.item-sku {
+  font-weight: bold;
+  border: 1px solid $black;
+  padding: .2rem .3rem;
+  border-radius: .3rem;
+  text-transform: uppercase;
+  font-size: .7rem;
+}

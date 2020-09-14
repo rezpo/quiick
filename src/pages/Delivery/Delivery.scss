@@ -7,11 +7,8 @@
   z-index: 1;
   margin: 0 auto;
 
-  @media screen and (max-width: $tablet-large-screen) {
+  @media screen and (max-width: $desktop-regular-screen) {
     width: 100%;
-  }
-
-  @media screen and (max-width: $mobile-large-screen) {
     padding: 40px 20px;
   }
 
