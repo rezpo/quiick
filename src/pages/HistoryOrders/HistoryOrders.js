@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { UserContext } from '../../components/context/UserContext'
+import Spinner from '../../components/spinner/Spinner'
 import { grinning } from '../../components/emojis/Emojis'
 import axios from 'axios'
 import './HistoryOrders.scss'
@@ -8,7 +9,9 @@ export default function HistoryOrders() {
 
   const [rawHistoryOrders, setRawHistoryOrders] = useState([])
   const [historyOrders, setHistoryOrders] = useState([])
+  const [historyOrdersLength, setHistoryOrdersLength] = useState(0)
   const { userToken, user } = useContext(UserContext)
+  const prevHistoryLength = useRef(historyOrdersLength)
 
   useEffect(() => {
     const CancelToken = axios.CancelToken
@@ -40,7 +43,7 @@ export default function HistoryOrders() {
       allHistory.forEach(item => {
         user.user.restaurantes.forEach(local => {
           item.owner.forEach(owner => {
-            if(owner.restaurant === local.slug) {
+            if (owner.restaurant === local.slug) {
               allMatchHistory.push(item)
             }
           })
@@ -48,13 +51,12 @@ export default function HistoryOrders() {
       })
 
       setHistoryOrders(allMatchHistory)
+      setHistoryOrdersLength(allMatchHistory.length)
+      prevHistoryLength.current = historyOrdersLength
     }
 
     getHistoryOrders()
-
-    setTimeout(() => {
-      cleanHistory()
-    }, 1000)
+    cleanHistory()
 
     return () => {
       source.cancel()
@@ -63,9 +65,11 @@ export default function HistoryOrders() {
 
   return (
     <div className="history__wrapper">
+      {prevHistoryLength.current !== historyOrdersLength ? <Spinner /> : null}
       {historyOrders.map((item, index) => {
         return (
           <div key={item.id} className="history-order__wrapper">
+            {historyOrdersLength <= 0 ? <div>Nada por aquí</div> : null}
             <div className="history-order-id">{index + 1}</div>
             <div className="history-order-detail" key={item.id}>
               {
