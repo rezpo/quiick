@@ -61,7 +61,7 @@ export default function HistoryOrders() {
     return () => {
       source.cancel()
     }
-  }, [rawHistoryOrders, userToken, user])
+  }, [rawHistoryOrders, userToken, user, historyOrdersLength])
 
   return (
     <div className="history__wrapper">
