@@ -114,7 +114,6 @@ const PendingOrders = () => {
       order.status.forEach(status => {
         const statusId = `${status.id}-${parentTarget}`
 
-        console.log(e.target.id, statusId)
         if (e.target.id === statusId) {
           status.isActive = !status.isActive
         }
