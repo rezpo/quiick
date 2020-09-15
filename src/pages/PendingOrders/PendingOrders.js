@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import axios from 'axios'
 import { UserContext } from '../../components/context/UserContext'
 import Spinner from '../../components/spinner/Spinner'
@@ -15,12 +15,13 @@ const PendingOrders = () => {
   const [rawOrders, setRawOrders] = useState([])
   const [orders, setOrders] = useState([])
   const [orderLength, setOrderLength] = useState(0)
+  const [itemStatus, setItemStatus] = useState(false)
+  const prevOrderLength = useRef(orderLength)
 
   useEffect(() => {
 
     const CancelToken = axios.CancelToken
     const source = CancelToken.source()
-
     const getAllPendingOrders = async () => {
       await
         axios
@@ -58,25 +59,29 @@ const PendingOrders = () => {
 
       setOrders(allMatchPendings)
       setOrderLength(allMatchPendings.length)
+      prevOrderLength.current = orderLength
     }
 
     getAllPendingOrders()
-
-    setTimeout(() => {
-      cleanOrders()
-    }, 1000)
+    cleanOrders()
 
     return () => {
       source.cancel()
     }
-  }, [rawOrders, userToken, user])
+  }, [rawOrders, userToken, user, orderLength])
+
 
   const updateOrder = async (target, status) => {
+    setItemStatus(true)
+
     await axios
       .put(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, status, {
         headers: {
           Authorization: `Bearer ${userToken}`
         }
+      })
+      .then(() => {
+        setItemStatus(false)
       })
   }
 
@@ -109,7 +114,6 @@ const PendingOrders = () => {
       order.status.forEach(status => {
         const statusId = `${status.id}-${parentTarget}`
 
-        console.log(e.target.id, statusId)
         if (e.target.id === statusId) {
           status.isActive = !status.isActive
         }
@@ -163,57 +167,57 @@ const PendingOrders = () => {
 
   return (
     <div className="pending-orders__wrapper">
-      {orderLength <= 0 ?
-        <div className="pending-orders-empty">No hay nada</div>
-        : orders.map(item => {
+      {prevOrderLength.current !== orderLength ? <Spinner /> : null}
+      {orders.map(item => {
 
-          return (
-            <div className="pending-order__wrapper" id={item.id} key={item.id}>
-              {item.isDone ? <Spinner /> : null}
-              <div className="pending-order__owner-wrapper">
-                <div className="pending-order-owner">
-                  {item.owner.map(client => {
+        return (
+          <div className="pending-order__wrapper" id={item.id} key={item.id}>
+            {orderLength <= 0 ? <div className="pending-orders-empty">No hay nada</div> : null}
+            {item.isDone ? <Spinner /> : null}
+            <div className="pending-order__owner-wrapper">
+              <div className="pending-order-owner">
+                {item.owner.map(client => {
+                  return (
+                    <div key={client.contact}>
+                      <strong className="pending-order-owner-name">{client.name}, {client.restaurant} mesa {client.table}</strong>
+                      <div className="pending-order-date">{client.orderDate}</div>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="pending-order__resume" >
+                <div className="pending-order__detail">
+                  {item.order.map(product => {
                     return (
-                      <div key={client.contact}>
-                        <strong className="pending-order-owner-name">{client.name}, {client.restaurant} mesa {client.table}</strong>
-                        <div className="pending-order-date">{client.orderDate}</div>
+                      <div key={product.sku} className="pending-order">
+                        <div className="pending-order-units"><span>{product.unidades}</span></div>
+                        <span className="pending-order-item">{product.nombre}</span>
                       </div>
                     )
                   })}
                 </div>
-                <div className="pending-order__resume" >
-                  <div className="pending-order__detail">
-                    {item.order.map(product => {
-                      return (
-                        <div key={product.sku} className="pending-order">
-                          <div className="pending-order-units"><span>{product.unidades}</span></div>
-                          <span className="pending-order-item">{product.nombre}</span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
               </div>
-              <ul className="pending-order__status">
-                {item.status.map((status, index) => {
-                  return (
-                    <li key={status.id} id={`${status.id}-${item.id}`} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={updateOrderStatus}>
-                      <div className={`pending-order-status-indicator`}>
-                        {
-                          (status.id === 'pending' ? <PendingOrder /> : null) ||
-                          (status.id === 'preparation' ? <PreparationOrder /> : null) ||
-                          (status.id === 'serve' ? <ServeOrder /> : null) ||
-                          (status.id === 'served' ? <ServedOrder /> : null)
-                        }
-                      </div>
-                    </li>
-                  )
-                })}
-              </ul>
             </div>
-          )
-
-        })}
+            <ul className="pending-order__status">
+              {item.status.map((status, index) => {
+                return (
+                  <li key={status.id} id={`${status.id}-${item.id}`} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={updateOrderStatus}>
+                    {status.isActive && itemStatus ? <Spinner /> : null}
+                    <div className={`pending-order-status-indicator`}>
+                      {
+                        (status.id === 'pending' ? <PendingOrder /> : null) ||
+                        (status.id === 'preparation' ? <PreparationOrder /> : null) ||
+                        (status.id === 'serve' ? <ServeOrder /> : null) ||
+                        (status.id === 'served' ? <ServedOrder /> : null)
+                      }
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        )
+      })}
     </div>
   )
 }
