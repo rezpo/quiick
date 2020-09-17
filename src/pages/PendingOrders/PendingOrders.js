@@ -15,7 +15,6 @@ const PendingOrders = () => {
   const [rawOrders, setRawOrders] = useState([])
   const [orders, setOrders] = useState([])
   const [orderLength, setOrderLength] = useState(0)
-  const [itemStatus, setItemStatus] = useState(false)
   const prevOrderLength = useRef(orderLength)
 
   useEffect(() => {
@@ -72,94 +71,51 @@ const PendingOrders = () => {
 
 
   const updateOrder = async (target, status) => {
-    setItemStatus(true)
-
-    await axios
-      .put(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, status, {
-        headers: {
-          Authorization: `Bearer ${userToken}`
-        }
-      })
-      .then(() => {
-        setItemStatus(false)
-      })
+    await
+      axios
+        .put(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, status, {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        })
   }
 
   const removeOrder = async (target) => {
-    await axios
-      .delete(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`
-        }
-      })
+    await
+      axios
+        .delete(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        })
   }
 
   const addOrderToHistory = async (orderDone) => {
-    await axios
-      .post(process.env.NODE_ENV !== 'production' ? `/historial-de-ordenes` : `https://quiick-281820.rj.r.appspot.com/historial-de-ordenes`, orderDone, {
-        headers: {
-          Authorization: `Bearer ${userToken}`
-        }
-      })
+    await
+      axios
+        .post(process.env.NODE_ENV !== 'production' ? `/historial-de-ordenes` : `https://quiick-281820.rj.r.appspot.com/historial-de-ordenes`, orderDone, {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        })
   }
 
-  const updateOrderStatus = (e) => {
-    const currentOrder = [...orders]
-    const parentTarget = e.target.parentNode.parentNode.id
-    let statusOrder = []
-    let orderIsDone = false
-    currentOrder.forEach(order => {
-      let statusArr = []
-
-      order.status.forEach(status => {
-        const statusId = `${status.id}-${parentTarget}`
-
-        if (e.target.id === statusId) {
-          status.isActive = !status.isActive
-        }
-
-        if (status.isActive) {
-          let statusCounter = 0
-          statusArr.push(status.isActive)
-          statusCounter += statusArr.length
-
-          if (statusCounter === 4) {
-            order.isDone = !order.isDone
-          }
-        }
-      })
-
-      statusOrder = order.status
-      orderIsDone = order.isDone
-
-      if (parentTarget === String(order.id)) {
-        updateOrder(parentTarget, { status: statusOrder, isDone: orderIsDone })
-        checkOrderStatus()
+  const statusListener = (currentOrder, currentStatus) => {
+    const allOrders = [...rawOrders]
+    allOrders.map(item => {
+      if (currentOrder === item.id && item.id === currentOrder) {
+        item.status[currentStatus].isActive = !item.status[currentStatus].isActive
+        updateOrder(currentOrder, item)
       }
+      return item
     })
 
-  }
-
-  const checkOrderStatus = () => {
-    const currentOrder = [...orders]
-
-    currentOrder.forEach(order => {
-      let statusArr = []
-      order.status.forEach(status => {
-        if (status.isActive) {
-          let statusCounter = 0
-          statusArr.push(status.isActive)
-          statusCounter += statusArr.length
-
-          if (statusCounter === 4) {
-            setTimeout(() => {
-              addOrderToHistory({
-                order: order.order,
-                owner: order.owner
-              })
-              removeOrder(order.id)
-            }, 1000)
-          }
+    allOrders.forEach(item => {
+      item.status.forEach(status => {
+        if (status.id === 'served' && status.isActive) {
+          item.isDone = true
+          addOrderToHistory(item)
+          removeOrder(currentOrder)
         }
       })
     })
@@ -201,8 +157,7 @@ const PendingOrders = () => {
             <ul className="pending-order__status">
               {item.status.map((status, index) => {
                 return (
-                  <li key={status.id} id={`${status.id}-${item.id}`} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={updateOrderStatus}>
-                    {status.isActive && itemStatus ? <Spinner /> : null}
+                  <li key={status.id} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={() => statusListener(item.id, index)}>
                     <div className={`pending-order-status-indicator`}>
                       {
                         (status.id === 'pending' ? <PendingOrder /> : null) ||
