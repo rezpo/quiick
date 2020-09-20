@@ -4,7 +4,6 @@ import Icon from '../../../components/icons/Icon'
 import { faHamburger } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import './Body.scss'
-import Slider from '../Slider/Slider'
 
 const Body = () => {
   return (
