@@ -9,7 +9,7 @@ import { faSadTear } from '@fortawesome/free-regular-svg-icons'
 import './Login.scss'
 import axios from 'axios'
 
-const Login = ({history}) => {
+const Login = ({ history }) => {
 
   const { user, setUser } = useContext(UserContext)
   const { setUserToken } = useContext(UserContext)
@@ -45,38 +45,36 @@ const Login = ({history}) => {
   }
 
   return (
-    <div>
+    <div className="login">
       {isLogin ? <Spinner /> : null}
-      <div className="login">
-        <div className="login__wrapper">
-          <form onSubmit={handleSubmit}>
-            <div className="form-account-input__wrapper">
-              <Input
-                input_type="email"
-                label_name="Correo"
-                value_state={userEmail}
-                input_error={setError}
-                input_setState={setUserEmail}
-                placeholder_content="joaquin@email.com"
-              />
-            </div>
-            <div className="form-account-input__wrapper">
-              <Input
-                input_type="password"
-                label_name="Contraseña"
-                value_state={userPass}
-                input_error={setError}
-                input_setState={setUserPass}
-              />
-              <small className="form-account-forgotpassword"><Link to="/recover-password"><Icon faIcon={faSadTear} />Olvide mi contraseña</Link></small>
-            </div>
-            <div className="form-account-submit__wrapper">
-              <Button isSubject="primary" isType="submit" isText="Entrar" />
-            </div>
-          </form>
+      <div className="login__wrapper">
+        <form onSubmit={handleSubmit}>
+          <div className="form-account-input__wrapper">
+            <Input
+              input_type="email"
+              label_name="Correo"
+              value_state={userEmail}
+              input_error={setError}
+              input_setState={setUserEmail}
+              placeholder_content="joaquin@email.com"
+            />
+          </div>
+          <div className="form-account-input__wrapper">
+            <Input
+              input_type="password"
+              label_name="Contraseña"
+              value_state={userPass}
+              input_error={setError}
+              input_setState={setUserPass}
+            />
+            <small className="form-account-forgotpassword"><Link to="/recover-password"><Icon faIcon={faSadTear} />Olvide mi contraseña</Link></small>
+          </div>
+          <div className="form-account-submit__wrapper">
+            <Button isSubject="primary" isType="submit" isText="Entrar" />
+          </div>
+        </form>
 
-          {error && <p>{error}</p>}
-        </div>
+        {error && <p>{error}</p>}
       </div>
     </div>
   );

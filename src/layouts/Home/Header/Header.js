@@ -31,22 +31,22 @@ export default function Header() {
       <Link to="/"><Logo /></Link>
       <div className="header__mobile-menu" onClick={menuMobileDisplayToggler}>{<BurgerIcon />}</div>
       <div className={`header__menu ${mobileMenuStatus}`}>
-        <div className="menu__item">
+        <div className="menu__item" onClick={menuMobileDisplayToggler}>
           <Link to="/delivery">
             <Button isSubject='quinary' isText='Precios' isIcon={<Icon faIcon={faDollarSign} />} />
           </Link>
         </div>
-        <div className="menu__item">
+        <div className="menu__item" onClick={menuMobileDisplayToggler}>
           <Link to="/">
             <Button isSubject='quinary' isText='¿Quienes somos?' isIcon={<Icon faIcon={faUserAstronaut} />} />
           </Link>
         </div>
-        <div className="menu__item">
+        <div className="menu__item" onClick={menuMobileDisplayToggler}>
           <Link to="/delivery">
             <Button isSubject='quinary' isText='¿Como funciona?' isIcon={<Icon faIcon={faBicycle} />} />
           </Link>
         </div>
-        <div className="menu__item">
+        <div className="menu__item" onClick={menuMobileDisplayToggler}>
           {isLogin ?
             <Link to={`/${user.user.id}/${user.user.username}/account`}>
               <Button plusClass='user--loggeding' isSubject='quinary' isText={`Hola, ${user.user.username}`} isIcon={<Icon faIcon={faSmileWink} />} />

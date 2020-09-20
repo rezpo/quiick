@@ -3,6 +3,8 @@ import { UserContext } from '../../components/context/UserContext'
 import PendingOrders from '../../pages/PendingOrders/PendingOrders'
 import HistoryOrder from '../../pages/HistoryOrders/HistoryOrders'
 import Icon from '../../components/icons/Icon'
+import { ReactComponent as Activemenu } from '../../assets/icons/active.svg'
+import { ReactComponent as Deactivemenu } from '../../assets/icons/deactive.svg'
 import { faClock, faBookmark } from '@fortawesome/free-regular-svg-icons'
 import axios from 'axios'
 import './Account.scss'
@@ -12,6 +14,7 @@ export default function Account() {
   const [restaurants, setRestaurants] = useState([])
   const [viewPending, setViewPending] = useState(false)
   const [viewHistory, setViewHistory] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
   const { userToken, user } = useContext(UserContext)
 
   useEffect(() => {
@@ -45,18 +48,31 @@ export default function Account() {
   const viewPendingOrders = () => {
     setViewPending(true)
     setViewHistory(false)
+    displayMenu()
   }
 
   const viewHistoryOrders = () => {
     setViewHistory(true)
     setViewPending(false)
+    displayMenu()
+  }
+
+  const displayMenu = () => {
+    setShowMenu(!showMenu)
   }
 
   return (
     <div className="account__wrapper">
-      <div className="account__menu-wrapper">
-        <strong className="account-username">Hola {user.user.username},</strong>
-        <span className="account-user-message">Aquí un resumen de tus ordenes</span>
+      <div className={`account__menu-wrapper ${showMenu ? 'show-user-menu' : ''}`}>
+        <div className="account__menu-user">
+          <div className="account-user">
+            <strong className="account-username">Hola {user.user.username},</strong>
+            <span className="account-user-message">Aquí un resumen de tus ordenes</span>
+          </div>
+          <div className="account-view-menu" onClick={displayMenu}>
+            {showMenu ? <Activemenu /> : <Deactivemenu />}
+          </div>
+        </div>
         <ul className="account__menu-items">
           <li className="account-menu-item" onClick={viewPendingOrders}><Icon faIcon={faClock} /><span>Ordenes pendientes</span></li>
           <li className="account-menu-item" onClick={viewHistoryOrders}><Icon faIcon={faBookmark} /><span>Historial de ordenes</span></li>
@@ -76,10 +92,10 @@ export default function Account() {
         </ul>
       </div>
       <div className="account__info-wrapper">
-      {
-        (viewPending ? <div className="hide-info"><PendingOrders /></div> : null) ||
-        (viewHistory ? <div className="hide-info"><HistoryOrder /></div> : null)
-      }
+        {
+          (viewPending ? <div className="hide-info"><PendingOrders /></div> : null) ||
+          (viewHistory ? <div className="hide-info"><HistoryOrder /></div> : null)
+        }
       </div>
     </div>
   )

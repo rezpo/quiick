@@ -27,7 +27,6 @@ const Body = () => {
       <div className='body__promo'>
         <div className='body__promo-wrapper'>
           <div className='body__promo-item'>
-            <Slider />
           </div>
         </div>
       </div>

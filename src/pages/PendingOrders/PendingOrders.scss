@@ -48,26 +48,8 @@
     padding: 0;
     list-style: none;
 
-    &:first-child {
-      .pending-order-status-indicator {
-
-        &::after {
-          content: '';
-        }
-
-        &::before {
-          content: '';
-          display: block;
-          width: 100%;
-          height: 3px;
-          background: $black;
-          position: absolute;
-          top: 50%;
-          left: -100%;
-          transform: translate(0, -50%);
-        }
-
-      }
+    @media screen and (max-width: $mobile-large-screen){
+      width: 100%;
     }
 
     &-wrapper {

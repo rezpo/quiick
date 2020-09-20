@@ -44,6 +44,7 @@ export default class Order extends Component {
       width: 0,
       height: 0,
       matchLocation: props.match.params,
+      showMethods: false,
       currentLocation: ''
     }
     this.clientData = this.clientData.bind(this)
@@ -53,6 +54,7 @@ export default class Order extends Component {
     this.toLowerCase = this.toLowerCase.bind(this)
     this.postCurrentOrder = this.postCurrentOrder.bind(this)
     this.getDateOfOrder = this.getDateOfOrder.bind(this)
+    this.showPaymentMethods = this.showPaymentMethods.bind(this)
   }
 
   selectItemHandler(id) {
@@ -92,6 +94,12 @@ export default class Order extends Component {
   clientData(e) {
     this.setState({
       [e.target.name]: e.target.value,
+    })
+  }
+
+  showPaymentMethods() {
+    this.setState({
+      showMethods: !this.state.showMethods
     })
   }
 
@@ -302,6 +310,7 @@ export default class Order extends Component {
       contactNumber,
       width,
       isReady,
+      showMethods,
       matchLocation
     } = this.state
 
@@ -486,40 +495,48 @@ export default class Order extends Component {
                     <Icon faIcon={faList} />
                     <strong>Detalle de pedido</strong>
                   </div>
-                  {catalogSelected.map((product, index) => {
-                    return (
-                      <div key={index} className='modal-product'>
-                        <div className="product-pic">
-                          <div className='product-quantity'>
-                            <span>{product.unidades}</span>
+                  <div className="modal-info-box-products">
+                    {catalogSelected.map((product, index) => {
+                      return (
+                        <div key={index} className='modal-product'>
+                          <div className="product-pic">
+                            <div className='product-quantity'>
+                              <span>{product.unidades}</span>
+                            </div>
+                            <img src={product.foto.url} alt={product.titulo} />
                           </div>
-                          <img src={product.foto.url} alt={product.titulo} />
+                          <div className='product-name'>
+                            {product.titulo}
+                            <small className="product-description">{product.descripcion}</small>
+                          </div>
+                          <span className='product-price'>
+                            <NumberFormat
+                              value={product.precio_ahora * product.unidades}
+                              displayType={'text'}
+                              thousandSeparator={'.'}
+                              prefix={'$'}
+                              decimalSeparator={','}
+                            />
+                          </span>
                         </div>
-                        <div className='product-name'>
-                          {product.titulo}
-                          <small className="product-description">{product.descripcion}</small>
-                        </div>
-                        <span className='product-price'>
-                          <NumberFormat
-                            value={product.precio_ahora * product.unidades}
-                            displayType={'text'}
-                            thousandSeparator={'.'}
-                            prefix={'$'}
-                            decimalSeparator={','}
-                          />
-                        </span>
-                      </div>
-                    )
-                  })}
+                      )
+                    })}
+                  </div>
                 </div>
               </div>
-              <div className="modal-payment-method">
+              <div className={`modal-payment-method ${showMethods ? 'show-methods' : null}`}>
                 {!isReady ? <Spinner /> : null}
                 <div className="modal__delivery-client">
                   <form className='modal-delivery'>
-                    <div className='modal-info-box-title'>
+                    <div className='modal-info-box-title title-desktop'>
                       <Icon faIcon={faUserAstronaut} />
                       <strong>Tu información</strong>
+                    </div>
+                    <div className={'modal-info-box-title title-mobile'} onClick={this.showPaymentMethods}>
+                      {showMethods ?
+                        <strong>Completa estos datos</strong> :
+                        <strong>Realizar pedido</strong>
+                      }
                     </div>
                     <div className='delivery-input'>
                       <label>Nombre</label>
@@ -562,7 +579,7 @@ export default class Order extends Component {
                   <div className='modal__payment-types'>
                     {!fullName ||
                       !contactNumber ? (
-                        <div className='order__submit'>
+                        <div className='order__make-order'>
                           <Button
                             isSubject='unactive'
                             isText='Debes llenar el formulario'
@@ -570,7 +587,7 @@ export default class Order extends Component {
                           />
                         </div>
                       ) : (
-                        <div className='order__submit' onClick={this.postCurrentOrder}>
+                        <div className='order__make-order' onClick={this.postCurrentOrder}>
                           <Button
                             isSubject='secondary'
                             isText='Confirmar orden'

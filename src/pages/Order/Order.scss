@@ -16,6 +16,10 @@
     width: 100%;
   }
 
+  @media screen and (max-width: $mobile-large-screen) {
+    padding: 0;
+  }
+
 }
 
 .order__header {
@@ -465,6 +469,14 @@
     margin: 0 auto;
   }
 
+}
+
+.order__make-order {
+  width: 100%;
+
+  .button {
+    margin: 0 auto;
+  }
 }
 
 .order__submit--disable {

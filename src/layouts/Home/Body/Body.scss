@@ -6,8 +6,12 @@
   width: 80%;
 
   @media screen and (max-width: $desktop-regular-screen) {
-    margin: 0 auto;
+    margin: 2rem auto;
     width: 90%;
+  }
+
+  @media screen and (max-width: $mobile-large-screen) {
+    width: 100%;
   }
 
 }
@@ -63,7 +67,7 @@
   padding-right: .5rem;
 
   @media screen and (max-width: $tablet-regular-screen) {
-    width: fit-content;
+    width: max-content;
     margin: 0 auto;
   }
 
@@ -76,8 +80,8 @@
 .body__promo {
   width: 60%;
 
-  @media screen and (max-width: $tablet-regular-screen) {
-    width: 100%;
+  @media screen and (max-width: $mobile-large-screen) {
+    display: none;
   }
 
 }
