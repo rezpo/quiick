@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import axios from 'axios'
 import { UserContext } from '../../components/context/UserContext'
 import Spinner from '../../components/spinner/Spinner'
@@ -15,12 +15,12 @@ const PendingOrders = () => {
   const [rawOrders, setRawOrders] = useState([])
   const [orders, setOrders] = useState([])
   const [orderLength, setOrderLength] = useState(0)
+  const prevOrderLength = useRef(orderLength)
 
   useEffect(() => {
 
     const CancelToken = axios.CancelToken
     const source = CancelToken.source()
-
     const getAllPendingOrders = async () => {
       await
         axios
@@ -58,104 +58,64 @@ const PendingOrders = () => {
 
       setOrders(allMatchPendings)
       setOrderLength(allMatchPendings.length)
+      prevOrderLength.current = orderLength
     }
 
     getAllPendingOrders()
-
-    setTimeout(() => {
-      cleanOrders()
-    }, 1000)
+    cleanOrders()
 
     return () => {
       source.cancel()
     }
-  }, [rawOrders, userToken, user])
+  }, [rawOrders, userToken, user, orderLength])
+
 
   const updateOrder = async (target, status) => {
-    await axios
-      .put(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, status, {
-        headers: {
-          Authorization: `Bearer ${userToken}`
-        }
-      })
+    await
+      axios
+        .put(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, status, {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        })
   }
 
   const removeOrder = async (target) => {
-    await axios
-      .delete(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`
-        }
-      })
+    await
+      axios
+        .delete(process.env.NODE_ENV !== 'production' ? `/ordenes/${target}` : `https://quiick-281820.rj.r.appspot.com/ordenes/${target}`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        })
   }
 
   const addOrderToHistory = async (orderDone) => {
-    await axios
-      .post(process.env.NODE_ENV !== 'production' ? `/historial-de-ordenes` : `https://quiick-281820.rj.r.appspot.com/historial-de-ordenes`, orderDone, {
-        headers: {
-          Authorization: `Bearer ${userToken}`
-        }
-      })
+    await
+      axios
+        .post(process.env.NODE_ENV !== 'production' ? `/historial-de-ordenes` : `https://quiick-281820.rj.r.appspot.com/historial-de-ordenes`, orderDone, {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        })
   }
 
-  const updateOrderStatus = (e) => {
-    const currentOrder = [...orders]
-    const parentTarget = e.target.parentNode.parentNode.id
-    let statusOrder = []
-    let orderIsDone = false
-    currentOrder.forEach(order => {
-      let statusArr = []
-
-      order.status.forEach(status => {
-        const statusId = `${status.id}-${parentTarget}`
-
-        console.log(e.target.id, statusId)
-        if (e.target.id === statusId) {
-          status.isActive = !status.isActive
-        }
-
-        if (status.isActive) {
-          let statusCounter = 0
-          statusArr.push(status.isActive)
-          statusCounter += statusArr.length
-
-          if (statusCounter === 4) {
-            order.isDone = !order.isDone
-          }
-        }
-      })
-
-      statusOrder = order.status
-      orderIsDone = order.isDone
-
-      if (parentTarget === String(order.id)) {
-        updateOrder(parentTarget, { status: statusOrder, isDone: orderIsDone })
-        checkOrderStatus()
+  const statusListener = (currentOrder, currentStatus) => {
+    const allOrders = [...rawOrders]
+    allOrders.map(item => {
+      if (currentOrder === item.id && item.id === currentOrder) {
+        item.status[currentStatus].isActive = !item.status[currentStatus].isActive
+        updateOrder(currentOrder, item)
       }
+      return item
     })
 
-  }
-
-  const checkOrderStatus = () => {
-    const currentOrder = [...orders]
-
-    currentOrder.forEach(order => {
-      let statusArr = []
-      order.status.forEach(status => {
-        if (status.isActive) {
-          let statusCounter = 0
-          statusArr.push(status.isActive)
-          statusCounter += statusArr.length
-
-          if (statusCounter === 4) {
-            setTimeout(() => {
-              addOrderToHistory({
-                order: order.order,
-                owner: order.owner
-              })
-              removeOrder(order.id)
-            }, 1000)
-          }
+    allOrders.forEach(item => {
+      item.status.forEach(status => {
+        if (status.id === 'served' && status.isActive) {
+          item.isDone = true
+          addOrderToHistory(item)
+          removeOrder(currentOrder)
         }
       })
     })
@@ -163,57 +123,56 @@ const PendingOrders = () => {
 
   return (
     <div className="pending-orders__wrapper">
-      {orderLength <= 0 ?
-        <div className="pending-orders-empty">No hay nada</div>
-        : orders.map(item => {
+      {prevOrderLength.current !== orderLength ? <Spinner /> : null}
+      {orders.map(item => {
 
-          return (
-            <div className="pending-order__wrapper" id={item.id} key={item.id}>
-              {item.isDone ? <Spinner /> : null}
-              <div className="pending-order__owner-wrapper">
-                <div className="pending-order-owner">
-                  {item.owner.map(client => {
+        return (
+          <div className="pending-order__wrapper" id={item.id} key={item.id}>
+            {orderLength <= 0 ? <div className="pending-orders-empty">No hay nada</div> : null}
+            {item.isDone ? <Spinner /> : null}
+            <div className="pending-order__owner-wrapper">
+              <div className="pending-order-owner">
+                {item.owner.map(client => {
+                  return (
+                    <div key={client.contact}>
+                      <strong className="pending-order-owner-name">{client.name}, {client.restaurant} mesa {client.table}</strong>
+                      <div className="pending-order-date">{client.orderDate}</div>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="pending-order__resume" >
+                <div className="pending-order__detail">
+                  {item.order.map(product => {
                     return (
-                      <div key={client.contact}>
-                        <strong className="pending-order-owner-name">{client.name}, {client.restaurant} mesa {client.table}</strong>
-                        <div className="pending-order-date">{client.orderDate}</div>
+                      <div key={product.sku} className="pending-order">
+                        <div className="pending-order-units"><span>{product.unidades}</span></div>
+                        <span className="pending-order-item">{product.nombre}</span>
                       </div>
                     )
                   })}
                 </div>
-                <div className="pending-order__resume" >
-                  <div className="pending-order__detail">
-                    {item.order.map(product => {
-                      return (
-                        <div key={product.sku} className="pending-order">
-                          <div className="pending-order-units"><span>{product.unidades}</span></div>
-                          <span className="pending-order-item">{product.nombre}</span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
               </div>
-              <ul className="pending-order__status">
-                {item.status.map((status, index) => {
-                  return (
-                    <li key={status.id} id={`${status.id}-${item.id}`} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={updateOrderStatus}>
-                      <div className={`pending-order-status-indicator`}>
-                        {
-                          (status.id === 'pending' ? <PendingOrder /> : null) ||
-                          (status.id === 'preparation' ? <PreparationOrder /> : null) ||
-                          (status.id === 'serve' ? <ServeOrder /> : null) ||
-                          (status.id === 'served' ? <ServedOrder /> : null)
-                        }
-                      </div>
-                    </li>
-                  )
-                })}
-              </ul>
             </div>
-          )
-
-        })}
+            <ul className="pending-order__status">
+              {item.status.map((status, index) => {
+                return (
+                  <li key={status.id} className={`pending-order__status-wrapper ${status.isActive ? 'active-order' : 'deactive-order'}`} onClick={() => statusListener(item.id, index)}>
+                    <div className={`pending-order-status-indicator`}>
+                      {
+                        (status.id === 'pending' ? <PendingOrder /> : null) ||
+                        (status.id === 'preparation' ? <PreparationOrder /> : null) ||
+                        (status.id === 'serve' ? <ServeOrder /> : null) ||
+                        (status.id === 'served' ? <ServedOrder /> : null)
+                      }
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        )
+      })}
     </div>
   )
 }
