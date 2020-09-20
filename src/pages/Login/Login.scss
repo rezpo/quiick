@@ -1,12 +1,15 @@
 @import '../../styles/Index.scss';
 
 .login {
-  height: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 20%;
+
+  @media screen and (max-width: $mobile-large-screen){
+    width: 80%;
+  }
 
   &__wrapper {
     position: absolute;

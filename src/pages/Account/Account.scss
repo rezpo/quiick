@@ -9,6 +9,7 @@
 
   &__menu-wrapper {
     position: fixed;
+    z-index: 1;
     left: 0;
     width: 20%;
     height: 100vh;
@@ -16,6 +17,20 @@
     padding-right: 0;
     border-radius: 4px;
     background: lighten($color: $tertiary, $amount: 5);
+    transition: .3s ease-in-out;
+
+    @media screen and (max-width: $mobile-large-screen){
+      bottom: -77%;
+      width: 100%;
+      height: 90vh;
+      padding: 0 .8rem;
+      padding-top: 2rem;
+    }
+  }
+
+  &__menu-user {
+    @include flex-between;
+
   }
 
   &__menu-items {
@@ -28,6 +43,10 @@
   &__info-wrapper {
     width: 80%;
     padding: 4rem 0;
+
+    @media screen and (max-width: $mobile-large-screen){
+      width: 100%;
+    }
   }
 
   &__restaurants-wrapper {
@@ -42,6 +61,14 @@
     margin-top: 1rem;
   }
 
+  &-user {
+    width: 100%;
+
+    @media screen and (max-width: $mobile-large-screen){
+      width: 90%;
+    }
+  }
+
   &-username {
     font-size: 2rem;
     font-weight: bold;
@@ -51,6 +78,21 @@
   &-user-message {
     display: block;
     font-size: .8rem;
+  }
+
+  &-view-menu {
+    display: none;
+    width: 10%;
+
+    @media screen and (max-width: $mobile-large-screen){
+      display: block;
+    }
+
+    svg {
+      path {
+        fill: $black;
+      }
+    }
   }
 
   &-menu-item {
@@ -78,6 +120,10 @@
     }
   }
 
+}
+
+.show-user-menu {
+  bottom: 0;
 }
 
 .hide-restaurants {

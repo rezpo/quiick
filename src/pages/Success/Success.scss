@@ -11,10 +11,19 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 30%;
+
+    @media screen and (max-width: $mobile-large-screen){
+      width: 100%;
+    }
   }
 
   &-message {
     font-size: 3rem;
     font-weight: bold;
+
+    @media screen and (max-width: $mobile-large-screen){
+      font-size: 2rem;
+      text-align: center;
+    }
   }
 }

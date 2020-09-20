@@ -157,12 +157,6 @@
   width: 100%;
   height: 100vh;
 
-  @media screen and (max-width: $desktop-regular-screen) {
-    width: 90%;
-    padding: 2rem 1rem;
-    height: 100vh;
-  }
-
   .price {
     @include flex-start;
 
@@ -215,10 +209,6 @@
   @include flex-between;
   width: 100%;
 
-  @media screen and (max-width: $tablet-regular-screen) {
-    width: 80%;
-  }
-
   .product-extra-info {
     display: block;
     text-align: right;
@@ -230,6 +220,10 @@
     text-align: left;
     margin-top: .5rem;
     font-size: 2rem;
+
+    @media screen and (max-width: $mobile-large-screen) {
+      font-size: 1.3rem;
+    }
   }
 
   .product-total-title {
@@ -244,6 +238,10 @@
 .modal-info-box {
   background: $white;
   padding: 1rem 2.5rem;
+
+  @media screen and (max-width: $mobile-large-screen) {
+    padding: 1rem;
+  }
 }
 
 .modal-info-box-title {
@@ -254,7 +252,7 @@
 
   svg {
     path {
-      color: $secondary;
+      color: $black;
     }
   }
 
@@ -263,6 +261,10 @@
 .modal-order-detail {
   width: 70%;
   height: 100vh;
+
+  @media screen and (max-width: $mobile-large-screen) {
+    width: 100%;
+  }
 }
 
 .modal-product {
@@ -273,6 +275,10 @@
   .product-pic {
     position: relative;
     width: 10%;
+
+    @media screen and (max-width: $mobile-large-screen) {
+      width: 20%;
+    }
 
     img {
       width: 100%;
@@ -310,8 +316,9 @@
     padding: 0 2rem;
     font-weight: bold;
 
-    @media screen and (max-width: $desktop-regular-screen) {
-      font-size: .8rem;
+    @media screen and (max-width: $mobile-large-screen) {
+      width: 50%;
+      padding: 0 1rem;
     }
   }
 
@@ -322,6 +329,10 @@
     font-weight: normal;
     margin-top: .3rem;
     color: lighten($color: $black, $amount: 50);
+
+    @media screen and (max-width: $mobile-large-screen) {
+      display: none;
+    }
   }
 
   .product-price {
@@ -330,8 +341,9 @@
     font-weight: bold;
     font-size: 1.3rem;
 
-    @media screen and (max-width: $desktop-regular-screen) {
-      font-size: .8rem;
+    @media screen and (max-width: $mobile-large-screen) {
+      width: 30%;
+      font-size: 1rem;
     }
 
     span {
@@ -365,10 +377,13 @@
     width: 70%;
     margin: 0 auto;
     margin-bottom: 3rem;
+
+    @media screen and (max-width: $mobile-large-screen) {
+      margin-bottom: 1rem;
+    }
   }
 
   &-focus {
-    background: lighten($color: $tertiary, $amount: 5);
     width: 100%;
     padding: 1rem 2rem;
     margin-bottom: 0;
@@ -408,6 +423,16 @@
   position: absolute;
   top: 0;
   right: 0;
+  transition: .3s ease-in-out;
+
+  @media screen and (max-width: $mobile-large-screen) {
+    width: 100%;
+    bottom: -47%;
+    top: auto;
+    height: auto;
+    padding: 1rem 0;
+    background: $quinary;
+  }
 }
 
 .menu--active {
@@ -484,6 +509,29 @@
       }
     }
   }
+}
+
+.title-desktop {
+  display: block;
+
+  @media screen and (max-width: $mobile-large-screen) {
+    display: none;
+  }
+
+}
+
+.title-mobile {
+  display: none;
+  text-align: center;
+
+  @media screen and (max-width: $mobile-large-screen) {
+    display: block;
+  }
+
+}
+
+.show-methods {
+  bottom: 0;
 }
 
 // CAROUSEL REFACTOR
