@@ -43,6 +43,24 @@
 
 }
 
+.order__header-options {
+  width: 100%;
+  margin-bottom: 2rem;
+
+  .options-wrapper {
+    @include flex-between;
+    width: 100%;
+  }
+
+  .option {
+    width: 49%;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
 .order__catalog-selector {
   @include flex-between;
   position: relative;
@@ -503,4 +521,10 @@
 
 .order-cost {
   margin-top: .5rem;
+}
+
+.order-opt-selected {
+  .button {
+    background: $secondary-gradient-end !important;
+  }
 }
