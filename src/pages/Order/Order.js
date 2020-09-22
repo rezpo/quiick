@@ -16,6 +16,8 @@ import {
   faUserAstronaut,
   faGlassCheers,
 } from '@fortawesome/free-solid-svg-icons'
+import { ReactComponent as DeliveryIcon } from '../../assets/icons/motorcycle.svg'
+import { ReactComponent as ClickCollectIcon } from '../../assets/icons/store.svg'
 import Spinner from '../../components/spinner/Spinner'
 import NumberFormat from 'react-number-format'
 import Carousel from 'nuka-carousel'
@@ -40,12 +42,16 @@ export default class Order extends Component {
       fullName: '',
       contactNumber: '',
       orderDate: '',
+      address: '',
+      delivery: false,
+      clickCollect: false,
       isReady: true,
       width: 0,
       height: 0,
       matchLocation: props.match.params,
       showMethods: false,
-      currentLocation: ''
+      currentLocation: '',
+      deliveryMethod: false
     }
     this.clientData = this.clientData.bind(this)
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
@@ -55,6 +61,7 @@ export default class Order extends Component {
     this.postCurrentOrder = this.postCurrentOrder.bind(this)
     this.getDateOfOrder = this.getDateOfOrder.bind(this)
     this.showPaymentMethods = this.showPaymentMethods.bind(this)
+    this.orderHandedOptions = this.orderHandedOptions.bind(this)
   }
 
   selectItemHandler(id) {
@@ -101,6 +108,23 @@ export default class Order extends Component {
     this.setState({
       showMethods: !this.state.showMethods
     })
+  }
+
+  orderHandedOptions(clickTarget) {
+
+    if (clickTarget === 'delivery-option') {
+      this.setState({
+        delivery: !this.state.delivery,
+        clickCollect: false,
+      })
+    }
+    if (clickTarget === 'ccollect-option') {
+      this.setState({
+        delivery: false,
+        clickCollect: !this.state.clickCollect,
+      })
+    }
+
   }
 
   incrementUnits(sku) {
@@ -207,7 +231,10 @@ export default class Order extends Component {
                   contact: this.state.contactNumber,
                   orderDate: this.getDateOfOrder(),
                   restaurant: this.state.matchLocation.restaurant,
-                  table: this.state.matchLocation.tableId
+                  table: this.state.matchLocation.tableId,
+                  address: this.state.address,
+                  delivery: this.state.delivery,
+                  clickCollect: this.state.clickCollect
                 }
               ],
               status: [
@@ -264,7 +291,7 @@ export default class Order extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { catalogSelected, prevCatalog } = this.state
+    const { catalogSelected, prevCatalog, delivery, clickCollect } = this.state
     let summaryTotal = []
 
     if (prevState.prevCatalog !== prevCatalog) {
@@ -287,7 +314,17 @@ export default class Order extends Component {
         })
       }
 
-
+    }
+    if ((prevState.delivery !== delivery) || (prevState.clickCollect !== clickCollect)) {
+      if (delivery || clickCollect) {
+        this.setState({
+          deliveryMethod: true
+        })
+      } else {
+        this.setState({
+          deliveryMethod: false
+        })
+      }
     }
   }
 
@@ -311,7 +348,12 @@ export default class Order extends Component {
       width,
       isReady,
       showMethods,
-      matchLocation
+      matchLocation,
+      delivery,
+      address,
+      clickCollect,
+      currentLocation,
+      deliveryMethod
     } = this.state
 
     let resumeMsg = []
@@ -326,10 +368,25 @@ export default class Order extends Component {
       <div>
         <div className='order'>
           <div className='order__header'>
-            <div className='title'>
-              <Icon faIcon={faGlassCheers} />
-              <div>Estas en la mesa {matchLocation.tableId}</div>
-            </div>
+
+            {matchLocation.tableId ?
+              <div className='title'>
+                <Icon faIcon={faGlassCheers} />
+                <div>Estas en la mesa {matchLocation.tableId}</div>
+              </div> :
+              <div className="order__header-options">
+                <h3>Selecciona la que prefieras</h3>
+                <div className="options-wrapper">
+                  <div id="delivery-option" className={`option ${delivery ? 'order-opt-selected' : ''}`} onClick={() => this.orderHandedOptions('delivery-option')}>
+                    <Button isSubject="senary" isText={`${delivery ? 'Despacho seleccionado' : 'Despacho'}`} isIcon={<DeliveryIcon />} />
+                  </div>
+                  <div id="ccollect-option" className={`option ${clickCollect ? 'order-opt-selected' : ''}`} onClick={() => this.orderHandedOptions('ccollect-option')}>
+                    <Button isSubject="senary" isText={`${clickCollect ? 'Retiro en tienda seleccionado' : 'Retiro en tienda'}`} isIcon={<ClickCollectIcon />} />
+                  </div>
+                </div>
+              </div>
+            }
+
             <Carousel
               className='tabs-link'
               cellSpacing={width <= 1080 ? 5 : 20}
@@ -459,23 +516,19 @@ export default class Order extends Component {
                 />
               </strong>
             </div>
-            {totalOrder === 0 ? (
-              <div className='order__submit--disable'>
-                <Button
-                  isSubject='quinary'
-                  isText='¿Nada aún?'
-                  isIcon={<Icon faIcon={faHandPointLeft} />}
-                />
-              </div>
-            ) : (
-                <div className='order__submit' onClick={this.showModal}>
-                  <Button
-                    isSubject='quinary'
-                    isText='Continuar'
-                    isIcon={<Icon faIcon={faPizzaSlice} />}
-                  />
-                </div>
-              )}
+            {
+              currentLocation.tableId === null
+                ?
+                (totalOrder === 0 || !deliveryMethod
+                  ? (<div className='order__submit--disable'><Button isSubject='quinary' isText='¿Nada aún?' isIcon={<Icon faIcon={faHandPointLeft} />} /></div>)
+                  : (<div className='order__submit' onClick={this.showModal}><Button isSubject='quinary' isText='Continuar' isIcon={<Icon faIcon={faPizzaSlice} />} /></div>)
+                )
+                :
+                (totalOrder === 0
+                  ? (<div className='order__submit--disable'><Button isSubject='quinary' isText='¿Nada aún?' isIcon={<Icon faIcon={faHandPointLeft} />} /></div>)
+                  : (<div className='order__submit' onClick={this.showModal}><Button isSubject='quinary' isText='Continuar' isIcon={<Icon faIcon={faPizzaSlice} />} /></div>)
+                )
+            }
           </div>
           <Modal
             isOpen={modalIsOpen}
@@ -557,6 +610,20 @@ export default class Order extends Component {
                         onChange={this.clientData}
                       />
                     </div>
+                    {delivery ?
+                      <div className='delivery-input'>
+                        <label>Dirección de despacho</label>
+                        <input
+                          type='text'
+                          name='address'
+                          placeholder='Ej: Calle Número, Depto/Casa/Oficina, Comuna'
+                          onChange={this.clientData}
+                        />
+                      </div>
+                      : null}
+                    {clickCollect ?
+                      <div>Debes retirar tu pedido en {prevCatalog[0].restaurante.address}</div>
+                      : null}
                   </form>
                 </div>
                 <div className="modal__delivery-resume">
@@ -577,24 +644,46 @@ export default class Order extends Component {
                 </div>
                 <div className='modal__delivery-payment modal__delivery-focus'>
                   <div className='modal__payment-types'>
-                    {!fullName ||
-                      !contactNumber ? (
-                        <div className='order__make-order'>
-                          <Button
-                            isSubject='unactive'
-                            isText='Debes llenar el formulario'
-                            isIcon={<Icon faIcon={faHandPointUp} />}
-                          />
-                        </div>
-                      ) : (
-                        <div className='order__make-order' onClick={this.postCurrentOrder}>
-                          <Button
-                            isSubject='secondary'
-                            isText='Confirmar orden'
-                            isIcon={<Icon faIcon={faThumbsUp} />}
-                          />
-                        </div>
-                      )}
+                    {delivery ?
+                      !fullName ||
+                        !contactNumber ||
+                        !address ? (
+                          <div className='order__make-order'>
+                            <Button
+                              isSubject='unactive'
+                              isText='Debes llenar el formulario'
+                              isIcon={<Icon faIcon={faHandPointUp} />}
+                            />
+                          </div>
+                        ) : (
+                          <div className='order__make-order' onClick={this.postCurrentOrder}>
+                            <Button
+                              isSubject='secondary'
+                              isText='Confirmar orden'
+                              isIcon={<Icon faIcon={faThumbsUp} />}
+                            />
+                          </div>
+                        )
+                      :
+                      !fullName ||
+                        !contactNumber ? (
+                          <div className='order__make-order'>
+                            <Button
+                              isSubject='unactive'
+                              isText='Debes llenar el formulario'
+                              isIcon={<Icon faIcon={faHandPointUp} />}
+                            />
+                          </div>
+                        ) : (
+                          <div className='order__make-order' onClick={this.postCurrentOrder}>
+                            <Button
+                              isSubject='secondary'
+                              isText='Confirmar orden'
+                              isIcon={<Icon faIcon={faThumbsUp} />}
+                            />
+                          </div>
+                        )
+                    }
                   </div>
                 </div>
               </div>
