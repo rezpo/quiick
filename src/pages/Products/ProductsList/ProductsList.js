@@ -3,7 +3,6 @@ import { UserContext } from '../../../components/context/UserContext'
 import { faStar, faCircle, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import Icon from '../../../components/icons/Icon'
 import Spinner from '../../../components/spinner/Spinner'
-import Disclaimer from '../../../components/disclaimer/Disclaimer'
 import Button from '../../../components/buttons/Button/Button'
 import './ProductsList.scss'
 import axios from 'axios'
@@ -31,7 +30,7 @@ export default function ProductsList(props) {
       const res = await axios.get(process.env.NODE_ENV !== 'production' ? `/productos` : `https://quiick-281820.rj.r.appspot.com/productos`)
       const userLocals = []
 
-      res.data.map(item => {
+      res.data.forEach(item => {
         item.restaurantes.forEach(local => {
           locals.forEach(userlocal => {
             if (local.restid === userlocal.restid) {
@@ -83,7 +82,7 @@ export default function ProductsList(props) {
     getProducts()
     switchVisibility()
 
-  }, [products, user, nonProductsSelected, displayVisibility]);
+  }, [products, user, nonProductsSelected, displayVisibility, userToken, locals, productRemove]);
 
   const switchRemoveHandler = () => {
     setRemoveSwitch(!removeSwitch)
@@ -97,7 +96,7 @@ export default function ProductsList(props) {
         },
       })
 
-      if (res.status = 200) {
+      if (res.status === 200) {
         setRemoveSuccess(true)
         setProductRemove([])
 

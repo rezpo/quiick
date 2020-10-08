@@ -64,7 +64,7 @@ class ProductsAdd extends Component {
   handleSelectionData(e) {
 
     if (e.target.name === 'categorias') {
-      this.state.userCategories.map(item => {
+      this.state.userCategories.forEach(item => {
         if (e.target.value === item.categoria) {
           this.setState({
             ...this.state,
@@ -73,7 +73,7 @@ class ProductsAdd extends Component {
         }
       })
     } else if (e.target.name === 'restaurantes') {
-      this.state.userLocals.map(item => {
+      this.state.userLocals.forEach(item => {
         if (e.target.value === item.name) {
           this.setState({
             ...this.state,
