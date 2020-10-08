@@ -6,7 +6,7 @@ import { ReactComponent as Minilogo } from '../../../assets/mini-logo.svg'
 export default class Footer extends Component {
   render() {
     return (
-      <div className='footer'>
+      <footer className='footer'>
         <div className='footer__info'>
           <div className='address'>
             <Minilogo className='minilogo' />
@@ -19,7 +19,7 @@ export default class Footer extends Component {
             <span>Contáctanos</span>
           </Link>
         </div>
-      </div>
+      </footer>
     )
   }
 }

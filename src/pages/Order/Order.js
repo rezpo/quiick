@@ -75,10 +75,10 @@ export default class Order extends Component {
       }
 
       if (!item.isSelected) {
-        item.unidades = 1
+        item.units = 1
       } else {
         onlySelected.push(item)
-        totalAmount.push(parseInt(item.precio_ahora) * item.unidades)
+        totalAmount.push(parseInt(item.price_now) * item.units)
       }
 
     })
@@ -129,10 +129,10 @@ export default class Order extends Component {
 
   incrementUnits(sku) {
     const incremetUnit = this.state.prevCatalog.map((item) => {
-      if (item.sku === sku && item.unidades < item.stock) {
+      if (item.sku === sku && item.units < item.stock) {
         return {
           ...item,
-          unidades: item.unidades + 1,
+          units: item.units + 1,
         }
       }
       return item
@@ -144,10 +144,10 @@ export default class Order extends Component {
 
   decrementUnits(sku) {
     const decremetUnit = this.state.prevCatalog.map((item) => {
-      if (item.sku === sku && item.unidades > 1) {
+      if (item.sku === sku && item.units > 1) {
         return {
           ...item,
-          unidades: item.unidades - 1,
+          units: item.units - 1,
         }
       }
       return item
@@ -169,16 +169,17 @@ export default class Order extends Component {
           let allProds = []
 
           res.data.forEach(item => {
-            if (item.restaurante.slug === this.state.matchLocation.restaurant) {
+            item.restaurantes.forEach(local => {
+              if (local.slug === this.state.matchLocation.restaurant) {
+                allProds.push(item)
 
-              allProds.push(item)
-
-              this.setState({
-                prevCatalog: allProds,
-              })
-
-            }
+                this.setState({
+                  prevCatalog: allProds,
+                })
+              }
+            })
           })
+
           res.data.map(item => {
             return (
               this.setState({
@@ -187,6 +188,7 @@ export default class Order extends Component {
             )
           })
         })
+
         .catch((error) => {
           console.log(error);
         })
@@ -196,7 +198,7 @@ export default class Order extends Component {
     await
       axios
         .get(process.env.NODE_ENV !== 'production' ? `/categorias` : 'https://quiick-281820.rj.r.appspot.com/categorias')
-        .then((res) => {
+        .then(res => {
           let allCats = []
 
           res.data.forEach(item => {
@@ -298,8 +300,8 @@ export default class Order extends Component {
       prevCatalog.map((item) => {
         catalogSelected.forEach((selected) => {
           if (item.id === selected.id) {
-            selected.unidades = item.unidades
-            summaryTotal.push(selected.precio_ahora * selected.unidades)
+            selected.units = item.units
+            summaryTotal.push(selected.price_now * selected.units)
           }
         })
         return summaryTotal
@@ -359,7 +361,7 @@ export default class Order extends Component {
     let resumeMsg = []
 
     catalogSelected.map(product => {
-      let productsCount = `- ${product.unidades} ${product.titulo}`
+      let productsCount = `- ${product.units} ${product.title}`
       resumeMsg.push(productsCount)
       return resumeMsg
     })
@@ -417,7 +419,7 @@ export default class Order extends Component {
                       {prevCatalog.map(product => {
                         return product.categorias.map(cat => {
                           return (
-                            item.categoria === cat.categoria ?
+                            item.categoria === cat.categoria && product.visible ?
                               <div key={product.id} className={`${product.promo ? 'order__catalog-item-promo' : 'order__catalog-item'} ${product.isSelected ? 'check' : ''}`} id={product.id}>
                                 <div className='order__catalog-pic' onClick={() => this.selectItemHandler(product.id)}>
                                   <div className={`toggler ${product.isSelected ? 'remove' : 'add'}`}>
@@ -431,27 +433,27 @@ export default class Order extends Component {
                                     </div>
                                   ) : ('')}
 
-                                  <img src={product.foto.url} alt={product.titulo} />
+                                  <img src={product.picture.url} alt={product.title} />
                                 </div>
                                 <div className='order__catalog-info'>
                                   <div className='order__catalog-info-title-spec'>
                                     <strong className='order__catalog-info-title'>
-                                      {product.nombre}
+                                      {product.name}
                                     </strong>
                                   </div>
                                   <p className='order__catalog-info-description'>
-                                    {product.descripcion}
+                                    {product.description}
                                   </p>
                                   <div className='order__catalog-item-price'>
                                     <div className='order__catalog-item-spec'>
                                       <div className='spec-price'>
                                         <div className='spec-item'>
                                           <div className='price'>
-                                            {parseInt(product.precio_antes) > 0 &&
-                                              parseInt(product.precio_antes) >
-                                              parseInt(product.precio_ahora) ? (
+                                            {parseInt(product.price_before) > 0 &&
+                                              parseInt(product.price_before) >
+                                              parseInt(product.price_now) ? (
                                                 <NumberFormat
-                                                  value={parseInt(product.precio_antes)}
+                                                  value={parseInt(product.price_before)}
                                                   displayType={'text'}
                                                   thousandSeparator={'.'}
                                                   prefix={'$'}
@@ -461,11 +463,11 @@ export default class Order extends Component {
                                               ) : ('')}
                                             <NumberFormat
                                               value={
-                                                product.unidades > 1 &&
+                                                product.units > 1 &&
                                                   product.isSelected
-                                                  ? parseInt(product.precio_ahora) *
-                                                  product.unidades
-                                                  : parseInt(product.precio_ahora)
+                                                  ? parseInt(product.price_now) *
+                                                  product.units
+                                                  : parseInt(product.price_now)
                                               }
                                               displayType={'text'}
                                               thousandSeparator={'.'}
@@ -476,7 +478,7 @@ export default class Order extends Component {
                                           {product.isSelected ? (
                                             <div className='units'>
                                               <span className='unit'>
-                                                {product.unidades}
+                                                {product.units}
                                               </span>
                                               <div className="units-actions">
                                                 <div className='quantifier' onClick={() => this.incrementUnits(product.sku)}>
@@ -554,17 +556,17 @@ export default class Order extends Component {
                         <div key={index} className='modal-product'>
                           <div className="product-pic">
                             <div className='product-quantity'>
-                              <span>{product.unidades}</span>
+                              <span>{product.units}</span>
                             </div>
-                            <img src={product.foto.url} alt={product.titulo} />
+                            <img src={product.picture.url} alt={product.title} />
                           </div>
                           <div className='product-name'>
-                            {product.titulo}
-                            <small className="product-description">{product.descripcion}</small>
+                            {product.title}
+                            <small className="product-description">{product.description}</small>
                           </div>
                           <span className='product-price'>
                             <NumberFormat
-                              value={product.precio_ahora * product.unidades}
+                              value={product.price_now * product.units}
                               displayType={'text'}
                               thousandSeparator={'.'}
                               prefix={'$'}

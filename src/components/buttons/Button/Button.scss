@@ -40,15 +40,17 @@
 
 .button--quaternary {
   padding: 4px 11px;
-  border-radius: 5rem;
   font-weight: bold;
   font-size: .9rem;
-  background: $quinary;
+  background: $quaternary;
+  box-shadow: none;
+  border: 1px solid $quaternary;
   transition: .2s ease-in-out;
+  color: $white;
 
   &:hover {
+    border: 1px solid $black;
     background: $black;
-    color: $white;
   }
 }
 
@@ -95,6 +97,23 @@
     }
   }
 
+}
+
+.button--septenary {
+  padding: 4px 11px;
+  font-weight: bold;
+  font-size: .9rem;
+  background: $quinary;
+  box-shadow: none;
+  border: 1px solid $quinary;
+  transition: .2s ease-in-out;
+  color: $black;
+
+  &:hover {
+    color: $white;
+    border: 1px solid $black;
+    background: $black;
+  }
 }
 
 .button--unactive {

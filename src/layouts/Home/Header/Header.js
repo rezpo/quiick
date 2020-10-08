@@ -27,7 +27,7 @@ export default function Header() {
   }
 
   return (
-    <div className="header">
+    <header className="header">
       <Link to="/"><Logo /></Link>
       <div className="header__mobile-menu" onClick={menuMobileDisplayToggler}>{<BurgerIcon />}</div>
       <div className={`header__menu ${mobileMenuStatus}`}>
@@ -60,6 +60,6 @@ export default function Header() {
           <Button isSubject='quinary' isText='Cerrar' isIcon={<Icon faIcon={faTimes} />} />
         </div>
       </div>
-    </div>
+    </header>
   )
 }

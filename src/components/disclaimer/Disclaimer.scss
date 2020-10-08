@@ -1,0 +1,26 @@
+@import '../../styles/Index.scss';
+
+.disclaimer {
+  &__wrapper {
+    width: 100%;
+    padding: .8rem 1rem;
+    border-radius: 5px;
+    color: $black;
+    border: 2px solid;
+  }
+
+  &--warning {
+    background: lighten($color: $quinary, $amount: 15);
+    border-color: $quinary;
+  }
+
+  &--error {
+    background: lighten($color: $primary, $amount: 15);
+    border-color: $primary;
+  }
+
+  &--success {
+    background: lighten($color: $secondary-gradient-end, $amount: 15);
+    border-color: $secondary-gradient-end;
+  }
+}

@@ -1,0 +1,19 @@
+@import '../../styles/Index.scss';
+
+.products {
+  &__wrapper {
+    padding: 3rem 2rem;
+  }
+
+  &__top-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &-menu--selected {
+    background: $black;
+    color: $white;
+  }
+}

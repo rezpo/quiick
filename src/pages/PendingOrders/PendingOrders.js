@@ -146,8 +146,8 @@ const PendingOrders = () => {
                   {item.order.map(product => {
                     return (
                       <div key={product.sku} className="pending-order">
-                        <div className="pending-order-units"><span>{product.unidades}</span></div>
-                        <span className="pending-order-item">{product.nombre}</span>
+                        <div className="pending-order-units"><span>{product.units}</span></div>
+                        <span className="pending-order-item">{product.name}</span>
                       </div>
                     )
                   })}

@@ -1,0 +1,174 @@
+@import '../../../styles/Index.scss';
+
+.product-list {
+  &__wrapper {
+    margin: 0 auto;
+    padding: 1rem 0;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &__product {
+    width: clamp(23ch, 50%, 46ch);
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    position: relative;
+    overflow: hidden;
+    border-radius: .6rem;
+    box-shadow: $secondary-shadow;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__picture {
+    flex: 1 100%;
+    position: relative;
+  }
+
+  &__detail {
+    display: flex;
+    flex: 1 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: .8rem .6rem;
+  }
+
+  &__spec {
+    flex: 2;
+
+    .spec-name {
+      margin-bottom: .3rem;
+
+      strong {
+        display: block;
+        @include primary-bold;
+      }
+
+      small {
+        display: block;
+        @include primary-normal-small;
+      }
+    }
+
+    .spec-title {
+      margin-bottom: .3rem;
+    }
+
+    .spec-description {
+      color: lighten($color: $black, $amount: 40);
+    }
+  }
+
+  &__prices {
+    flex: 1;
+    margin-top: .5rem;
+
+    .item {
+      font-size: .9rem;
+    }
+
+  }
+
+  &__displayer {
+    margin-top: 1rem;
+    width: 100%;
+
+    .button {
+      width: 100%;
+    }
+  }
+
+  &__top-menu {
+    @include flex-start;
+
+    .menu-option {
+      margin-right: 1rem;
+    }
+
+    .option-selected {
+      background: $black;
+      color: $white;
+    }
+  }
+
+}
+
+.visible-product {
+  @include flex-start;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: $white;
+  border-radius: 999rem;
+  padding: .2rem .5rem;
+  font-size: .9rem;
+  transition: .2s ease-in-out;
+}
+
+.sku-product {
+  @include flex-start;
+  font-size: .9rem;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: $white;
+  padding: .2rem .3rem;
+  border-radius: 999rem;
+  transition: .2s ease-in-out;
+}
+
+.selected-id-product {
+  background: $quaternary;
+  color: $white;
+}
+
+.selected-product {
+  border: 2px solid $quaternary;
+  background: $quaternary;
+  color: $white;
+
+  .spec-description {
+    color: $white;
+  }
+
+  .visible-product {
+    background: $quaternary;
+  }
+}
+
+.remove-product {
+  margin-right: .3rem;
+  cursor: pointer;
+
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.highlight-product {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: $white;
+  color: $black;
+  padding: .5rem;
+  border-radius: 999rem;
+
+  .icon {
+    margin: 0;
+  }
+}
