@@ -2,20 +2,43 @@ import React, { useState, useEffect, useContext } from 'react'
 import { UserContext } from '../../components/context/UserContext'
 import PendingOrders from '../../pages/PendingOrders/PendingOrders'
 import HistoryOrder from '../../pages/HistoryOrders/HistoryOrders'
+import ProductList from '../../pages/Products/ProductsList/ProductsList'
+import ProductsAdd from '../../pages/Products/ProductsAdd/ProductsAdd'
 import Icon from '../../components/icons/Icon'
 import { ReactComponent as Activemenu } from '../../assets/icons/active.svg'
 import { ReactComponent as Deactivemenu } from '../../assets/icons/deactive.svg'
-import { faClock, faBookmark } from '@fortawesome/free-regular-svg-icons'
+import { faClock, faBookmark, faEdit } from '@fortawesome/free-regular-svg-icons'
 import axios from 'axios'
 import './Account.scss'
-
+import { faPizzaSlice } from '@fortawesome/free-solid-svg-icons'
 export default function Account() {
 
   const [restaurants, setRestaurants] = useState([])
-  const [viewPending, setViewPending] = useState(false)
-  const [viewHistory, setViewHistory] = useState(false)
+  const [selectedSection, setSelectedSection] = useState('')
   const [showMenu, setShowMenu] = useState(false)
   const { userToken, user } = useContext(UserContext)
+  const pendingOrders = <PendingOrders />
+  const historyOrder = <HistoryOrder />
+  const products = <ProductList />
+  const newProducts = <ProductsAdd />
+  const viewSection = [
+    {
+      name: 'pending-orders',
+      component: pendingOrders
+    },
+    {
+      name: 'history-orders',
+      component: historyOrder
+    },
+    {
+      name: 'edit-products',
+      component: products
+    },
+    {
+      name: 'add-products',
+      component: newProducts
+    },
+  ]
 
   useEffect(() => {
 
@@ -45,16 +68,13 @@ export default function Account() {
     }
   }, [restaurants, userToken, user])
 
-  const viewPendingOrders = () => {
-    setViewPending(true)
-    setViewHistory(false)
-    displayMenu()
-  }
-
-  const viewHistoryOrders = () => {
-    setViewHistory(true)
-    setViewPending(false)
-    displayMenu()
+  const viewSelectedSection = (e) => {
+    viewSection.forEach(item => {
+      if (e.target.id === item.name) {
+        setSelectedSection(item.component)
+        displayMenu()
+      }
+    })
   }
 
   const displayMenu = () => {
@@ -74,8 +94,10 @@ export default function Account() {
           </div>
         </div>
         <ul className="account__menu-items">
-          <li className="account-menu-item" onClick={viewPendingOrders}><Icon faIcon={faClock} /><span>Ordenes pendientes</span></li>
-          <li className="account-menu-item" onClick={viewHistoryOrders}><Icon faIcon={faBookmark} /><span>Historial de ordenes</span></li>
+          <li className="account-menu-item" id="pending-orders" onClick={viewSelectedSection}><Icon faIcon={faClock} /><span>Ordenes pendientes</span></li>
+          <li className="account-menu-item" id="history-orders" onClick={viewSelectedSection}><Icon faIcon={faBookmark} /><span>Historial de ordenes</span></li>
+          <li className="account-menu-item" id="edit-products" onClick={viewSelectedSection}><Icon faIcon={faEdit} /><span>Mis productos</span></li>
+          <li className="account-menu-item" id="add-products" onClick={viewSelectedSection}><Icon faIcon={faPizzaSlice} /><span>Añadir productos</span></li>
           <div className="account__restaurants-wrapper">
             <strong>Tus Locales</strong>
             <div className="account__restaurants-list">
@@ -92,10 +114,7 @@ export default function Account() {
         </ul>
       </div>
       <div className="account__info-wrapper">
-        {
-          (viewPending ? <div className="hide-info"><PendingOrders /></div> : null) ||
-          (viewHistory ? <div className="hide-info"><HistoryOrder /></div> : null)
-        }
+        {selectedSection}
       </div>
     </div>
   )

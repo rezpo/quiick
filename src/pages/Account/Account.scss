@@ -4,19 +4,17 @@
   &__wrapper {
     @include flex-end;
     position: relative;
-    height: 100vh;
   }
 
   &__menu-wrapper {
     position: fixed;
-    z-index: 1;
+    top: 0;
     left: 0;
     width: 20%;
-    height: 100vh;
+    height: 100%;
     padding: 4rem 1.3rem;
     padding-right: 0;
     border-radius: 4px;
-    background: lighten($color: $tertiary, $amount: 5);
     transition: .3s ease-in-out;
 
     @media screen and (max-width: $mobile-large-screen){
@@ -41,8 +39,10 @@
   }
 
   &__info-wrapper {
+    position: relative;
     width: 80%;
-    padding: 4rem 0;
+    height: 100%;
+    padding: 0 1rem;
 
     @media screen and (max-width: $mobile-large-screen){
       width: 100%;

@@ -8,7 +8,9 @@ export default class Wrapper extends Component {
     return (
       <div className="wrapper-page">
         <Header />
-        {this.props.children}
+        <main>
+          {this.props.children}
+        </main>
         <Footer />
       </div>
     )

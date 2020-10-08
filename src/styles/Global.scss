@@ -534,6 +534,80 @@
   bottom: 0;
 }
 
+.input {
+  border-radius: 5px;
+  position: relative;
+
+  &__type-file {
+    display: grid;
+    place-items: center;
+    border: .15rem dashed $secondary;
+    background: lighten($color: $secondary, $amount: 30);
+    padding: 1rem;
+    width: 100%;
+    height: 250px;
+    transition: .2s ease-in-out;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      background: lighten($color: $secondary, $amount: 20);
+    }
+  }
+
+  &__type-textarea {
+    border: .15rem solid $secondary;
+    background: lighten($color: $secondary, $amount: 30);
+    color: $black;
+    padding: 1rem;
+
+    textarea {
+      &::placeholder {
+        color: $black;
+      }
+    }
+  }
+}
+
+.switch__selector-wrapper {
+  position: relative;
+  height: 26px;
+  width: 45px;
+  border-radius: 999rem;
+  background: $secondary;
+
+  .switch {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 999rem;
+    background: $white;
+    transition: .3s ease-in-out;
+
+    &--left {
+      left: .2rem;
+      transition: .2s ease-in-out;
+    }
+
+    &--right {
+      left: 1.4rem;
+      transition: .2s ease-in-out;
+    }
+  }
+
+  &--deactive {
+    background: $secondary;
+    box-shadow: inset 0 0 3px darken($color: $secondary, $amount: 20);
+  }
+
+  &--active {
+    background: $quaternary;
+    box-shadow: inset 0 0 8px darken($color: $quaternary, $amount: 20);
+  }
+}
+
 // CAROUSEL REFACTOR
 .carousel {
   .slide {
