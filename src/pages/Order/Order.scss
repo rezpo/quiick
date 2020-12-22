@@ -4,7 +4,7 @@
   @include large-box-radius;
   width: 100%;
   padding: 0 1rem;
-  margin: 5rem auto;
+  margin: 0 auto;
 
   @media screen and (max-width: $desktop-regular-screen) {
     width: 90%;
@@ -37,28 +37,110 @@
     margin-bottom: 0;
   }
 
-  .title {
-    @include flex-start;
+  .location-msg {
+    @include secondary-normal;
+
+    .location {
+      @include secondary-bold;
+    }
   }
+
+}
+
+.order__header-carpet {
+  position: relative;
+  width: 100%;
 
 }
 
 .order__header-options {
   width: 100%;
-  margin-bottom: 2rem;
 
   .options-wrapper {
-    @include flex-between;
-    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1rem;
   }
 
   .option {
-    width: 49%;
+    position: relative;
+    overflow: hidden;
+    flex: 1 1 167px;
+    border: 1px solid $black;
+    border-radius: .6rem;
+    padding: 1rem;
+    margin: 0 5px;
+    height: 136px;
+    cursor: pointer;
+
+    .icon-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: grid;
+      place-items: center;
+      height: 60%;
+      width: 100%;
+    }
+
+    .action-button {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 40%;
+      width: 100%;
+      display: grid;
+      place-items: center;
+      color: $black;
+    }
+  }
+}
+
+.order__header-local {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 999rem;
+
+  .local-avatar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 90%;
+    overflow: hidden;
+    border-radius: 999rem;
+    z-index: 1;
   }
 
-  .button {
-    width: 100%;
+}
+
+.order__header-presentation {
+  @include flex-between;
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translate(0, -50%);
+  z-index: 1;
+
+  .presentation {
+    @include flex-start;
   }
+}
+
+.order__header-welcome {
+  margin-left: 1rem;
+
+  .welcome-title {
+    font-size: 2rem;
+    text-shadow: 2px 0 5px rgba($color: $white, $alpha: .7);
+  }
+}
+
+.order__external {
+  width: 100%;
 }
 
 .order__catalog-selector {
@@ -98,7 +180,6 @@
   width: 15%;
   background: $white;
   height: 378px;
-  box-shadow: $secondary-shadow;
 
   @media screen and (max-width: $desktop-large-screen) {
     &:hover {
@@ -217,12 +298,7 @@
   }
 
   .add {
-    background: $secondary;
     transition: .2s ease-in-out;
-
-    &:hover {
-      background: $quaternary;
-    }
 
     .icon {
       left: 30%;
@@ -230,12 +306,7 @@
   }
 
   .remove {
-    background: $quaternary;
     transition: .2s ease-in-out;
-
-    &:hover {
-      background: $secondary;
-    }
 
     .icon {
       left: 70%;

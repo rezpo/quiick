@@ -14,7 +14,6 @@ import {
   faArrowLeft,
   faList,
   faUserAstronaut,
-  faGlassCheers,
 } from '@fortawesome/free-solid-svg-icons'
 import { ReactComponent as DeliveryIcon } from '../../assets/icons/motorcycle.svg'
 import { ReactComponent as ClickCollectIcon } from '../../assets/icons/store.svg'
@@ -26,6 +25,7 @@ import { HashLink as Link } from 'react-router-hash-link'
 import axios from 'axios'
 import './Order.scss'
 import './Order-promo.scss'
+import { faAccusoft } from '@fortawesome/free-brands-svg-icons'
 
 Modal.setAppElement('#root')
 export default class Order extends Component {
@@ -33,10 +33,10 @@ export default class Order extends Component {
     super(props)
     this.state = {
       prevCatalog: [],
-      prevCategories: [],
       catalogSelected: [],
       allCategories: [],
       currentOrder: [],
+      promoBanners: [],
       totalOrder: 0,
       modalIsOpen: false,
       fullName: '',
@@ -48,9 +48,11 @@ export default class Order extends Component {
       isReady: true,
       width: 0,
       height: 0,
+      local: null,
       matchLocation: props.match.params,
       showMethods: false,
       currentLocation: '',
+      prevActiveCategories: null,
       deliveryMethod: false
     }
     this.clientData = this.clientData.bind(this)
@@ -62,6 +64,11 @@ export default class Order extends Component {
     this.getDateOfOrder = this.getDateOfOrder.bind(this)
     this.showPaymentMethods = this.showPaymentMethods.bind(this)
     this.orderHandedOptions = this.orderHandedOptions.bind(this)
+    this.localAvatar = this.localAvatar.bind(this)
+    this.currentTable = this.currentTable.bind(this)
+    this.externalOrder = this.externalOrder.bind(this)
+    this.promoBanner = this.promoBanner.bind(this)
+    this.getPromoBanners = this.getPromoBanners.bind(this)
   }
 
   selectItemHandler(id) {
@@ -167,24 +174,33 @@ export default class Order extends Component {
         .get(process.env.NODE_ENV !== 'production' ? `/productos` : 'https://quiick-281820.rj.r.appspot.com/productos')
         .then(res => {
           let allProds = []
+          let allCats = []
 
           res.data.forEach(item => {
             item.restaurantes.forEach(local => {
               if (local.slug === this.state.matchLocation.restaurant) {
                 allProds.push(item)
+                allCats.push(...item.categorias)
+                const removeDoubles = [...new Map(allCats.map(item => [item.id, item])).values()]
 
                 this.setState({
                   prevCatalog: allProds,
+                  prevActiveCategories: removeDoubles
                 })
               }
             })
           })
 
-          res.data.map(item => {
-            return (
-              this.setState({
-                currentLocation: item.restaurante.slug
-              })
+          res.data.forEach(item => {
+            item.restaurantes.map(local => {
+              if (local.slug === this.state.matchLocation.restaurant) {
+                return (
+                  this.setState({
+                    currentLocation: local
+                  })
+                )
+              }
+            }
             )
           })
         })
@@ -194,27 +210,26 @@ export default class Order extends Component {
         })
   }
 
-  async getPrevCategories() {
+  async getPromoBanners() {
     await
       axios
-        .get(process.env.NODE_ENV !== 'production' ? `/categorias` : 'https://quiick-281820.rj.r.appspot.com/categorias')
+        .get(process.env.NODE_ENV !== 'production' ? '/promo-banners' : 'https://quiick-281820.rj.r.appspot.com/promo-banners')
         .then(res => {
-          let allCats = []
-
+          let allBanners = []
           res.data.forEach(item => {
-            item.restaurantes.forEach(restaurant => {
-              if (restaurant.slug === this.state.matchLocation.restaurant) {
-                allCats.push(item)
+            item.restaurantes.forEach(local => {
+              if (local.slug === this.state.matchLocation.restaurant) {
+                allBanners.push(item)
 
                 this.setState({
-                  prevCategories: allCats
+                  promoBanners: allBanners
                 })
               }
             })
           })
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(err => {
+          console.log(err.error)
         })
   }
 
@@ -286,10 +301,143 @@ export default class Order extends Component {
   }
 
   componentDidMount() {
-    this.getPrevCategories()
     this.getProducts()
     this.updateWindowDimensions()
+    this.getPromoBanners()
     window.addEventListener('resize', this.updateWindowDimensions)
+  }
+
+  localAvatar(picture, name) {
+    const { currentLocation } = this.state
+
+    return (
+      <div className="order__header-local" style={{ background: `linear-gradient(319deg, ${currentLocation.color_2} 12%, ${currentLocation.color_1} 52%, ${currentLocation.color_5} 82%)` }}>
+        <img src={`${picture}`} className="local-avatar" alt={`${name}`} />
+      </div>
+    )
+  }
+
+  currentTable(tableId) {
+    return (
+      <div className='location-msg'>
+        Estas en la <strong className="location">mesa {tableId},</strong> toma tu tiempo y realiza tu orden
+      </div>
+    )
+  }
+
+  externalOrder(option_1, option_2) {
+    const { currentLocation, delivery, clickCollect, deliveryMethod } = this.state
+
+    return (
+      <div className="order__header-options">
+        <div className="options-wrapper">
+          <div
+            id="delivery-option"
+            className={`option ${option_1 ? 'order-opt-selected' : ''}`}
+            onClick={() => this.orderHandedOptions('delivery-option')}
+            style={
+              deliveryMethod && delivery
+                ? {
+                  background: `${currentLocation.color_4}`,
+                  boxShadow: `0px 4px 8px ${currentLocation.color_2}30`,
+                  color: 'white'
+                }
+                :
+                {
+                  background: `${currentLocation.color_2}`,
+                  boxShadow: `0px 4px 8px ${currentLocation.color_2}30`
+                }
+            }>
+
+            <div className="icon-wrapper"><Icon faIcon={faAccusoft} /></div>
+            <div
+              className="action-button"
+              style={
+                deliveryMethod && delivery
+                  ? {
+                    background: `${currentLocation.color_4}`,
+                    color: 'white'
+                  }
+                  : { background: `${currentLocation.color_2}` }
+              }>
+              {`${option_1 ? 'Despacho seleccionado' : 'Despacho'}`}
+            </div>
+
+          </div>
+          <div
+            id="ccollect-option"
+            className={`option ${option_2 ? 'order-opt-selected' : ''}`}
+            onClick={() => this.orderHandedOptions('ccollect-option')}
+            style={
+              deliveryMethod && clickCollect
+                ? {
+                  background: `${currentLocation.color_4}`,
+                  boxShadow: `0px 4px 8px ${currentLocation.color_2}30`,
+                  color: 'white'
+                }
+                : {
+                  background: `${currentLocation.color_2}`,
+                  boxShadow: `0px 4px 8px ${currentLocation.color_2}30`
+                }
+            }>
+
+            <div className="icon-wrapper"><Icon faIcon={faAccusoft} /></div>
+            <div
+              className="action-button"
+              style={
+                deliveryMethod && clickCollect
+                  ? {
+                    background: `${currentLocation.color_4}`,
+                    color: 'white'
+                  }
+                  : { background: `${currentLocation.color_2}` }
+              }>
+              {`${option_2 ? 'Retiro en tienda seleccionado' : 'Retiro en tienda'}`}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  promoBanner() {
+    let bannerInfo = []
+
+    this.state.promoBanners.forEach(item => {
+      item.banner_img.forEach(item => {
+        bannerInfo.push({ img: item.url, name: item.name })
+      })
+    })
+
+    return (
+      bannerInfo.map(item => {
+        return (
+          <img src={`${item.img}`} alt={`${item.name}`} />
+        )
+      })
+    )
+  }
+
+  getCategories() {
+    const { prevActiveCategories } = this.state
+    let localCategories = []
+
+    if (prevActiveCategories !== null) {
+      prevActiveCategories.forEach(item => {
+        localCategories.push({ id: item.id, category: item.categoria })
+      })
+    }
+
+    return (
+      localCategories.map(item => {
+        return (
+          <Link key={item.id} to={`${item.category}`} className='link'>
+            <Button isSubject='quinary' isText={`${item.category}`} />
+          </Link>
+        )
+      })
+    )
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -341,7 +489,6 @@ export default class Order extends Component {
   render() {
     const {
       prevCatalog,
-      prevCategories,
       catalogSelected,
       totalOrder,
       modalIsOpen,
@@ -355,7 +502,8 @@ export default class Order extends Component {
       address,
       clickCollect,
       currentLocation,
-      deliveryMethod
+      deliveryMethod,
+      prevActiveCategories
     } = this.state
 
     let resumeMsg = []
@@ -369,25 +517,34 @@ export default class Order extends Component {
     return (
       <div>
         <div className='order'>
-          <div className='order__header'>
 
-            {matchLocation.tableId ?
-              <div className='title'>
-                <Icon faIcon={faGlassCheers} />
-                <div>Estas en la mesa {matchLocation.tableId}</div>
-              </div> :
-              <div className="order__header-options">
-                <h3>Selecciona la que prefieras</h3>
-                <div className="options-wrapper">
-                  <div id="delivery-option" className={`option ${delivery ? 'order-opt-selected' : ''}`} onClick={() => this.orderHandedOptions('delivery-option')}>
-                    <Button isSubject="senary" isText={`${delivery ? 'Despacho seleccionado' : 'Despacho'}`} isIcon={<DeliveryIcon />} />
-                  </div>
-                  <div id="ccollect-option" className={`option ${clickCollect ? 'order-opt-selected' : ''}`} onClick={() => this.orderHandedOptions('ccollect-option')}>
-                    <Button isSubject="senary" isText={`${clickCollect ? 'Retiro en tienda seleccionado' : 'Retiro en tienda'}`} isIcon={<ClickCollectIcon />} />
+          <div className='order__header'>
+            <div className="order__header-carpet">
+              <div className='order__header-presentation'>
+                <div className="presentation">
+                  {matchLocation.restaurant === currentLocation.slug ? this.localAvatar(currentLocation.avatar.url) : null}
+                  <div className="order__header-welcome">
+                    <div className="welcome-title">
+                      Bienvenidos a <strong>{currentLocation.name}</strong>
+                      {matchLocation.tableId ? this.currentTable(matchLocation.tableId) : <div className='location-msg'>{`Selecciona despacho a domicilio o retiro en tienda`}</div>}
+                    </div>
                   </div>
                 </div>
               </div>
-            }
+
+              <Carousel
+                className='promo-banner-slider'
+                dragging={true}
+                slidesToScroll={1}
+                withoutControls={true}
+                autoGenerateStyleTag={true}>
+                {this.promoBanner()}
+              </Carousel>
+            </div>
+
+            <div className="order__external">
+              {!matchLocation.tableId ? this.externalOrder(delivery, clickCollect) : null}
+            </div>
 
             <Carousel
               className='tabs-link'
@@ -398,111 +555,112 @@ export default class Order extends Component {
               cellAlign='left'
               withoutControls={true}
               autoGenerateStyleTag={true}
-              slideWidth={0.8}
-            >
-              {prevCategories.map(item => {
-                return (
-                  <Link key={item.id} to={`#${item.categoria}`} className='link'>
-                    <Button isSubject='quinary' isText={`${item.categoria}`} />
-                  </Link>
-                )
-              })}
+              slideWidth={0.8}>
+              {this.getCategories()}
             </Carousel>
           </div>
+
           <div className='order__catalog-selector'>
             <div className='order__catalog'>
-              {prevCategories.map(item => {
-                return (
-                  <div className='order__catalog-category' key={item.id} id={item.categoria}>
-                    <h2>{item.categoria}</h2>
-                    <div key={item.categoria} className='order__catalog-products'>
-                      {prevCatalog.map(product => {
-                        return product.categorias.map(cat => {
-                          return (
-                            item.categoria === cat.categoria && product.visible ?
-                              <div key={product.id} className={`${product.promo ? 'order__catalog-item-promo' : 'order__catalog-item'} ${product.isSelected ? 'check' : ''}`} id={product.id}>
-                                <div className='order__catalog-pic' onClick={() => this.selectItemHandler(product.id)}>
-                                  <div className={`toggler ${product.isSelected ? 'remove' : 'add'}`}>
-                                    {product.isSelected ? (<Icon faIcon={faTimesCircle} />) : (<Icon faIcon={faCheckCircle} />)}
-                                  </div>
-                                  {product.promo ? (
-                                    <div className='order__catalog-info-spec'>
-                                      <span className='spec'>
-                                        <Icon faIcon={faStar} />
-                                      </span>
-                                    </div>
-                                  ) : ('')}
+              {prevActiveCategories !== null ?
+                prevActiveCategories.map(item => {
+                  return (
+                    <div className='order__catalog-category' key={item.id} id={item.categoria}>
+                      <h2>{item.categoria}</h2>
+                      <div key={item.categoria} className='order__catalog-products'>
+                        {prevCatalog.map(product => {
+                          return product.categorias.map(cat => {
+                            return (
+                              item.categoria === cat.categoria && product.visible ?
+                                <div
+                                  key={product.id}
+                                  className={`${product.promo ? 'order__catalog-item-promo' : 'order__catalog-item'} ${product.isSelected ? 'check' : ''}`} id={product.id}
+                                  style={product.isSelected
+                                    ? { boxShadow: `0px 4px 8px ${currentLocation.color_2}30`, background: `${currentLocation.color_4}` }
+                                    : { boxShadow: `0px 4px 8px ${currentLocation.color_2}30`, background: `${product.promo ? currentLocation.color_5 : '#FFF'}` }}>
 
-                                  <img src={product.picture.url} alt={product.title} />
-                                </div>
-                                <div className='order__catalog-info'>
-                                  <div className='order__catalog-info-title-spec'>
-                                    <strong className='order__catalog-info-title'>
-                                      {product.name}
-                                    </strong>
+                                  <div className='order__catalog-pic' onClick={() => this.selectItemHandler(product.id)}>
+                                    <div className={`toggler ${product.isSelected ? 'remove' : 'add'}`} style={product.isSelected ? { background: `${currentLocation.color_4}` } : { background: `${currentLocation.color_2}` }}>
+                                      {product.isSelected ? (<Icon faIcon={faTimesCircle} />) : (<Icon faIcon={faCheckCircle} />)}
+                                    </div>
+                                    {product.promo
+                                      ? <div className='order__catalog-info-spec'>
+                                        <span className='spec'>
+                                          <Icon faIcon={faStar} />
+                                        </span>
+                                      </div>
+                                      : null}
+
+                                    <img src={product.picture.url} alt={product.title} />
                                   </div>
-                                  <p className='order__catalog-info-description'>
-                                    {product.description}
-                                  </p>
-                                  <div className='order__catalog-item-price'>
-                                    <div className='order__catalog-item-spec'>
-                                      <div className='spec-price'>
-                                        <div className='spec-item'>
-                                          <div className='price'>
-                                            {parseInt(product.price_before) > 0 &&
-                                              parseInt(product.price_before) >
-                                              parseInt(product.price_now) ? (
-                                                <NumberFormat
-                                                  value={parseInt(product.price_before)}
-                                                  displayType={'text'}
-                                                  thousandSeparator={'.'}
-                                                  prefix={'$'}
-                                                  decimalSeparator={','}
-                                                  className='before'
-                                                />
-                                              ) : ('')}
-                                            <NumberFormat
-                                              value={
-                                                product.units > 1 &&
-                                                  product.isSelected
-                                                  ? parseInt(product.price_now) *
-                                                  product.units
-                                                  : parseInt(product.price_now)
-                                              }
-                                              displayType={'text'}
-                                              thousandSeparator={'.'}
-                                              prefix={'$'}
-                                              decimalSeparator={','}
-                                            />
-                                          </div>
-                                          {product.isSelected ? (
-                                            <div className='units'>
-                                              <span className='unit'>
-                                                {product.units}
-                                              </span>
-                                              <div className="units-actions">
-                                                <div className='quantifier' onClick={() => this.incrementUnits(product.sku)}>
-                                                  <Icon faIcon={faPlus} />
-                                                </div>
-                                                <div className='quantifier' onClick={() => this.decrementUnits(product.sku)}>
-                                                  <Icon faIcon={faMinus} />
+                                  <div className='order__catalog-info'>
+                                    <div className='order__catalog-info-title-spec' style={product.isSelected && product.promo ? { background: `${currentLocation.color_2}` } : null}>
+                                      <strong className='order__catalog-info-title'>
+                                        {product.name}
+                                      </strong>
+                                    </div>
+                                    <p className='order__catalog-info-description'>
+                                      {product.description}
+                                    </p>
+                                    <div className='order__catalog-item-price'>
+                                      <div className='order__catalog-item-spec'>
+                                        <div className='spec-price'>
+                                          <div className='spec-item'>
+                                            <div className='price'>
+                                              {parseInt(product.price_before) > 0 &&
+                                                parseInt(product.price_before) >
+                                                parseInt(product.price_now) ? (
+                                                  <NumberFormat
+                                                    value={parseInt(product.price_before)}
+                                                    displayType={'text'}
+                                                    thousandSeparator={'.'}
+                                                    prefix={'$'}
+                                                    decimalSeparator={','}
+                                                    className='before'
+                                                  />
+                                                ) : ('')}
+                                              <NumberFormat
+                                                value={
+                                                  product.units > 1 &&
+                                                    product.isSelected
+                                                    ? parseInt(product.price_now) *
+                                                    product.units
+                                                    : parseInt(product.price_now)
+                                                }
+                                                displayType={'text'}
+                                                thousandSeparator={'.'}
+                                                prefix={'$'}
+                                                decimalSeparator={','}
+                                              />
+                                            </div>
+                                            {product.isSelected ? (
+                                              <div className='units'>
+                                                <span className='unit'>
+                                                  {product.units}
+                                                </span>
+                                                <div className="units-actions">
+                                                  <div className='quantifier' onClick={() => this.incrementUnits(product.sku)}>
+                                                    <Icon faIcon={faPlus} />
+                                                  </div>
+                                                  <div className='quantifier' onClick={() => this.decrementUnits(product.sku)}>
+                                                    <Icon faIcon={faMinus} />
+                                                  </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          ) : ('')}
+                                            ) : ('')}
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              : null)
-                        })
-                      })}
+                                : null)
+                          })
+                        })}
+                      </div>
                     </div>
-                  </div>
-                )
-              })}
+                  )
+                }) : <Spinner />}
             </div>
           </div>
           <div className='order__action'>
@@ -547,7 +705,6 @@ export default class Order extends Component {
               <div className='modal-order-detail'>
                 <div className='modal-info-box'>
                   <div className='modal-info-box-title'>
-                    <Icon faIcon={faList} />
                     <strong>Detalle de pedido</strong>
                   </div>
                   <div className="modal-info-box-products">
@@ -555,7 +712,7 @@ export default class Order extends Component {
                       return (
                         <div key={index} className='modal-product'>
                           <div className="product-pic">
-                            <div className='product-quantity'>
+                            <div className='product-quantity' style={{ background: `${currentLocation.color_2}` }}>
                               <span>{product.units}</span>
                             </div>
                             <img src={product.picture.url} alt={product.title} />
@@ -624,7 +781,7 @@ export default class Order extends Component {
                       </div>
                       : null}
                     {clickCollect ?
-                      <div>Debes retirar tu pedido en {prevCatalog[0].restaurante.address}</div>
+                      <div>Debes retirar tu pedido en {currentLocation.address}</div>
                       : null}
                   </form>
                 </div>
@@ -681,11 +838,11 @@ export default class Order extends Component {
                             <Button
                               isSubject='secondary'
                               isText='Confirmar orden'
+                              plusStyle={{ background: `${currentLocation.color_2}` }}
                               isIcon={<Icon faIcon={faThumbsUp} />}
                             />
                           </div>
-                        )
-                    }
+                        )}
                   </div>
                 </div>
               </div>
