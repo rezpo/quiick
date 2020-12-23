@@ -5,8 +5,7 @@ import axios from "axios";
 import "./CategoriesAdd.scss";
 import Icon from "../../../components/icons/Icon";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
-import { faEye, faEyeSlash, faTimes } from "@fortawesome/free-solid-svg-icons";
-import Spinner from "../../../components/spinner/Spinner";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default class CategoriesAdd extends Component {
   static contextType = UserContext;
