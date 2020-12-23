@@ -40,15 +40,17 @@
 
 .button--quaternary {
   padding: 4px 11px;
-  border-radius: 5rem;
   font-weight: bold;
   font-size: .9rem;
-  background: $quinary;
+  background: $quaternary;
+  box-shadow: none;
+  border: 1px solid $quaternary;
   transition: .2s ease-in-out;
+  color: $white;
 
   &:hover {
+    border: 1px solid $black;
     background: $black;
-    color: $white;
   }
 }
 
@@ -68,18 +70,48 @@
 }
 
 .button--senary {
-  padding: 4px 6px;
   font-weight: bold;
-  font-size: .9rem;
-  border-radius: .5rem .5rem 0 0 ;
-  border: 1px solid $black;
+  font-size: 1rem;
   outline: none;
-  background: transparent;
+  background: $quinary;
   transition: .2s ease-in-out;
-  box-shadow: none;
+
+  svg {
+    height: 25px;
+    margin-right: .5rem;
+
+    path {
+      fill: $black;
+      transition: .2s ease-in-out;
+    }
+  }
 
   &:hover {
     color: $white;
+    background: $black;
+
+    svg {
+      path {
+        fill: $white;
+      }
+    }
+  }
+
+}
+
+.button--septenary {
+  padding: 4px 11px;
+  font-weight: bold;
+  font-size: .9rem;
+  background: $quinary;
+  box-shadow: none;
+  border: 1px solid $quinary;
+  transition: .2s ease-in-out;
+  color: $black;
+
+  &:hover {
+    color: $white;
+    border: 1px solid $black;
     background: $black;
   }
 }

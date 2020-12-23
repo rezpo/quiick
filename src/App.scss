@@ -49,8 +49,18 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+input[type=file] {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 body {
   @include primary-normal;
   background-color: $white;
+  height: 100vh;
 
 }

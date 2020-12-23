@@ -9,6 +9,7 @@ export default class Spinner extends Component {
         <div className="spinner__wrapper">
           <div className="spinner-animation">
             <img src={spin} alt="Wait for it"/>
+            {this.props.children}
           </div>
         </div>
       </div>

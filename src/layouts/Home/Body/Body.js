@@ -4,7 +4,6 @@ import Icon from '../../../components/icons/Icon'
 import { faHamburger } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import './Body.scss'
-import Slider from '../Slider/Slider'
 
 const Body = () => {
   return (
@@ -27,7 +26,6 @@ const Body = () => {
       <div className='body__promo'>
         <div className='body__promo-wrapper'>
           <div className='body__promo-item'>
-            <Slider />
           </div>
         </div>
       </div>

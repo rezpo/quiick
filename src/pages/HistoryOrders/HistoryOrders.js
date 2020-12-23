@@ -75,7 +75,7 @@ export default function HistoryOrders() {
               {
                 item.order.map((order, index) => {
                   return (
-                    <div key={index} className="item-ordered">{order.titulo} <small className="item-sku">sku {order.sku}</small></div>
+                    <div key={index} className="item-ordered">{order.title} <small className="item-sku">sku {order.sku}</small></div>
                   )
                 })
               }

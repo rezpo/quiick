@@ -135,7 +135,7 @@ const PendingOrders = () => {
                 {item.owner.map(client => {
                   return (
                     <div key={client.contact}>
-                      <strong className="pending-order-owner-name">{client.name}, {client.restaurant} mesa {client.table}</strong>
+                      <strong className="pending-order-owner-name">{client.name}, {client.restaurant} {client.table ? `Mesa ${client.table}` : null} {client.delivery ? `Despacho ${client.address}` : null} {client.clickCollect ? 'Retiro en tienda' : null}</strong>
                       <div className="pending-order-date">{client.orderDate}</div>
                     </div>
                   )
@@ -146,8 +146,8 @@ const PendingOrders = () => {
                   {item.order.map(product => {
                     return (
                       <div key={product.sku} className="pending-order">
-                        <div className="pending-order-units"><span>{product.unidades}</span></div>
-                        <span className="pending-order-item">{product.nombre}</span>
+                        <div className="pending-order-units"><span>{product.units}</span></div>
+                        <span className="pending-order-item">{product.name}</span>
                       </div>
                     )
                   })}

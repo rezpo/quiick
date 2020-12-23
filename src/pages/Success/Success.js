@@ -6,7 +6,7 @@ export default class Success extends Component {
     return (
       <div className="success">
         <div className="success__wrapper">
-          <div className="success-message">Tu orden ha sido creada con éxito revisa tu WhatsApp para conocer el status de tu pédido</div>
+          <div className="success-message">Tu orden ha sido creada con éxito, no te preocupes, te informaremos cuando este listo</div>
         </div>
       </div>
     )
