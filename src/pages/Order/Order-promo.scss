@@ -8,9 +8,7 @@
   overflow: hidden;
   border-radius: .6rem;
   width: 32%;
-  background: $quinary;
   height: 378px;
-  box-shadow: $secondary-shadow;
 
   @media screen and (max-width: $desktop-large-screen) {
     &:hover {
@@ -70,8 +68,6 @@
       }
 
       .order__catalog-info-title-spec {
-        background: $secondary;
-
         .order__catalog-info-title {
           color: $white;
         }
@@ -265,6 +261,8 @@
 
   .units {
     font-size: 1.5rem;
+    width: 100%;
+    margin-top: 1rem;
   }
 
   .quantifier {

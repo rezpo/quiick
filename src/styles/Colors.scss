@@ -4,37 +4,37 @@ $white-gradient: linear-gradient(180deg, transparent 10%, $white 100%);
 $black: #070707;
 
 // PRIMARY
-$primary: #ff5252;
-$primary-ligth: #f78e8e;
-$primary-dark: #db4747;
-$primary-gradient-end: #fd3153;
+$primary: #FF5252;
+$primary-ligth: #F78E8E;
+$primary-dark: #DB4747;
+$primary-gradient-end: #FD3153;
 $primary-gradient: linear-gradient(142.65deg, $primary-dark 33.6%, $primary-gradient-end 90.53%);
 
 // SECONDARY
-$secondary: #3ff0e1;
-$secondary-ligth: #9feee7;
-$secondary-dark: #2bb4a9;
-$secondary-gradient-end: #59f8ae;
+$secondary: #3FF0E1;
+$secondary-ligth: #9FEEE7;
+$secondary-dark: #2BB4A9;
+$secondary-gradient-end: #59F8AE;
 $secondary-gradient: linear-gradient(188.67deg, $secondary 12.5%, $secondary-gradient-end 100%);
 $secondary-gradient-hover: linear-gradient(188.67deg, $secondary 30.5%, $secondary-gradient-end 100%);
 
 // TERTIARY
 $tertiary: #EEEEEE;
-$tertiary-ligth: #fafafa;
-$tertiary-dark: #c4c4c4;
+$tertiary-ligth: #FAFAFA;
+$tertiary-dark: #C4C4C4;
 $tertiary-gradient-end: $white;
 $tertiary-gradient: linear-gradient(214.29deg, $tertiary 12.5%, $tertiary-gradient-end 100%);
 $tertiary-gradient-hover: linear-gradient(214.29deg, $tertiary 5.5%, $tertiary-gradient-end 100%);
 
 // QUATERNARY
-$quaternary: #7835cf;
-$quaternary-ligth: #ad76f5;
-$quaternary-dark: #5f2ca1;
+$quaternary: #7835CF;
+$quaternary-ligth: #AD76F5;
+$quaternary-dark: #5F2CA1;
 
 // QUINARY
-$quinary: #ffe44d;
-$quinary-ligth: #ffef94;
-$quinary-dark: #ecb212;
+$quinary: #FFE44D;
+$quinary-ligth: #FFEF94;
+$quinary-dark: #ECB212;
 
 // SHADOW
 $black-shadow: 0px 46px 28px rgba($color: $black, $alpha: .1);

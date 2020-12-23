@@ -1,0 +1,74 @@
+@import '../../../styles/Index.scss';
+
+.category-add {
+  &__wrapper {
+    width: 100%;
+  }
+
+  &__list {
+    width: 100%;
+  }
+
+  &__list-items {
+    display: grid;
+    grid-gap: 1rem;
+    list-style: none;
+    padding: 0;
+
+    .item {
+      @include flex-between;
+      padding-bottom: 1rem;
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border-bottom: 1px solid $tertiary;
+    }
+
+    .item--remove {
+      height: 30px;
+      width: 30px;
+      border-radius: 999rem;
+      background: $primary;
+      transition: .2s ease-in-out;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        background: $black;
+      }
+
+      .icon {
+        margin-right: 0;
+        width: 100%;
+      }
+    }
+  }
+
+  &__new-category {
+    display: grid;
+    grid-gap: 1rem;
+    width: max-content;
+    margin: 0 auto;
+  }
+
+  &-heading {
+    width: 100%;
+    @include flex-between;
+
+    .title {
+      @include secondary-normal;
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .actioner {
+      @include flex-between;
+
+      >* {
+        margin: 0 .2rem;
+      }
+    }
+  }
+}
