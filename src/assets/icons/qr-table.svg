@@ -9,7 +9,14 @@
 	.st3{fill:none;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
 	.st4{fill:none;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-miterlimit:10;}
 </style>
-<path class="st3" d="M39.8,54.6V20.4c0-7.5-6.1-13.6-13.6-13.6h0c-7.5,0-13.6,6.1-13.6,13.6v71.9"/>
-<polyline class="st3" points="85.3,92.4 85.3,54.6 39.8,36.9 "/>
-<line class="st3" x1="64" y1="50" x2="64" y2="62.3"/>
+<g>
+	<path d="M75.8,8C84.7,8,92,15.3,92,24.2v51.6C92,84.7,84.7,92,75.8,92H24.2C15.3,92,8,84.7,8,75.8V24.2C8,15.3,15.3,8,24.2,8H75.8
+		 M75.8,0H24.2C10.8,0,0,10.8,0,24.2v51.6C0,89.2,10.8,100,24.2,100h51.6c13.4,0,24.2-10.8,24.2-24.2V24.2C100,10.8,89.2,0,75.8,0
+		L75.8,0z"/>
+</g>
+<polyline class="st3" points="19.9,33 24.3,59 43.8,59 47.8,79.3 "/>
+<line class="st3" x1="21.4" y1="79.3" x2="24.3" y2="59"/>
+<rect x="66.8" y="26.1" class="st3" width="6.4" height="6.4"/>
+<rect x="38" y="32.5" class="st3" width="14.5" height="14.5"/>
+<rect x="61.5" y="60.6" class="st3" width="17" height="17"/>
 </svg>

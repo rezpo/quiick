@@ -1,1 +1,16 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 111 111"><defs><style>.cls-1{fill:#70c9cb;}</style></defs><rect class="cls-1" width="111" height="111" rx="43"/><path d="M82.46,80.34a6.69,6.69,0,0,1-5.34,7.81c-3.63.68-9.44-1.27-10.13-4.9s4-7.56,7.66-8.24A6.69,6.69,0,0,1,82.46,80.34Z"/><path d="M50.25,54.19a7,7,0,0,0-14,0Zm-20.5,0a7,7,0,0,0-14,0Zm6.5,0a2.13,2.13,0,0,1-.71,1.87,4.1,4.1,0,0,1-2.57.8,4,4,0,0,1-2.52-.75,2.2,2.2,0,0,1-.7-1.92h-14a16.14,16.14,0,0,0,5.71,12.65,17.92,17.92,0,0,0,11.57,4,18.11,18.11,0,0,0,11.52-4.08,16.1,16.1,0,0,0,5.7-12.59Z"/><path d="M95.25,53.07a7,7,0,1,0-14,0Zm-20.5,0a7,7,0,1,0-14,0Zm6.5,0a2.13,2.13,0,0,1-.71,1.87,4.1,4.1,0,0,1-2.57.8A4,4,0,0,1,75.45,55a2.22,2.22,0,0,1-.7-1.92h-14a16.14,16.14,0,0,0,5.71,12.65,18.46,18.46,0,0,0,23.09-.07,16.06,16.06,0,0,0,5.7-12.58Z"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#EF5355;}
+	.st1{fill:#70C9CB;}
+	.st2{fill:#FFE44D;}
+	.st3{fill:none;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st4{fill:none;stroke:#000000;stroke-width:8;stroke-linecap:round;stroke-miterlimit:10;}
+</style>
+<path class="st1" d="M81.1,99.9H18.9C8.5,99.9,0,91.4,0,81V18.7C0,8.3,8.5-0.1,18.9-0.1h62.2c10.4,0,18.9,8.5,18.9,18.9V81
+	C100,91.4,91.5,99.9,81.1,99.9z"/>
+<circle class="st3" cx="50" cy="50" r="22"/>
+<line class="st3" x1="17.9" y1="50" x2="82.1" y2="50"/>
+</svg>

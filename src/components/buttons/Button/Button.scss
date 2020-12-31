@@ -119,5 +119,6 @@
 .button--unactive {
   background: $tertiary;
   box-shadow: none;
+  pointer-events: none;
 
 }
