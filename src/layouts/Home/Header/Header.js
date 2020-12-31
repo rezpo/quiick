@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "../../../components/context/UserContext";
 import { ReactComponent as Logo } from "../../../assets/logo.svg";
 import { ReactComponent as WatermarkLogo } from "../../../assets/watermark-logo.svg";
-import { ReactComponent as BurgerIcon } from "../../../assets/icons/burguer-menu.svg";
+import { ReactComponent as BurgerIcon } from "../../../assets/icons/burger-menu.svg";
 import { Link, useLocation } from "react-router-dom";
 import {
   faBicycle,
