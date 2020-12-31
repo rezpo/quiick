@@ -21,7 +21,7 @@ import Button from "../../components/buttons/Button/Button";
 import axios from "axios";
 import "./Account.scss";
 export default function Account() {
-  const { register, handleSubmit, reset, errors } = useForm();
+  const { register, handleSubmit } = useForm();
   const pendingOrders = <PendingOrders />;
   const historyOrder = <HistoryOrder />;
   const products = <ProductsCategory />;
