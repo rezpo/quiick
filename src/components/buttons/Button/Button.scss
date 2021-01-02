@@ -116,6 +116,22 @@
   }
 }
 
+.button--octonary {
+  padding: 4px 11px;
+  font-weight: bold;
+  background: $primary;
+  box-shadow: none;
+  border: none;
+  transition: .2s ease-in-out;
+  color: $black;
+  font-weight: bold;
+
+  &:hover {
+    color: $white;
+    background: $black;
+  }
+}
+
 .button--unactive {
   background: $tertiary;
   box-shadow: none;

@@ -48,7 +48,7 @@
     padding: 0;
     list-style: none;
 
-    @media screen and (max-width: $mobile-large-screen){
+    @media screen and (max-width: $mobile-large-screen) {
       width: 100%;
     }
 
@@ -66,8 +66,13 @@
   }
 
   &-owner-name {
+    @include flex-start;
     margin-right: .3rem;
     text-transform: capitalize;
+
+    >*+* {
+      margin-left: .5rem
+    }
   }
 
   &-date {
@@ -134,6 +139,18 @@
         }
       }
 
+    }
+  }
+
+  &-hide-cancel {
+    cursor: pointer;
+  }
+
+  &--cancel {
+    @include flex-start;
+
+    >*+* {
+      margin-left: .8rem;
     }
   }
 }
